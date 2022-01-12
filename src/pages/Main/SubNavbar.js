@@ -2,56 +2,39 @@ import React,{useState} from'react'
 import styled from 'styled-components'
 import {Link} from 'react-router-dom'
 const SubNavbar =({selectedTab ,subBarSelect}) =>{
-    const select0 =() =>{ //
-        subBarSelect(0)
-    }
-    const select1 =() =>{
-        subBarSelect(1)
-    }
-    const select2 =() =>{
-        subBarSelect(2)
-    }
-    const select3 =() =>{
-        subBarSelect(3)
-    }
     let now = null
+    
     if(selectedTab === 0){ //0번탭
-        now = 
+    now =
 <NavBar>
-  
       <NavList>
         <NavItem>
-          <Link to="#" onClick={select0}>
-            <NavText>홈</NavText>
-          </Link>
+            <NavText onClick={() => subBarSelect("Story")} >스토리</NavText>
         </NavItem>
         <NavItem>
-          <Link to="#" onClick={select1}>
-            <NavText>질문과 답변</NavText>
-          </Link>
+            <NavText onClick={() =>subBarSelect("Advices")} >노하우</NavText>
         </NavItem>
-      </NavList>
-      
-    
+        <NavItem>
+            <NavText onClick={() =>subBarSelect("Event")}>이벤트</NavText>
+        </NavItem>
+      </NavList>          
 </NavBar>
-    
-
+        
     }
     else{               //1번 탭
-        now = 
+        now =
 <NavBar>
       <NavList>
         <NavItem>
-          <Link to="#" onClick={select2}>
-            <NavText>스토어</NavText>
-          </Link>
+            <NavText >카테고리</NavText>
         </NavItem>
         <NavItem>
-          <Link to="#" onClick={select3}>
-            <NavText>카테고리</NavText>
-          </Link>
+            <NavText >오늘의 딜</NavText>
         </NavItem>
-      </NavList>
+        <NavItem>
+            <NavText >프리미엄</NavText>
+        </NavItem>
+      </NavList>          
 </NavBar>
 
     }
