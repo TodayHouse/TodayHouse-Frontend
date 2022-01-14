@@ -2,8 +2,10 @@ import React, { useState, useEffect, Fragment } from 'react'
 import styled from 'styled-components'
 import $ from 'jquery'
 import SelectedCategoryElement from '../elements/SelectedCategoryElement'
+import { Palette } from '../components/index'
 
 const Category = () => {
+  const [flatText, setFlatText] = useState('모든 평수')
   const [allColorIsChecked, setAllColorIsChecked] = useState(false)
   const [wallColorIsChecked, setwallColorIsChecked] = useState(false)
   const [selectedCategoryList, setSelectedCategoryList] = useState({
@@ -13,7 +15,9 @@ const Category = () => {
     budget: '',
     family: '',
     style: '',
-    color: '',
+    allColor: '',
+    wallColor: '',
+    floorColor: '',
     construction: '',
     field: '',
     worker: '',
@@ -26,13 +30,82 @@ const Category = () => {
     selectedCategoryList.budget,
     selectedCategoryList.family,
     selectedCategoryList.style,
-    selectedCategoryList.color,
+    selectedCategoryList.allColor,
+    selectedCategoryList.wallColor,
+    selectedCategoryList.floorColor,
     selectedCategoryList.construction,
     selectedCategoryList.field,
     selectedCategoryList.worker,
   ]
 
-  const CategoryListAllHide = () => {
+  const setFlatValue = (data) => {
+    if (1 <= data && data < 10) {
+      setFlatText('1-9평')
+      setSelectedCategoryList({
+        ...selectedCategoryList,
+        flatArea: '1-9평',
+      })
+      $('#selectedFlatArea').show()
+    }
+    if (10 <= data && data < 20) {
+      setFlatText('10평대')
+      setSelectedCategoryList({
+        ...selectedCategoryList,
+        flatArea: '10평대',
+      })
+      $('#selectedFlatArea').show()
+    }
+    if (20 <= data && data < 30) {
+      setFlatText('20평대')
+      setSelectedCategoryList({
+        ...selectedCategoryList,
+        flatArea: '20평대',
+      })
+      $('#selectedFlatArea').show()
+    }
+    if (30 <= data && data < 40) {
+      setFlatText('30평대')
+      setSelectedCategoryList({
+        ...selectedCategoryList,
+        flatArea: '30평대',
+      })
+      $('#selectedFlatArea').show()
+    }
+    if (40 <= data && data < 50) {
+      setFlatText('40평대')
+      setSelectedCategoryList({
+        ...selectedCategoryList,
+        flatArea: '40평대',
+      })
+      $('#selectedFlatArea').show()
+    }
+    if (50 <= data && data < 60) {
+      setFlatText('50평대')
+      setSelectedCategoryList({
+        ...selectedCategoryList,
+        flatArea: '50평대',
+      })
+      $('#selectedFlatArea').show()
+    }
+    if (60 <= data && data < 70) {
+      setFlatText('60평대')
+      setSelectedCategoryList({
+        ...selectedCategoryList,
+        flatArea: '60평대',
+      })
+      $('#selectedFlatArea').show()
+    }
+    if (70 <= data && data < 80) {
+      setFlatText('70평 이상')
+      setSelectedCategoryList({
+        ...selectedCategoryList,
+        flatArea: '70평대 이상',
+      })
+      $('#selectedFlatArea').show()
+    }
+  }
+
+  const categoryListAllhide = () => {
     // 초기화 버튼 누를 때 실행
     $('#selectedSort').hide()
     $('#selectedLivingType').hide()
@@ -40,7 +113,9 @@ const Category = () => {
     $('#selectedBudget').hide()
     $('#selectedFamily').hide()
     $('#selectedStyle').hide()
-    $('#selectedColor').hide()
+    $('#selectedAllColor').hide()
+    $('#selectedWallColor').hide()
+    $('#selectedFloorColor').hide()
     $('#selectedConstruction').hide()
     $('#selectedField').hide()
     $('#selectedWorker').hide()
@@ -52,14 +127,16 @@ const Category = () => {
       budget: '',
       family: '',
       style: '',
-      color: '',
+      allColor: '',
+      wallColor: '',
+      floorColor: '',
       construction: '',
       field: '',
       worker: '',
     })
   }
 
-  const AllColorCheckHandler = () => {
+  const allColorCheckHandler = () => {
     // 컬러 내의 전체톤 체크값이 변경될 때마다 실행됨
     console.log('전체 : ' + allColorIsChecked)
 
@@ -67,81 +144,86 @@ const Category = () => {
       // 전체톤 체크가 되어있으면
       $('#all').show() // 전체톤 색 목록을 보여줌
       $('#wall').hide() // 벽/바닥 색 목록은 숨김
+      $('#floor').hide()
       setwallColorIsChecked(false) // 벽/바닥 체크를 해제
     } else $('#all').hide()
   }
 
-  const WallColorCheckHandler = () => {
+  const wallColorCheckHandler = () => {
     // 컬러 내의 벽/바닥 컬러 체크값이 변경될 때마다 실행됨
     console.log('벽 : ' + wallColorIsChecked)
 
     if (wallColorIsChecked) {
       // 벽/바닥 체크가 되어있으면
       $('#wall').show() // 벽/바닥 색 목록을 보여줌
+      $('#floor').show()
       $('#all').hide() // 전체톤 색 목록은 숨김
       setAllColorIsChecked(false) // 전체톤 체크를 해제
-    } else $('#wall').hide()
+    } else {
+      $('#wall').hide()
+      $('#floor').hide()
+    }
   }
 
   // 카테고리 상세항목 보이기/숨기기
-  const ShowSort = () => {
+  const showSort = () => {
     $('#sort').show()
   }
-  const HideSort = () => {
+  const hideSort = () => {
     $('#sort').hide()
   }
-  const ShowLivingType = () => {
+  const showLivingType = () => {
     $('#livingtype').show()
   }
-  const HideLivingType = () => {
+  const hideLivingType = () => {
     $('#livingtype').hide()
   }
-  const ShowFlatArea = () => {
+  const showFlatArea = () => {
     $('#flatarea').show()
   }
-  const HideFlatArea = () => {
+  const hideFlatArea = () => {
     $('#flatarea').hide()
   }
-  const ShowBudget = () => {
+  const showBudget = () => {
     $('#budget').show()
   }
-  const HideBudget = () => {
+  const hideBudget = () => {
     $('#budget').hide()
   }
-  const ShowFamily = () => {
+  const showFamily = () => {
     $('#family').show()
   }
-  const HideFamily = () => {
+  const hideFamily = () => {
     $('#family').hide()
   }
-  const ShowStyle = () => {
+  const showStyle = () => {
     $('#style').show()
   }
-  const HideStyle = () => {
+  const hideStyle = () => {
     $('#style').hide()
   }
-  const ShowColor = () => {
+  const showColor = () => {
     $('#color').show()
   }
-  const HideColor = () => {
+  const hideColor = () => {
     $('#color').hide()
   }
-  const ShowConstruction = () => {
+  const showConstruction = () => {
     $('#construction').show()
   }
-  const HideConstruction = () => {
+  const hideConstruction = () => {
     $('#construction').hide()
   }
-  const ShowField = () => {
+  const showField = () => {
     $('#field').show()
   }
-  const HideField = () => {
+  const hideField = () => {
     $('#field').hide()
   }
-  const ShowWorker = () => {
+  const showWorker = () => {
     $('#worker').show()
   }
-  const HideWorker = () => {
+  const hideWorker = () => {
     $('#worker').hide()
   }
   // 카테고리 상세항목 보이기/숨기기
@@ -159,16 +241,30 @@ const Category = () => {
     $('#worker').hide()
     $('#all').hide()
     $('#wall').hide()
+    $('#floor').hide()
+    $('#selectedSort').hide()
+    $('#selectedLivingType').hide()
+    $('#selectedFlatArea').hide()
+    $('#selectedBudget').hide()
+    $('#selectedFamily').hide()
+    $('#selectedStyle').hide()
+    $('#selectedAllColor').hide()
+    $('#selectedWallColor').hide()
+    $('#selectedFloorColor').hide()
+    $('#selectedConstruction').hide()
+    $('#selectedField').hide()
+    $('#selectedWorker').hide()
+    $('#reset').hide()
   }, [])
 
   useEffect(() => {
     // 컬러 내의 전체톤 체크값이 변경될 때마다 실행됨
-    AllColorCheckHandler()
+    allColorCheckHandler()
   }, [allColorIsChecked])
 
   useEffect(() => {
     // 컬러 내의 벽/바닥 컬러 체크값이 변경될 때마다 실행됨
-    WallColorCheckHandler()
+    wallColorCheckHandler()
   }, [wallColorIsChecked])
 
   useEffect(() => {
@@ -184,22 +280,23 @@ const Category = () => {
   }, [selectedCategoryList])
 
   useEffect(() => {
+    // 선택된 카테고리가 없으면 초기화 버튼 없앰
     let cnt = 0
     categoryList.forEach((e) => {
       if (e === '') cnt += 1
     })
-    if (cnt === 10) $('#reset').hide()
+    if (cnt === 12) $('#reset').hide()
   }, [categoryList])
 
   return (
     <Fragment>
       <CategoryContainer>
         <CategoryElement style={{ width: 70 }}>
-          <Select onMouseOver={ShowSort} onMouseLeave={HideSort}>
+          <Select onMouseOver={showSort} onMouseLeave={hideSort}>
             정렬
             <img src={require('../../../img/ExpandArrow.png')} />
           </Select>
-          <SortBox id="sort" onMouseOver={ShowSort} onMouseLeave={HideSort}>
+          <SortBox id="sort" onMouseOver={showSort} onMouseLeave={hideSort}>
             <div style={{ overflow: 'auto' }}>
               <Detail
                 onClick={() => {
@@ -249,14 +346,14 @@ const Category = () => {
           </SortBox>
         </CategoryElement>
         <CategoryElement>
-          <Select onMouseOver={ShowLivingType} onMouseLeave={HideLivingType}>
+          <Select onMouseOver={showLivingType} onMouseLeave={hideLivingType}>
             주거형태
             <img src={require('../../../img/ExpandArrow.png')} />
           </Select>
           <LivingTypeBox
             id="livingtype"
-            onMouseOver={ShowLivingType}
-            onMouseLeave={HideLivingType}
+            onMouseOver={showLivingType}
+            onMouseLeave={hideLivingType}
           >
             <div style={{ overflow: 'auto' }}>
               <Detail
@@ -340,19 +437,19 @@ const Category = () => {
           </LivingTypeBox>
         </CategoryElement>
         <CategoryElement style={{ width: 70 }}>
-          <Select onMouseOver={ShowFlatArea} onMouseLeave={HideFlatArea}>
+          <Select onMouseOver={showFlatArea} onMouseLeave={hideFlatArea}>
             평수
             <img src={require('../../../img/ExpandArrow.png')} />
           </Select>
           <FlatAreaBox
             id="flatarea"
-            onMouseOver={ShowFlatArea}
-            onMouseLeave={HideFlatArea}
+            onMouseOver={showFlatArea}
+            onMouseLeave={hideFlatArea}
           >
             <div style={{ overflow: 'auto' }}>
               <div style={{ height: 300, padding: 16 }}>
                 <div style={{ fontWeight: 'bold', fontSize: 20, padding: 8 }}>
-                  모든 평수
+                  {flatText}
                 </div>
                 <div
                   style={{
@@ -361,23 +458,140 @@ const Category = () => {
                     alignItems: 'center',
                   }}
                 >
-                  <RangeSlider
-                    style={{ marginTop: 20 }}
-                    type="range"
-                    class="form-range"
-                    id="customRange1"
-                  />
-                  <FlatContainer style={{ marginTop: 90 }}>
-                    <Flat>1-9평</Flat>
-                    <Flat>10평대</Flat>
-                    <Flat>10평대</Flat>
-                    <Flat>10평대</Flat>
+                  <div>
+                    <RangeSlider
+                      type="range"
+                      min="1"
+                      max="80"
+                      class="form-range"
+                      id="customRange1"
+                      onChange={(e) => {
+                        if (e.target.value === '80') setFlatText('모든 평수')
+                        else {
+                          let flatValue = Number(e.target.value)
+                          setFlatValue(flatValue)
+                        }
+                      }}
+                    />
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        color: '#777777',
+                        fontSize: 14,
+                      }}
+                    >
+                      <p>1평</p>
+                      <p>70평 이상</p>
+                    </div>
+                  </div>
+                  <FlatContainer style={{ marginTop: 30 }}>
+                    <Flat
+                      onClick={() => {
+                        setSelectedCategoryList({
+                          ...selectedCategoryList,
+                          flatArea: '1-9평',
+                        })
+                        setFlatText('1-9평')
+                        $('#customRange1').val('9')
+                        $('#selectedFlatArea').show()
+                      }}
+                    >
+                      1-9평
+                    </Flat>
+                    <Flat
+                      onClick={() => {
+                        setSelectedCategoryList({
+                          ...selectedCategoryList,
+                          flatArea: '10평대',
+                        })
+                        setFlatText('10평대')
+                        $('#customRange1').val('19')
+                        $('#selectedFlatArea').show()
+                      }}
+                    >
+                      10평대
+                    </Flat>
+                    <Flat
+                      onClick={() => {
+                        setSelectedCategoryList({
+                          ...selectedCategoryList,
+                          flatArea: '20평대',
+                        })
+                        setFlatText('20평대')
+                        $('#customRange1').val('29')
+                        $('#selectedFlatArea').show()
+                      }}
+                    >
+                      20평대
+                    </Flat>
+                    <Flat
+                      onClick={() => {
+                        setSelectedCategoryList({
+                          ...selectedCategoryList,
+                          flatArea: '30평대',
+                        })
+                        setFlatText('30평대')
+                        $('#customRange1').val('39')
+                        $('#selectedFlatArea').show()
+                      }}
+                    >
+                      30평대
+                    </Flat>
                   </FlatContainer>
                   <FlatContainer>
-                    <Flat>40평대</Flat>
-                    <Flat>50평대</Flat>
-                    <Flat>60평대</Flat>
-                    <Flat>70평 이상</Flat>
+                    <Flat
+                      onClick={() => {
+                        setSelectedCategoryList({
+                          ...selectedCategoryList,
+                          flatArea: '40평대',
+                        })
+                        setFlatText('40평대')
+                        $('#customRange1').val('49')
+                        $('#selectedFlatArea').show()
+                      }}
+                    >
+                      40평대
+                    </Flat>
+                    <Flat
+                      onClick={() => {
+                        setSelectedCategoryList({
+                          ...selectedCategoryList,
+                          flatArea: '50평대',
+                        })
+                        setFlatText('50평대')
+                        $('#customRange1').val('59')
+                        $('#selectedFlatArea').show()
+                      }}
+                    >
+                      50평대
+                    </Flat>
+                    <Flat
+                      onClick={() => {
+                        setSelectedCategoryList({
+                          ...selectedCategoryList,
+                          flatArea: '60평대',
+                        })
+                        setFlatText('60평대')
+                        $('#customRange1').val('69')
+                        $('#selectedFlatArea').show()
+                      }}
+                    >
+                      60평대
+                    </Flat>
+                    <Flat
+                      onClick={() => {
+                        setSelectedCategoryList({
+                          ...selectedCategoryList,
+                          flatArea: '70평 이상',
+                        })
+                        setFlatText('70평 이상')
+                        $('#customRange1').val('79')
+                        $('#selectedFlatArea').show()
+                      }}
+                    >
+                      70평 이상
+                    </Flat>
                   </FlatContainer>
                 </div>
               </div>
@@ -385,14 +599,14 @@ const Category = () => {
           </FlatAreaBox>
         </CategoryElement>
         <CategoryElement style={{ width: 70 }}>
-          <Select onMouseOver={ShowBudget} onMouseLeave={HideBudget}>
+          <Select onMouseOver={showBudget} onMouseLeave={hideBudget}>
             예산
             <img src={require('../../../img/ExpandArrow.png')} />
           </Select>
           <BudgetBox
             id="budget"
-            onMouseOver={ShowBudget}
-            onMouseLeave={HideBudget}
+            onMouseOver={showBudget}
+            onMouseLeave={hideBudget}
           >
             <div style={{ overflow: 'auto' }}>
               <div style={{ height: 230, padding: 16 }}>
@@ -408,20 +622,120 @@ const Category = () => {
                 >
                   <div style={{ marginTop: 8 }}>
                     <PriceContainer>
-                      <Price>1백만원 미만</Price>
-                      <Price>1백만원대</Price>
-                      <Price>2백만원대</Price>
-                      <Price>3백만원대</Price>
+                      <Price
+                        onClick={() => {
+                          setSelectedCategoryList({
+                            ...selectedCategoryList,
+                            budget: '1백만원 미만',
+                          })
+                          $('#selectedBudget').show()
+                        }}
+                      >
+                        1백만원 미만
+                      </Price>
+                      <Price
+                        onClick={() => {
+                          setSelectedCategoryList({
+                            ...selectedCategoryList,
+                            budget: '1백만원대',
+                          })
+                          $('#selectedBudget').show()
+                        }}
+                      >
+                        1백만원대
+                      </Price>
+                      <Price
+                        onClick={() => {
+                          setSelectedCategoryList({
+                            ...selectedCategoryList,
+                            budget: '2백만원대',
+                          })
+                          $('#selectedBudget').show()
+                        }}
+                      >
+                        2백만원대
+                      </Price>
+                      <Price
+                        onClick={() => {
+                          setSelectedCategoryList({
+                            ...selectedCategoryList,
+                            budget: '3백만원대',
+                          })
+                          $('#selectedBudget').show()
+                        }}
+                      >
+                        3백만원대
+                      </Price>
                     </PriceContainer>
                     <PriceContainer>
-                      <Price>4백만원대</Price>
-                      <Price>5백만원대</Price>
-                      <Price>1천만원대</Price>
-                      <Price>2천만원대</Price>
+                      <Price
+                        onClick={() => {
+                          setSelectedCategoryList({
+                            ...selectedCategoryList,
+                            budget: '4백만원대',
+                          })
+                          $('#selectedBudget').show()
+                        }}
+                      >
+                        4백만원대
+                      </Price>
+                      <Price
+                        onClick={() => {
+                          setSelectedCategoryList({
+                            ...selectedCategoryList,
+                            budget: '5백만원대',
+                          })
+                          $('#selectedBudget').show()
+                        }}
+                      >
+                        5백만원대
+                      </Price>
+                      <Price
+                        onClick={() => {
+                          setSelectedCategoryList({
+                            ...selectedCategoryList,
+                            budget: '1천만원대',
+                          })
+                          $('#selectedBudget').show()
+                        }}
+                      >
+                        1천만원대
+                      </Price>
+                      <Price
+                        onClick={() => {
+                          setSelectedCategoryList({
+                            ...selectedCategoryList,
+                            budget: '2천만원대',
+                          })
+                          $('#selectedBudget').show()
+                        }}
+                      >
+                        2천만원대
+                      </Price>
                     </PriceContainer>
                     <PriceContainer>
-                      <Price>3천만원대</Price>
-                      <Price>4천만원 이상</Price>
+                      <Price
+                        onClick={() => {
+                          setSelectedCategoryList({
+                            ...selectedCategoryList,
+                            budget: '3천만원대',
+                          })
+                          $('#selectedBudget').show()
+                        }}
+                      >
+                        3천만원대
+                      </Price>
+                      <Price
+                        onClick={() => {
+                          setSelectedCategoryList({
+                            ...selectedCategoryList,
+                            budget: '4천만원 이상',
+                          })
+                          $('#selectedBudget').show()
+                        }}
+                      >
+                        4천만원 이상
+                      </Price>
                     </PriceContainer>
                   </div>
                 </div>
@@ -430,14 +744,14 @@ const Category = () => {
           </BudgetBox>
         </CategoryElement>
         <CategoryElement>
-          <Select onMouseOver={ShowFamily} onMouseLeave={HideFamily}>
+          <Select onMouseOver={showFamily} onMouseLeave={hideFamily}>
             가족형태
             <img src={require('../../../img/ExpandArrow.png')} />
           </Select>
           <FamilyBox
             id="family"
-            onMouseOver={ShowFamily}
-            onMouseLeave={HideFamily}
+            onMouseOver={showFamily}
+            onMouseLeave={hideFamily}
           >
             <div style={{ overflow: 'auto' }}>
               <Detail
@@ -510,11 +824,11 @@ const Category = () => {
           </FamilyBox>
         </CategoryElement>
         <CategoryElement style={{ width: 85 }}>
-          <Select onMouseOver={ShowStyle} onMouseLeave={HideStyle}>
+          <Select onMouseOver={showStyle} onMouseLeave={hideStyle}>
             스타일
             <img src={require('../../../img/ExpandArrow.png')} />
           </Select>
-          <StyleBox id="style" onMouseOver={ShowStyle} onMouseLeave={HideStyle}>
+          <StyleBox id="style" onMouseOver={showStyle} onMouseLeave={hideStyle}>
             <div style={{ overflow: 'visible auto' }}>
               <Detail
                 onClick={() => {
@@ -641,11 +955,11 @@ const Category = () => {
           </StyleBox>
         </CategoryElement>
         <CategoryElement style={{ width: 70 }}>
-          <Select onMouseOver={ShowColor} onMouseLeave={HideColor}>
+          <Select onMouseOver={showColor} onMouseLeave={hideColor}>
             컬러
             <img src={require('../../../img/ExpandArrow.png')} />
           </Select>
-          <ColorBox id="color" onMouseOver={ShowColor} onMouseLeave={HideColor}>
+          <ColorBox id="color" onMouseOver={showColor} onMouseLeave={hideColor}>
             <div style={{ overflow: 'auto' }}>
               <div style={{ height: 350, padding: 16 }}>
                 <CheckboxContainer>
@@ -662,38 +976,48 @@ const Category = () => {
                     />
                   </div>
                 </CheckboxContainer>
-                <div id="all">sfsdfdsf</div>
-                <CheckboxContainer>
-                  벽/바닥 컬러
-                  <div class="form-check form-switch">
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      id="flexSwitchCheckDefault"
-                      onChange={() => {
-                        setwallColorIsChecked(!wallColorIsChecked)
-                      }}
-                      checked={wallColorIsChecked}
-                    />
-                  </div>
-                </CheckboxContainer>
-                <div id="wall">wall</div>
+                <Palette
+                  id="all"
+                  onClick={() => {
+                    $('#selectedAllColor').show()
+                  }}
+                />
+                <div style={{ marginTop: 20 }}>
+                  <CheckboxContainer>
+                    벽/바닥 컬러
+                    <div class="form-check form-switch">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="flexSwitchCheckDefault"
+                        onChange={() => {
+                          setwallColorIsChecked(!wallColorIsChecked)
+                        }}
+                        checked={wallColorIsChecked}
+                      />
+                    </div>
+                  </CheckboxContainer>
+                </div>
+                <PaletteWrap>
+                  <Palette type="벽" id="wall" />
+                  <Palette type="바닥" id="floor" />
+                </PaletteWrap>
               </div>
             </div>
           </ColorBox>
         </CategoryElement>
         <CategoryElement>
           <Select
-            onMouseOver={ShowConstruction}
-            onMouseLeave={HideConstruction}
+            onMouseOver={showConstruction}
+            onMouseLeave={hideConstruction}
           >
             세부공사
             <img src={require('../../../img/ExpandArrow.png')} />
           </Select>
           <ConstructionBox
             id="construction"
-            onMouseOver={ShowConstruction}
-            onMouseLeave={HideConstruction}
+            onMouseOver={showConstruction}
+            onMouseLeave={hideConstruction}
           >
             <div style={{ overflow: 'visible auto' }}>
               <Detail
@@ -843,11 +1167,11 @@ const Category = () => {
           </ConstructionBox>
         </CategoryElement>
         <CategoryElement style={{ width: 70 }}>
-          <Select onMouseOver={ShowField} onMouseLeave={HideField}>
+          <Select onMouseOver={showField} onMouseLeave={hideField}>
             분야
             <img src={require('../../../img/ExpandArrow.png')} />
           </Select>
-          <FieldBox id="field" onMouseOver={ShowField} onMouseLeave={HideField}>
+          <FieldBox id="field" onMouseOver={showField} onMouseLeave={hideField}>
             <div style={{ overflow: 'auto' }}>
               <Detail
                 onClick={() => {
@@ -897,14 +1221,14 @@ const Category = () => {
           </FieldBox>
         </CategoryElement>
         <CategoryElement style={{ width: 85 }}>
-          <Select onMouseOver={ShowWorker} onMouseLeave={HideWorker}>
+          <Select onMouseOver={showWorker} onMouseLeave={hideWorker}>
             작업자
             <img src={require('../../../img/ExpandArrow.png')} />
           </Select>
           <WorkerBox
             id="worker"
-            onMouseOver={ShowWorker}
-            onMouseLeave={HideWorker}
+            onMouseOver={showWorker}
+            onMouseLeave={hideWorker}
           >
             <div style={{ overflow: 'auto' }}>
               <Detail
@@ -1031,13 +1355,38 @@ const Category = () => {
           {selectedCategoryList.style}
         </SelectedCategoryElement>
         <SelectedCategoryElement
-          id="selectedColor"
+          id="selectedAllColor"
           onClick={() => {
-            $('#selectedColor').hide()
-            setSelectedCategoryList({ ...selectedCategoryList, color: '' })
+            $('#selectedAllColor').hide()
+            setSelectedCategoryList({ ...selectedCategoryList, allColor: '' })
           }}
         >
-          {selectedCategoryList.color}
+          <div
+            style={{
+              width: 20,
+              height: 20,
+              borderRadius: 20,
+              backgroundColor: 'pink',
+            }}
+          ></div>
+        </SelectedCategoryElement>
+        <SelectedCategoryElement
+          id="selectedWallColor"
+          onClick={() => {
+            $('#selectedWallColor').hide()
+            setSelectedCategoryList({ ...selectedCategoryList, wallColor: '' })
+          }}
+        >
+          {selectedCategoryList.wallColor}
+        </SelectedCategoryElement>
+        <SelectedCategoryElement
+          id="selectedFloorColor"
+          onClick={() => {
+            $('#selectedFloorColor').hide()
+            setSelectedCategoryList({ ...selectedCategoryList, floorColor: '' })
+          }}
+        >
+          {selectedCategoryList.floorColor}
         </SelectedCategoryElement>
         <SelectedCategoryElement
           id="selectedConstruction"
@@ -1069,19 +1418,9 @@ const Category = () => {
         >
           {selectedCategoryList.worker}
         </SelectedCategoryElement>
-        <div
-          id="reset"
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            fontWeight: 'bold',
-            color: '#35c4ef',
-            padding: '0px 16px',
-          }}
-          onClick={CategoryListAllHide}
-        >
+        <ResetButton id="reset" onClick={categoryListAllhide}>
           초기화
-        </div>
+        </ResetButton>
       </SelectedCategoryContainer>
     </Fragment>
   )
@@ -1089,13 +1428,15 @@ const Category = () => {
 
 const CategoryContainer = styled.div`
   display: flex;
+  position: relative;
+  z-index: 2;
+  padding: 12px;
 `
 const Select = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   background-color: #eeeeee;
-  //width: 100px;
   height: 40px;
   border: none;
   color: #777777;
@@ -1103,6 +1444,7 @@ const Select = styled.div`
   font-size: 16px;
   padding: 0px 8px;
   border-radius: 4px;
+  cursor: pointer;
   &:hover {
     background-color: #dddddd;
   }
@@ -1115,6 +1457,8 @@ const SortBox = styled.div`
   justify-content: space-between;
   box-shadow: 5px 5px 8px #aaaaaa;
   border-radius: 8px;
+  cursor: pointer;
+  background-color: white;
 `
 const LivingTypeBox = styled.div`
   width: 200px;
@@ -1124,6 +1468,8 @@ const LivingTypeBox = styled.div`
   justify-content: space-between;
   box-shadow: 5px 5px 8px #aaaaaa;
   border-radius: 8px;
+  cursor: pointer;
+  background-color: white;
 `
 const FlatAreaBox = styled.div`
   width: 370px;
@@ -1133,6 +1479,7 @@ const FlatAreaBox = styled.div`
   justify-content: space-between;
   box-shadow: 5px 5px 8px #aaaaaa;
   border-radius: 8px;
+  background-color: white;
 `
 const BudgetBox = styled.div`
   width: 400px;
@@ -1142,6 +1489,7 @@ const BudgetBox = styled.div`
   justify-content: space-between;
   box-shadow: 5px 5px 8px #aaaaaa;
   border-radius: 8px;
+  background-color: white;
 `
 const FamilyBox = styled.div`
   width: 200px;
@@ -1151,6 +1499,8 @@ const FamilyBox = styled.div`
   justify-content: space-between;
   box-shadow: 5px 5px 8px #aaaaaa;
   border-radius: 8px;
+  cursor: pointer;
+  background-color: white;
 `
 const StyleBox = styled.div`
   width: 200px;
@@ -1160,6 +1510,8 @@ const StyleBox = styled.div`
   justify-content: space-between;
   box-shadow: 5px 5px 8px #aaaaaa;
   border-radius: 8px;
+  cursor: pointer;
+  background-color: white;
 `
 const ColorBox = styled.div`
   width: 500px;
@@ -1169,6 +1521,7 @@ const ColorBox = styled.div`
   justify-content: space-between;
   box-shadow: 5px 5px 8px #aaaaaa;
   border-radius: 8px;
+  background-color: white;
 `
 const ConstructionBox = styled.div`
   width: 200px;
@@ -1178,6 +1531,8 @@ const ConstructionBox = styled.div`
   justify-content: space-between;
   box-shadow: 5px 5px 8px #aaaaaa;
   border-radius: 8px;
+  cursor: pointer;
+  background-color: white;
 `
 const FieldBox = styled.div`
   width: 200px;
@@ -1187,6 +1542,8 @@ const FieldBox = styled.div`
   justify-content: space-between;
   box-shadow: 5px 5px 8px #aaaaaa;
   border-radius: 8px;
+  cursor: pointer;
+  background-color: white;
 `
 const WorkerBox = styled.div`
   width: 400px;
@@ -1196,6 +1553,8 @@ const WorkerBox = styled.div`
   justify-content: space-between;
   box-shadow: 5px 5px 8px #aaaaaa;
   border-radius: 8px;
+  cursor: pointer;
+  background-color: white;
 `
 const CategoryElement = styled.div`
   display: flex;
@@ -1229,9 +1588,14 @@ const Price = styled.div`
   font-weight: bold;
   color: #777777;
   margin: 2px;
+  &:hover {
+    background-color: #dddddd;
+    cursor: pointer;
+  }
 `
 const RangeSlider = styled.input`
   width: 330px;
+  margin-top: 20px;
 `
 const FlatContainer = styled.div`
   display: flex;
@@ -1249,6 +1613,10 @@ const Flat = styled.div`
   font-weight: bold;
   color: #777777;
   margin: 2px;
+  &:hover {
+    background-color: #dddddd;
+    cursor: pointer;
+  }
 `
 const CheckboxContainer = styled.div`
   display: flex;
@@ -1259,6 +1627,26 @@ const CheckboxContainer = styled.div`
 `
 const SelectedCategoryContainer = styled.div`
   display: flex;
-  margin-top: 12px;
+  margin-top: 20px;
+  margin-left: 12px;
+  height: 30px;
+  position: absolute;
+  top: 210px;
+  z-index: 1;
+`
+const ResetButton = styled.button`
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  color: #35c4ef;
+  padding: 0px 16px;
+  border: none;
+  background-color: white;
+`
+const PaletteWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 150px;
 `
 export default Category

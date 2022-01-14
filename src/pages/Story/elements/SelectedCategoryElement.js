@@ -16,7 +16,7 @@ const SelectedCategoryElement = (props) => {
   )
 }
 
-const Element = styled.div`
+const Element = styled.button`
   display: flex;
   align-items: center;
   height: 30px;
@@ -24,6 +24,7 @@ const Element = styled.div`
   margin: 0px 2px;
   color: white;
   border-radius: 24px;
+  border: none;
   background-color: #35c4ef;
   font-size: 15px;
   font-weight: bold;
