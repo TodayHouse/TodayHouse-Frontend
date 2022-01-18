@@ -1,9 +1,9 @@
 import React, { Fragment, useEffect, useState } from 'react'
-import Main from '../Main/Main'
+import Main from '../../Main/Main'
 import styled from 'styled-components'
-import { Category, StoryPost } from './components/index'
-import d from '../../img/house1.jpg'
-import d2 from '../../img/house2.jpg'
+import { Category, StoryPost } from '../components/index'
+import d from '../../../img/house1.jpg'
+import d2 from '../../../img/house2.jpg'
 
 const Story = () => {
   const data = [

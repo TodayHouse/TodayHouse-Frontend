@@ -1,5 +1,7 @@
 import Category from './Category'
 import StoryPost from './StoryPost'
 import Palette from './Palette'
+import Sidebar from './Sidebar'
+import FixedMenu from './FixedMenu'
 
-export { Category, StoryPost, Palette }
+export { Category, StoryPost, Palette, Sidebar, FixedMenu }

@@ -1,9 +1,15 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useNavigate } from 'react-router-dom'
 
 const StoryPost = (props) => {
+  const navigate = useNavigate()
   return (
-    <Container>
+    <Container
+      onClick={() => {
+        navigate('/story-post-detail')
+      }}
+    >
       <div style={{ position: 'relative', width: '100%' }}>
         <Image width="100%" height="300px" src={props.src} />
         <Bookmark

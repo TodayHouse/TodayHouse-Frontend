@@ -1,7 +1,7 @@
 import './App.css'
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { Login, Main, Signup, Story } from '../src/pages/index'
+import { Login, Main, Signup, Story, StoryPostDetail } from '../src/pages/index'
 import { BrowserRouter, Routes, Link, Route } from 'react-router-dom'
 
 import { Cookies } from 'react-cookie'
@@ -35,6 +35,10 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />}></Route>
           <Route path="/story" element={<Story />}></Route>
+          <Route
+            path="/story-post-detail"
+            element={<StoryPostDetail />}
+          ></Route>
         </Routes>
       </div>
     </BrowserRouter>
