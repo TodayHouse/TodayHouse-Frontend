@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import $ from 'jquery'
 import Main from '../../Main/Main'
-import { Sidebar, FixedMenu } from '../components/index'
+import { Sidebar, FixedMenu, Footer } from '../components/index'
 
 const sample = [
   { category: '공간', data: '아파트' },
@@ -38,7 +38,7 @@ const StoryPostDetail = () => {
       />
       <Wrap>
         <WhiteSpace />
-        <PostSidebarWrap>
+        <ContentContainer>
           <Post>
             <p style={{ color: '#777777', fontSize: 18 }}>온라인 집들이</p>
             <Title>계획서만 50장! 내 머릿 속 인테리어, 그대로 실현하기</Title>
@@ -56,82 +56,82 @@ const StoryPostDetail = () => {
               </Profile>
               <FollowButton>+ 팔로우</FollowButton>
             </ProfileContainer>
-            <SummaryContainer>
-              <Simple>
-                <SimpleInfo>
-                  <img
-                    width="30px"
-                    height="30px"
-                    src="https://img.icons8.com/ios/50/000000/apartment.png"
-                  />
-                  <span style={{ marginLeft: 10 }}>원룸&오피스텔</span>
-                </SimpleInfo>
-                <SimpleInfo>
-                  <img
-                    width="30px"
-                    height="30px"
-                    src="https://img.icons8.com/ios-glyphs/30/000000/structural.png"
-                  />
-                  <span style={{ marginLeft: 10 }}>33평</span>
-                </SimpleInfo>
-                <SimpleInfo>
-                  <img
-                    width="30px"
-                    height="30px"
-                    src="https://img.icons8.com/ios/50/000000/maintenance.png"
-                  />
-                  <span style={{ marginLeft: 10 }}>리모델링</span>
-                </SimpleInfo>
-                <SimpleInfo style={{ borderRight: 'none' }}>
-                  <img
-                    width="30px"
-                    height="30px"
-                    src="https://img.icons8.com/ios/50/000000/couple-man-woman.png"
-                  />
-                  <span style={{ marginLeft: 10 }}>신혼부부</span>
-                </SimpleInfo>
-              </Simple>
-              <Detail>
-                {sample.map((e) => {
-                  return (
-                    <div
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        fontSize: 14,
-                        padding: '0px 4px',
-                      }}
-                    >
-                      <dt style={{ color: '#777777', marginRight: 4 }}>
-                        {e.category}
-                      </dt>
-                      <dd>{e.data}</dd>
-                    </div>
-                  )
-                })}
-                {/* 공간 아파트 평수 33평 작업 전문가 분야 리모델링 가족형태 신혼부부
-            지역 sdfs sfsdfs sdfjslfj ldsfjlskfkl slfjlsd sfjsf sfjdslfl sflsdk */}
-              </Detail>
-            </SummaryContainer>
+            <div>
+              <SummaryContainer>
+                <Simple>
+                  <SimpleInfo>
+                    <img
+                      width="30px"
+                      height="30px"
+                      src="https://img.icons8.com/ios/50/000000/apartment.png"
+                    />
+                    <span style={{ marginLeft: 10 }}>원룸&오피스텔</span>
+                  </SimpleInfo>
+                  <SimpleInfo>
+                    <img
+                      width="30px"
+                      height="30px"
+                      src="https://img.icons8.com/ios-glyphs/30/000000/structural.png"
+                    />
+                    <span style={{ marginLeft: 10 }}>33평</span>
+                  </SimpleInfo>
+                  <SimpleInfo>
+                    <img
+                      width="30px"
+                      height="30px"
+                      src="https://img.icons8.com/ios/50/000000/maintenance.png"
+                    />
+                    <span style={{ marginLeft: 10 }}>리모델링</span>
+                  </SimpleInfo>
+                  <SimpleInfo style={{ borderRight: 'none' }}>
+                    <img
+                      width="30px"
+                      height="30px"
+                      src="https://img.icons8.com/ios/50/000000/couple-man-woman.png"
+                    />
+                    <span style={{ marginLeft: 10 }}>신혼부부</span>
+                  </SimpleInfo>
+                </Simple>
+                <Detail>
+                  {sample.map((e) => {
+                    return (
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          fontSize: 14,
+                          padding: '0px 4px',
+                        }}
+                      >
+                        <dt style={{ color: '#777777', marginRight: 4 }}>
+                          {e.category}
+                        </dt>
+                        <dd>{e.data}</dd>
+                      </div>
+                    )
+                  })}
+                </Detail>
+              </SummaryContainer>
+              <div
+                style={{
+                  marginTop: 50,
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
+                <p>
+                  안녕하세요. 오늘의 집에 첫 집들이를 소개하게 된 "투모"입니다.
+                  얼마 전 새로 이사 온 현재 집에 무한 애정을 갖고 매일 이리저리
+                  들고 옮기는 재미에 빠져있습니다.
+                </p>
+              </div>
+              <Footer />
+            </div>
           </Post>
-        </PostSidebarWrap>
+        </ContentContainer>
         <Sidebar />
       </Wrap>
       <FixedMenu />
-      <div
-        style={{
-          marginTop: 50,
-          width: '50vw',
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      >
-        <p>
-          안녕하세요. 오늘의 집에 첫 집들이를 소개하게 된 "투모"입니다. 얼마 전
-          새로 이사 온 현재 집에 무한 애정을 갖고 매일 이리저리 들고 옮기는
-          재미에 빠져있습니다.
-        </p>
-      </div>
     </Container>
   )
 }
@@ -140,14 +140,14 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 100vw;
+  height: 100%;
   align-items: center;
 `
 const Wrap = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
-  height: 100%;
-  position: relative;
+  //position: relative;
 `
 const MainImage = styled.img``
 const Post = styled.div`
@@ -232,7 +232,7 @@ const SimpleInfo = styled.div`
   border-right: 1px solid #cccccc;
   font-size: 14px;
 `
-const PostSidebarWrap = styled.div`
+const ContentContainer = styled.div`
   display: flex;
   width: 50%;
   height: 100%;

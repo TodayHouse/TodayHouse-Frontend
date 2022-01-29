@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
+//집들이 게시글 상세 페이지의 상품 모아보기, 위로 가기, 목차 버튼이 있는 컴포넌트
 const FixedMenu = () => {
   return (
     <Container id="fixedMenu">

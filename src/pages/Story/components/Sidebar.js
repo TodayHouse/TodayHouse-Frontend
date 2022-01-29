@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Element from '../elements/SidebarElement'
 
+//집들이 게시글 상세 페이지의 좋아요, 스크랩, 댓글, 공유 버튼이 있는 사이드바 컴포넌트
 const Sidebar = () => {
   return (
     <Wrap>

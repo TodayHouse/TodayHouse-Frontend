@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
+//사이드바의 각 버튼
 const SidebarElement = (props) => {
   return (
     <Element>

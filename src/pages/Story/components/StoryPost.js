@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 
+//집들이 페이지의 그리드로 뿌려져있는 게시글 하나하나의 미리보기
 const StoryPost = (props) => {
   const navigate = useNavigate()
   return (
