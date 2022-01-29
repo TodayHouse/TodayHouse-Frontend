@@ -1,14 +1,13 @@
 import React, { useState,useEffect } from "react";
 import styled from "styled-components";
 import GridCards from "./GridCards";
-import {Row} from "antd"
-import house1 from"./img/house1.jpg"
-import house2 from"./img/house2.jpg"
-import house3 from"./img/house3.jpg"
-import house4 from"./img/house4.jpg"
+import {Row} from "antd";
+import img1 from "./img/img1.png";
+import img2 from"./img/img2.png";
+
 import "antd/dist/antd.css"
 const Advices =() =>{
-    const [images,setImages] =useState([house1,house2,house3,house4])//임시 이미지
+    const [images, setImages] =useState([img1, img2])//임시 이미지
     const [items,setItems] = useState([])
     const load = () =>{
         console.log("load");
@@ -20,21 +19,18 @@ const Advices =() =>{
 
     return(
         <React.Fragment>
-            <Text>테마별 노하우</Text>
+            
             <Scroll>
-                <Row gutter={16}>
+                <Row gutter={20}>
                 {items && items.map((item,index)=>( //반복문
                         <React.Fragment key={index}>
                             <GridCards
                             image ={item}
-                            id = {index} // 임시로 순서대로 id부여
                             >
                             </GridCards>
-
                         </React.Fragment>
                     ))}
-
-                    
+              
                 </Row>
                 <LoadMore onClick={load}>Load</LoadMore>
             </Scroll>
@@ -44,6 +40,7 @@ const Advices =() =>{
 
 export default Advices
 const Scroll =styled.div`
+margin-top : 50px;
 position: relative;
 display: flex;
 flex-direction: column;
@@ -52,7 +49,7 @@ justify-content: center;
 width : 1256px;
 background-color: #fff;
 border-bottom: 1px solid #ededed;
-margin:0 auto;
+
 `
 const Text =styled.div`
   position: relative;
@@ -72,6 +69,7 @@ const LoadMore = styled.button`
     padding: 0.375rem 0.75rem;
     font-size: 1rem;
     border-radius: 0.25rem;
+    margin: 30px 50px;
     
 
 `

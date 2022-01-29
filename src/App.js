@@ -4,6 +4,10 @@ import styled from 'styled-components';
 import Login from'./pages/Login/Login';
 import Signup from'./pages/Signup/Signup'
 import Main from'./pages/Main/Main';
+import AdviceDetail from "./pages/Advices/AdviceDetail"
+import Advices from './pages/Advices/Advices';
+import Edit from './pages/Editor/Edit'
+import Board from './pages/Event/Board'
 import {
   BrowserRouter,
   Routes,
@@ -42,7 +46,12 @@ function App() {
         <div>
       
             <Routes>
-              <Route path ="/" element={<Main/>}/>
+              <Route path ="/" element={<Main/>}>
+                <Route path ="/advices" element={<Advices/>}></Route>
+                <Route path ="/advices/:id"element={<AdviceDetail/>}></Route>
+                <Route path ="/event" element={<Board/>}></Route>
+              </Route>
+              <Route path ="/editor" element={<Edit/>}></Route>
               <Route path ="/login" element={<Login/>}/>
               <Route path ="/signup" element={<Signup/>}></Route>
             </Routes>

@@ -1,22 +1,25 @@
 import React,{useState} from'react'
 import styled from 'styled-components'
 import {Link} from 'react-router-dom'
-const SubNavbar =({selectedTab ,subBarSelect}) =>{
+import { connect } from 'react-redux'
+const SubNavbar =({navSelect}) =>{
     let now = null
     
-    if(selectedTab === 0){ //0번탭
+    if(navSelect === "community"){ //0번탭
     now =
 <NavBar>
       <NavList>
         <NavItem>
-            <NavText onClick={() => subBarSelect("Story")} >스토리</NavText>
+            <Link to="/story">
+                <NavText >스토리</NavText>
+            </Link>
         </NavItem>
-        <NavItem>
-            <NavText onClick={() =>subBarSelect("Advices")} >노하우</NavText>
-        </NavItem>
-        <NavItem>
-            <NavText onClick={() =>subBarSelect("Event")}>이벤트</NavText>
-        </NavItem>
+        <Link to="/advices">
+                <NavText >노하우</NavText>
+            </Link>
+        <Link to="/event">
+            <NavText >이벤트</NavText>
+        </Link>
       </NavList>          
 </NavBar>
         
@@ -45,7 +48,10 @@ const SubNavbar =({selectedTab ,subBarSelect}) =>{
       </div>
     )
 }
-
+function mapStateToProps(state,ownProps){ //navSelect를 스토어에서 가져옴
+    return{navSelect:state.navSelect}
+}
+export default connect(mapStateToProps)(SubNavbar)
 const NavItem = styled.li`
     display: flex;
     text-align: -webkit-match-parent;
@@ -75,4 +81,3 @@ const NavBar = styled.nav`
     
 }
 `
-export default SubNavbar

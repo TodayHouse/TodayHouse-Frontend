@@ -1,21 +1,17 @@
 import React from 'react'
 import styled from 'styled-components'
 import {Col} from 'antd'
-import {Link} from "react-router-dom"
 function GridCards(props) {
     return (
-        <Col lg={6} md={8} xs={24}>
+        <Col lg={12} md={24} xs={24}>
             <div style ={{position: 'relative'}}>
-                <Link to={`/advices/${props.id}`}>
                     <Frame>
                     <Image src={props.image}/>
                     </Frame>
                     <Text>
-                        제목
-                        <Textsmall>작성자</Textsmall>
-                        <Textsmall>조회수</Textsmall>
+                        진행중
                     </Text>
-                </Link>
+                    
                 
             </div>
         </Col>
@@ -25,9 +21,9 @@ function GridCards(props) {
 export default GridCards
 //이미지 확대시 overflow관리를 위한 프레임
 const Frame = styled.div` 
-width: 100%;
-height: 320px;
-border-radius: 5%;
+width: 600px;
+height: 250px;
+border-radius: 30px;
 overflow: hidden;
 cursor: pointer;
 `
@@ -53,9 +49,4 @@ const Text =styled.div`
   font-weight: 700;
   color: #0;
   cursor: pointer;
-`
-const Textsmall=styled.div`
-font-size: 8px;
-line-height: 15px;
-color: #888888;
 `
