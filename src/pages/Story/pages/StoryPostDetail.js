@@ -189,7 +189,7 @@ const FollowButton = styled.div`
   align-items: center;
   height: 40px;
   padding: 20px;
-  background-color: #35c4ef;
+  background-color: ${(props) => props.theme.mainColor};
   border: none;
   border-radius: 4px;
   color: white;

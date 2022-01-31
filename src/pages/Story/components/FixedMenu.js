@@ -51,12 +51,12 @@ const BlueButton = styled.button`
   border: none;
   border-radius: 50px;
   color: white;
-  background-color: #35c4ef;
+  background-color: ${(props) => props.theme.mainColor};
   font-size: 14px;
   font-weight: bold;
   padding: 12px 24px;
   &:hover {
-    background-color: #74a9d4;
+    background-color: ${(props) => props.theme.hoverMainColor};
   }
 `
 const WhiteButton = styled.button`

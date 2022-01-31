@@ -25,11 +25,11 @@ const Element = styled.button`
   color: white;
   border-radius: 24px;
   border: none;
-  background-color: #35c4ef;
+  background-color: ${(props) => props.theme.mainColor};
   font-size: 15px;
   font-weight: bold;
   &:hover {
-    background-color: #74a9d4;
+    background-color: ${(props) => props.theme.hoverMainColor};
   }
 `
 export default SelectedCategoryElement

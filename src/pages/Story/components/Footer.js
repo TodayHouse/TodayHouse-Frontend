@@ -175,7 +175,7 @@ const FollowBtn = styled.button`
   font-weight: bold;
   font-size: 24px;
   margin-left: 20px;
-  color: #35c4ef;
+  color: ${(props) => props.theme.mainColor};
 `
 const CommentContainer = styled.div`
   padding: 20px 0px;

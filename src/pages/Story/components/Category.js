@@ -1638,7 +1638,7 @@ const ResetButton = styled.button`
   display: flex;
   align-items: center;
   font-weight: bold;
-  color: #35c4ef;
+  color: ${(props) => props.theme.mainColor};
   padding: 0px 16px;
   border: none;
   background-color: white;
