@@ -13,7 +13,7 @@ import {
   Edit,
   Board,
 } from '../src/pages/index'
-import { BrowserRouter, Routes, Link, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 import { Cookies } from 'react-cookie'
 const cookies = new Cookies()
@@ -52,7 +52,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />}></Route>
             <Route path="/story" element={<Story />} />
-            <Route path="/story-post-detail" element={<StoryPostDetail />} />
+            <Route path="/story/post" element={<StoryPostDetail />} />
             <Route path="/product/:id" element={<Product />} />
           </Routes>
         </div>
