@@ -510,7 +510,7 @@ const ErrorText = styled.p`
   margin: 12px 0px;
 `
 const ButtonText = styled.p`
-  color: #35c4ef;
+  color: ${(props) => props.theme.mainColor};
   font-size: 20px;
   font-weight: bold;
   margin: 14px;
@@ -533,7 +533,7 @@ const EmailButton = styled.button`
   width: 100%;
   background-color: white;
   box-sizing: border-box;
-  border: 2px solid #35c4ef;
+  border: 2px solid ${(props) => props.theme.mainColor};
   border-radius: 8px;
   &:hover {
     background-color: #e6f4ff;
@@ -541,12 +541,12 @@ const EmailButton = styled.button`
 `
 const SignupButton = styled.button`
   width: 100%;
-  background-color: #35c4ef;
+  background-color: ${(props) => props.theme.mainColor};
   box-sizing: border-box;
-  border: 2px solid #35c4ef;
+  border: 2px solid ${(props) => props.theme.mainColor};
   border-radius: 8px;
   &:hover {
-    background-color: #74a9d4;
+    background-color: ${(props) => props.theme.hoverMainColor};
   }
 `
 const LogoImage = styled.img`
