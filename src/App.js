@@ -1,6 +1,5 @@
-import './App.css'
-import React, { useState, useEffect } from 'react'
-import styled, { ThemeProvider } from 'styled-components'
+import React from 'react'
+import { ThemeProvider } from 'styled-components'
 import theme from './theme'
 import {
   Login,
@@ -9,8 +8,12 @@ import {
   Story,
   StoryPostDetail,
   Product,
+  AdviceDetail,
+  Advices,
+  Edit,
+  Board,
 } from '../src/pages/index'
-import { BrowserRouter, Routes, Link, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 import { Cookies } from 'react-cookie'
 const cookies = new Cookies()
@@ -40,7 +43,12 @@ function App() {
       <BrowserRouter>
         <div style={{ width: '100vw' }}>
           <Routes>
-            <Route path="/" element={<Main />} />
+            <Route path="/" element={<Main />}>
+              <Route path="/advices" element={<Advices />}></Route>
+              <Route path="/advices/:id" element={<AdviceDetail />}></Route>
+              <Route path="/event" element={<Board />}></Route>
+            </Route>
+            <Route path="/editor" element={<Edit />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/story" element={<Story />} />

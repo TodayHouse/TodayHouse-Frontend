@@ -1,4 +1,3 @@
-import React from 'react'
 import {configureStore,createSlice,combineReducers} from '@reduxjs/toolkit'
 import {product} from './reducer'
 

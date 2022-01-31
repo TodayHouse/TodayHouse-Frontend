@@ -4,19 +4,14 @@ import logo from'../../img/logo.jpg';
 import {
     Link
 }from 'react-router-dom'
+import {connect} from 'react-redux'
+import { navChange } from '../../Store';
 
-const Navbar = ({authenticated,navBarSelect}) =>
+const Navbar = ({isLogin,changeNavSelect,navSelect}) =>
 {
+  
     const buttonLogout=() =>{
       console.log("로그아웃")
-    }
-    const select0 =() =>
-    {
-      navBarSelect(0)
-    }
-    const select1 =() =>
-    {
-      navBarSelect(1)
     }
 
     return(
@@ -33,14 +28,14 @@ const Navbar = ({authenticated,navBarSelect}) =>
           
             <NavItem>
               
-                <Link to="community" onMouseOver={select0} >
+                <Link to="community" onMouseOver={()=> changeNavSelect("community")} >
                   <NavText>커뮤니티</NavText>
                 </Link>
               
             </NavItem>
 
             <NavItem>
-              <Link to="store" onMouseOver={select1}>
+              <Link to="store" onMouseOver={()=> changeNavSelect("store")}>
                 <NavText>스토어</NavText>
               </Link>
             </NavItem>
@@ -58,12 +53,14 @@ const Navbar = ({authenticated,navBarSelect}) =>
           
 
          
-{authenticated? //로그인 여부에 따른 조건부 렌더링
+{isLogin? //로그인 여부에 따른 조건부 렌더링
 
             <NavItem>
               <button class="btn btn-danger" onClick={buttonLogout}>로그아웃</button>
             </NavItem>         
       :
+      <>
+      <span style={{width:300}}></span>
           <NavItem>
             <NavItem>
               <Link  to="/login">
@@ -76,13 +73,26 @@ const Navbar = ({authenticated,navBarSelect}) =>
               </Link>
             </NavItem>
           </NavItem>
+      </>
 }
           </NavListBack>
     
     </NavBar>
     );
 };
+function mapStateToProps(state,ownProps){
+  return {
+    isLogin : state.isLogin,
+    navSelect : state.navSelect
+  } //여기서 반환한 객체가 props에 추가됨. navSelect를 store에서 가져옴.
+}
 
+function mapDispatchToProps(dispatch){
+  return {
+    changeNavSelect : (navSelect) =>dispatch(navChange(navSelect))
+  } //디스패치함수를 props에 추가.
+}
+export default connect(mapStateToProps,mapDispatchToProps)(Navbar);
 const NavBrand =styled.div`
     padding-top: 0.3125rem;
     padding-bottom: 0.3125rem;
@@ -130,4 +140,5 @@ const NavBar = styled.nav`
     margin:0 auto;
 }
 `
-export default Navbar
+
+
