@@ -1,7 +1,15 @@
 import './App.css'
 import React, { useState, useEffect } from 'react'
-import styled from 'styled-components'
-import { Login, Main, Signup, Story, StoryPostDetail } from '../src/pages/index'
+import styled, { ThemeProvider } from 'styled-components'
+import theme from './theme'
+import {
+  Login,
+  Main,
+  Signup,
+  Story,
+  StoryPostDetail,
+  Product,
+} from '../src/pages/index'
 import { BrowserRouter, Routes, Link, Route } from 'react-router-dom'
 
 import { Cookies } from 'react-cookie'
@@ -28,20 +36,20 @@ function App() {
 */
 
   return (
-    <BrowserRouter>
-      <div style={{ width: '100vw' }}>
-        <Routes>
-          <Route path="/" element={<Main />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />}></Route>
-          <Route path="/story" element={<Story />}></Route>
-          <Route
-            path="/story-post-detail"
-            element={<StoryPostDetail />}
-          ></Route>
-        </Routes>
-      </div>
-    </BrowserRouter>
+    <ThemeProvider theme={theme}>
+      <BrowserRouter>
+        <div style={{ width: '100vw' }}>
+          <Routes>
+            <Route path="/" element={<Main />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/story" element={<Story />} />
+            <Route path="/story-post-detail" element={<StoryPostDetail />} />
+            <Route path="/product/:id" element={<Product />} />
+          </Routes>
+        </div>
+      </BrowserRouter>
+    </ThemeProvider>
   )
 }
 
