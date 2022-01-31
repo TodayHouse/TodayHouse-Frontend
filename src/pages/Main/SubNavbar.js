@@ -1,57 +1,43 @@
 import React,{useState} from'react'
 import styled from 'styled-components'
 import {Link} from 'react-router-dom'
-const SubNavbar =({selectedTab ,subBarSelect}) =>{
-    const select0 =() =>{ //
-        subBarSelect(0)
-    }
-    const select1 =() =>{
-        subBarSelect(1)
-    }
-    const select2 =() =>{
-        subBarSelect(2)
-    }
-    const select3 =() =>{
-        subBarSelect(3)
-    }
+import { connect } from 'react-redux'
+const SubNavbar =({navSelect}) =>{
     let now = null
-    if(selectedTab === 0){ //0번탭
-        now = 
+    
+    if(navSelect === "community"){ //0번탭
+    now =
 <NavBar>
-  
       <NavList>
         <NavItem>
-          <Link to="#" onClick={select0}>
-            <NavText>홈</NavText>
-          </Link>
+            <Link to="/story">
+                <NavText >스토리</NavText>
+            </Link>
         </NavItem>
-        <NavItem>
-          <Link to="#" onClick={select1}>
-            <NavText>질문과 답변</NavText>
-          </Link>
-        </NavItem>
-      </NavList>
-      
-    
+        <Link to="/advices">
+                <NavText >노하우</NavText>
+            </Link>
+        <Link to="/event">
+            <NavText >이벤트</NavText>
+        </Link>
+      </NavList>          
 </NavBar>
-    
-
+        
     }
     else{               //1번 탭
-        now = 
+        now =
 <NavBar>
       <NavList>
         <NavItem>
-          <Link to="#" onClick={select2}>
-            <NavText>스토어</NavText>
-          </Link>
+            <NavText >카테고리</NavText>
         </NavItem>
         <NavItem>
-          <Link to="#" onClick={select3}>
-            <NavText>카테고리</NavText>
-          </Link>
+            <NavText >오늘의 딜</NavText>
         </NavItem>
-      </NavList>
+        <NavItem>
+            <NavText >프리미엄</NavText>
+        </NavItem>
+      </NavList>          
 </NavBar>
 
     }
@@ -62,7 +48,10 @@ const SubNavbar =({selectedTab ,subBarSelect}) =>{
       </div>
     )
 }
-
+function mapStateToProps(state,ownProps){ //navSelect를 스토어에서 가져옴
+    return{navSelect:state.navSelect}
+}
+export default connect(mapStateToProps)(SubNavbar)
 const NavItem = styled.li`
     display: flex;
     text-align: -webkit-match-parent;
@@ -92,4 +81,3 @@ const NavBar = styled.nav`
     
 }
 `
-export default SubNavbar
