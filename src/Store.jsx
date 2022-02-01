@@ -1,5 +1,5 @@
-import React from 'react'
-import {configureStore,createSlice} from '@reduxjs/toolkit'
+import {configureStore,createSlice,combineReducers} from '@reduxjs/toolkit'
+import {product} from './reducer'
 
 const slicer = createSlice({
     name:"Reducer",
@@ -12,13 +12,11 @@ const slicer = createSlice({
         navChange:(state,action)=>{
             state.navSelect = action.payload;
         },
-        
-
     }
-
 })
 
-const store= configureStore({reducer: slicer.reducer}) //redux toolkit 사용가능
+const rootReducer = combineReducers({slicer:slicer.reducer, product:product.reducer})
+const store = configureStore({reducer: rootReducer}) //redux toolkit 사용가능
 
-export const {navChange} =slicer.actions //export할 reducer들 이름
+export const {navChange} = slicer.actions //export할 reducer들 이름
 export default store;
