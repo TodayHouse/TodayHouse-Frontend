@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import $ from 'jquery'
-import SelectBoxElement from './SelectBoxElement'
+import SelectBoxElement from '../elements/SelectBoxElement'
 
 const mockOptions = [
   {
@@ -78,7 +78,6 @@ const Option = () => {
   }
 
   useEffect(() => {
-    console.log(show)
     if (show) $('#selectBox').show()
     else $('#selectBox').hide()
   }, [show])
@@ -113,7 +112,7 @@ const Option = () => {
           />
         ))}
       </SelectBox>
-      <PurchaseContainer>
+      <PurchaseContainer isShowed={show}>
         <InnerContainer>
           <PriceLabel>주문금액</PriceLabel>
           <PurchasePrice>0원</PurchasePrice>
@@ -154,6 +153,7 @@ const Price = styled.span`
 const SelectOption = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-top: 20px;
   padding: 20px;
   width: 100%;
@@ -170,10 +170,13 @@ const SelectBox = styled.div`
   border-radius: 4px;
   margin-top: 5px;
   overflow: auto;
+  background-color: white;
 `
 const PurchaseContainer = styled.div`
   display: flex;
   flex-direction: column;
+  margin-top: ${(props) =>
+    props.isShowed ? '-400px' : ''}; //임시로 상품 선택창 열렸을 때 마진 부여
 `
 const PriceLabel = styled.span`
 position

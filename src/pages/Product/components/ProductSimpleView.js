@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import { SidePhoto, MainPhoto, Option } from '../elements'
+import { SidePhoto, MainPhoto } from '../elements'
+import { Option } from './index'
 
 const mockSide = [
   'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2Foriginals%2Fd0%2F65%2F21%2Fd065217abfbb25923daf231784c1b916.jpg&type=sc960_832',
