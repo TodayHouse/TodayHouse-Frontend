@@ -1,5 +1,5 @@
-import React from 'react'
-import { ThemeProvider } from 'styled-components'
+import React, { useState, useEffect } from 'react'
+import styled, { ThemeProvider } from 'styled-components'
 import theme from './theme'
 import {
   Login,
@@ -41,18 +41,18 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
-        <div style={{ width: '100vw' }}>
+        <div>
           <Routes>
             <Route path="/" element={<Main />}>
               <Route path="/advices" element={<Advices />}></Route>
               <Route path="/advices/:id" element={<AdviceDetail />}></Route>
               <Route path="/event" element={<Board />}></Route>
             </Route>
-            <Route path="/editor" element={<Edit />} />
+            <Route path="/editor" element={<Edit />}></Route>
             <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
+            <Route path="/signup" element={<Signup />}></Route>
             <Route path="/story" element={<Story />} />
-            <Route path="/story-post-detail" element={<StoryPostDetail />} />
+            <Route path="/story/post" element={<StoryPostDetail />} />
             <Route path="/product/:id" element={<Product />} />
           </Routes>
         </div>

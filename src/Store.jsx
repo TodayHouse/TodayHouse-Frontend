@@ -12,14 +12,11 @@ const slicer = createSlice({
         navChange:(state,action)=>{
             state.navSelect = action.payload;
         },
-        
-
     }
-
 })
 
-const rootReducer=combineReducers({slicer:slicer.reducer, product:product.reducer})
-const store= configureStore({reducer: rootReducer}) //redux toolkit 사용가능
+const rootReducer = combineReducers({slicer:slicer.reducer, product:product.reducer})
+const store = configureStore({reducer: rootReducer}) //redux toolkit 사용가능
 
-export const {navChange} =slicer.actions //export할 reducer들 이름
+export const {navChange} = slicer.actions //export할 reducer들 이름
 export default store;

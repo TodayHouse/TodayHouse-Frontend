@@ -16,8 +16,8 @@ export {
   Story,
   StoryPostDetail,
   Product,
-  Advices,
   AdviceDetail,
+  Advices,
   Edit,
   Board,
 }

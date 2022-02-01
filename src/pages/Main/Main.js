@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import Navbar from './Navbar'
 import SubNavbar from './SubNavbar'
-import { Outlet } from 'react-router-dom'
+import { Outlet, Route, Routes } from 'react-router-dom'
+import Advices from '../Advices/Advices'
 import { connect } from 'react-redux'
 
 const Main = ({ selPage }) => {
