@@ -70,7 +70,7 @@ const Signup = () => {
     const fullEmail = form.email + '@' + form.emailSuffix
     // 이메일 인증하기 버튼 눌렀을 때 인증 실패하면 메시지 띄우면 됨(이메일 형식 예외 케이스 굳이 안 짜도 됨)
     // 이메일이 가입된 이메일인지, 아니라면 이메일 형식에 맞는지 -> 맞다면 인증 코드 전송
-    axios.get(url + `/users/emails/${fullEmail}/exist`).then((response) => {
+    axios.get(url + `users/emails/${fullEmail}/exist`).then((response) => {
       if (response.data.result) {
         //중복된 이메일
         setEmailCheckMsg('이미 가입된 이메일입니다.')
@@ -85,7 +85,7 @@ const Signup = () => {
           else {
             const data = { email: fullEmail }
             axios
-              .post(url + '/emails/token/send', data, {
+              .post(url + 'emails/token/send', data, {
                 headers: {
                   'Content-Type': 'application/json',
                 },
@@ -141,7 +141,7 @@ const Signup = () => {
   const nicknameCheckFunc = () => {
     if (nicknameRegExp(form.nickname) || form.nickname.length === 0) {
       axios
-        .get(url + `users/nickname/${form.nickname}/exist`)
+        .get(url + `users/nicknames/${form.nickname}/exist`)
         .then((response) => {
           if (response.data.result) {
             //닉네임 중복
