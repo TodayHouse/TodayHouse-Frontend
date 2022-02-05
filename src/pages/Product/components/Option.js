@@ -1,86 +1,87 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import $ from 'jquery'
-import SelectBoxElement from '../elements/SelectBoxElement'
+import { SelectedOption } from '.'
+import { useDispatch, useSelector } from 'react-redux'
+import { addOption, removeOption } from '../../../reducer/product'
 
 const mockOptions = [
   {
-    idx: 1,
-    img:
-      'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxODEwMTZfOTcg%2FMDAxNTM5NjUxNDA1MjQ2.cuYLfg63fR2cC2aRZNFFMolQdCZcex5GAt8wg230rzQg.nPJKQPUIwJf5c1X8h3xN3i-RcR5sq0vnMg3-J_FV9dsg.JPEG.spadegagu%2F997a36db8472a5e9f86ebe4c2cd0ad0e.jpg&type=a340',
     name: '베네치아 4인용 12T 포셀린 세라믹 식탁테이블 1400(직각)',
-    price: 188000,
+    price: 118000,
   },
   {
-    idx: 2,
-    img:
-      'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxODEwMTZfOTcg%2FMDAxNTM5NjUxNDA1MjQ2.cuYLfg63fR2cC2aRZNFFMolQdCZcex5GAt8wg230rzQg.nPJKQPUIwJf5c1X8h3xN3i-RcR5sq0vnMg3-J_FV9dsg.JPEG.spadegagu%2F997a36db8472a5e9f86ebe4c2cd0ad0e.jpg&type=a340',
     name: '베네치아 4인용 12T 포셀린 세라믹 식탁테이블 1400(타원)',
-    price: 188000,
+    price: 128000,
   },
   {
-    idx: 3,
-    img:
-      'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxODEwMTZfOTcg%2FMDAxNTM5NjUxNDA1MjQ2.cuYLfg63fR2cC2aRZNFFMolQdCZcex5GAt8wg230rzQg.nPJKQPUIwJf5c1X8h3xN3i-RcR5sq0vnMg3-J_FV9dsg.JPEG.spadegagu%2F997a36db8472a5e9f86ebe4c2cd0ad0e.jpg&type=a340',
     name: '베네치아 4인용 12T 포셀린 세라믹 식탁테이블 1600(직각)',
-    price: 188000,
+    price: 138000,
   },
   {
-    idx: 4,
-    img:
-      'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxODEwMTZfOTcg%2FMDAxNTM5NjUxNDA1MjQ2.cuYLfg63fR2cC2aRZNFFMolQdCZcex5GAt8wg230rzQg.nPJKQPUIwJf5c1X8h3xN3i-RcR5sq0vnMg3-J_FV9dsg.JPEG.spadegagu%2F997a36db8472a5e9f86ebe4c2cd0ad0e.jpg&type=a340',
     name: '베네치아 4인용 12T 포셀린 세라믹 식탁테이블 1600(타원)',
-    price: 188000,
+    price: 148000,
   },
   {
-    idx: 5,
-    img:
-      'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxODEwMTZfOTcg%2FMDAxNTM5NjUxNDA1MjQ2.cuYLfg63fR2cC2aRZNFFMolQdCZcex5GAt8wg230rzQg.nPJKQPUIwJf5c1X8h3xN3i-RcR5sq0vnMg3-J_FV9dsg.JPEG.spadegagu%2F997a36db8472a5e9f86ebe4c2cd0ad0e.jpg&type=a340',
     name: '베네치아 4인용 12T 포셀린 세라믹 식탁테이블 1800(직각)',
-    price: 188000,
+    price: 158000,
   },
   {
-    idx: 6,
-    img:
-      'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxODEwMTZfOTcg%2FMDAxNTM5NjUxNDA1MjQ2.cuYLfg63fR2cC2aRZNFFMolQdCZcex5GAt8wg230rzQg.nPJKQPUIwJf5c1X8h3xN3i-RcR5sq0vnMg3-J_FV9dsg.JPEG.spadegagu%2F997a36db8472a5e9f86ebe4c2cd0ad0e.jpg&type=a340',
     name: '베네치아 4인용 12T 포셀린 세라믹 식탁테이블 1800(타원)',
+    price: 168000,
+  },
+  {
+    name: '베네치아 4인용 12T 포셀린 세라믹 식탁테이블 2000(직각)',
+    price: 178000,
+  },
+  {
+    name: '베네치아 4인용 12T 포셀린 세라믹 식탁테이블 2000(타원)',
     price: 188000,
   },
   {
-    idx: 7,
-    img:
-      'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxODEwMTZfOTcg%2FMDAxNTM5NjUxNDA1MjQ2.cuYLfg63fR2cC2aRZNFFMolQdCZcex5GAt8wg230rzQg.nPJKQPUIwJf5c1X8h3xN3i-RcR5sq0vnMg3-J_FV9dsg.JPEG.spadegagu%2F997a36db8472a5e9f86ebe4c2cd0ad0e.jpg&type=a340',
-    name: '베네치아 4인용 12T 포셀린 세라믹 식탁테이블 1400(직각)',
-    price: 188000,
-  },
-  {
-    idx: 8,
-    img:
-      'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxODEwMTZfOTcg%2FMDAxNTM5NjUxNDA1MjQ2.cuYLfg63fR2cC2aRZNFFMolQdCZcex5GAt8wg230rzQg.nPJKQPUIwJf5c1X8h3xN3i-RcR5sq0vnMg3-J_FV9dsg.JPEG.spadegagu%2F997a36db8472a5e9f86ebe4c2cd0ad0e.jpg&type=a340',
-    name: '베네치아 4인용 12T 포셀린 세라믹 식탁테이블 1400(타원)',
-    price: 188000,
-  },
-  {
-    idx: 9,
-    img:
-      'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxODEwMTZfOTcg%2FMDAxNTM5NjUxNDA1MjQ2.cuYLfg63fR2cC2aRZNFFMolQdCZcex5GAt8wg230rzQg.nPJKQPUIwJf5c1X8h3xN3i-RcR5sq0vnMg3-J_FV9dsg.JPEG.spadegagu%2F997a36db8472a5e9f86ebe4c2cd0ad0e.jpg&type=a340',
-    name: '베네치아 4인용 12T 포셀린 세라믹 식탁테이블 1600(직각)',
-    price: 188000,
+    name: '베네치아 4인용 12T 포셀린 세라믹 식탁테이블 2200(직각)',
+    price: 198000,
   },
 ]
 
 const Option = () => {
-  const [selected, setSelected] = useState('상품을 선택하세요.')
-  const [show, setShow] = useState(false)
+  const [price, setPrice] = useState([])
+  const [totalPrice, setTotalPrice] = useState(0)
+  const dispatch = useDispatch()
+  const selectedOption = useSelector((state) => state.product.selectedOption)
 
-  const showSelectBox = () => {
-    setShow(!show)
+  const onOptionSelected = (e) => {
+    const value = e.target.value
+    const id = $('#select').val(`${value}`)[0].selectedIndex
+    dispatch(
+      addOption({
+        name: e.target.value,
+        price: price[id - 1],
+        id: id,
+        num: 1,
+      }),
+    )
   }
 
   useEffect(() => {
-    if (show) $('#selectBox').show()
-    else $('#selectBox').hide()
-  }, [show])
+    //상품 가격을 따로 배열에 저장
+    let arr = []
+    mockOptions.map((data) => {
+      arr.push(data.price)
+    })
+    setPrice(arr)
+  }, [])
+
+  useEffect(() => {
+    console.log(selectedOption)
+    console.log(typeof selectedOption)
+    let total = 0
+    selectedOption &&
+      selectedOption.map((data) => {
+        total += data.price * data.num
+      })
+    setTotalPrice(total)
+  }, [selectedOption])
 
   return (
     <Container>
@@ -90,32 +91,33 @@ const Option = () => {
         <Review>1093개 리뷰</Review>
         <Price>188,000원</Price>
       </NamePrice>
-      <SelectOption onClick={showSelectBox}>
-        <span>{selected}</span>
-        <img
-          width="30px"
-          height="30px"
-          src={require('../../../img/ExpandArrow.png')}
-        />
-      </SelectOption>
-      <SelectBox id="selectBox">
-        {mockOptions.map((data, idx) => (
-          <SelectBoxElement
-            onClick={() => {
-              setSelected(data.name)
-              showSelectBox()
-            }}
-            idx={data.idx}
-            img={data.img}
-            name={data.name}
-            price={data.price}
-          />
-        ))}
-      </SelectBox>
-      <PurchaseContainer isShowed={show}>
+      <SelectedView>
+        <Selected id="select" onChange={onOptionSelected}>
+          <option disabled selected>
+            옵션을 선택하세요.
+          </option>
+          {mockOptions.map((data, idx) => (
+            <option id={'option' + idx} value={data.name}>
+              {data.name + '(' + data.price.toLocaleString() + '원)'}
+            </option>
+          ))}
+        </Selected>
+      </SelectedView>
+      <SelectedOptionView id="selectView">
+        {selectedOption &&
+          selectedOption.map((data, idx) => (
+            <SelectedOption
+              key={idx}
+              name={data.name}
+              price={data.price}
+              id={data.id}
+            />
+          ))}
+      </SelectedOptionView>
+      <PurchaseContainer>
         <InnerContainer>
           <PriceLabel>주문금액</PriceLabel>
-          <PurchasePrice>0원</PurchasePrice>
+          <PurchasePrice>{totalPrice.toLocaleString()}원</PurchasePrice>
         </InnerContainer>
         <InnerContainer>
           <MyBucketBtn>장바구니</MyBucketBtn>
@@ -150,27 +152,26 @@ const Price = styled.span`
   font-weight: bold;
   font-size: 30px;
 `
-const SelectOption = styled.div`
+const Selected = styled.select`
+  width: 100%;
+  height: 50px;
+  border: none;
+  font-size: 16px;
+`
+const SelectedView = styled.div`
   display: flex;
+  border: 1px solid ${(props) => props.theme.mainColor};
+  border-radius: 4px;
   justify-content: space-between;
   align-items: center;
+  padding: 0px 10px;
   margin-top: 20px;
-  padding: 20px;
   width: 100%;
-  border: 1px solid lightgray;
-  border-radius: 4px;
-  &:hover {
-    cursor: pointer;
-  }
 `
-const SelectBox = styled.div`
+const SelectedOptionView = styled.div`
   width: 100%;
-  height: 400px;
-  border: 1px solid lightgray;
-  border-radius: 4px;
-  margin-top: 5px;
-  overflow: auto;
-  background-color: white;
+  display: flex;
+  flex-direction: column;
 `
 const PurchaseContainer = styled.div`
   display: flex;
