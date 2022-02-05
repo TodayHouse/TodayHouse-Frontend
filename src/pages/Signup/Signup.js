@@ -43,7 +43,6 @@ const Signup = () => {
       ...form,
       [e.target.name]: e.target.value,
     }
-    console.log(changed)
     setForm(changed)
   }
 
@@ -91,7 +90,6 @@ const Signup = () => {
                 },
               })
               .then((response) => {
-                console.log(response)
                 if (response.data.isSuccess) {
                   alert('이메일에서 인증코드를 확인해주세요.')
                 }
@@ -127,7 +125,6 @@ const Signup = () => {
         '비밀번호는 영문, 숫자를 포함하여 8자 이상이어야 합니다.',
       )
       setTextColor({ password: 'red' })
-      console.log('red')
     }
   }
 

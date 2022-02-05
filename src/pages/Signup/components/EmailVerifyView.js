@@ -21,7 +21,6 @@ const EmailVerifyView = (props) => {
         },
       })
       .then((response) => {
-        console.log(response)
         if (response.data.isSuccess) {
           alert('이메일 인증이 완료되었습니다.')
         }

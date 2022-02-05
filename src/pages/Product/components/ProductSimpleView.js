@@ -30,6 +30,7 @@ const ProductSimpleView = () => {
 const Container = styled.div`
   display: flex;
   width: 1150px;
+  margin-top: 30px;
 `
 const SidePhotoView = styled.div`
   display: flex;

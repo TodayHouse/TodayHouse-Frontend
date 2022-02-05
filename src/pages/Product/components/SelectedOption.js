@@ -1,30 +1,22 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { changeNum, removeOption } from '../../../reducer/product'
+import $ from 'jquery'
 
 const SelectedOption = (props) => {
-  const [num, setNum] = useState([])
-  const [selectedNum, setSelectedNum] = useState(1)
   const dispatch = useDispatch()
+  const num = Array(100) //1~100을 원소로 가지는 배열 생성
+    .fill()
+    .map((data, i) => i + 1)
+  const selectedOption = useSelector((state) => state.product.selectedOption)
   const id = props.id
+  const curNum = selectedOption.filter((data) => data.id === id)[0].num //sidebar에도 동시에 적용하기 위해 선언
 
   const onChange = (e) => {
-    setSelectedNum(e.target.value)
+    dispatch(changeNum({ id, num: e.target.value }))
+    $('#select').val(`${e.target.value}`).prop('selected', true)
   }
-
-  useEffect(() => {
-    //수량 변경 후 스토어에 저장
-    dispatch(changeNum({ id, num: selectedNum }))
-  }, [selectedNum])
-
-  useEffect(() => {
-    let arr = []
-    for (let i = 1; i <= 100; i++) {
-      arr.push(i)
-    }
-    setNum(arr)
-  }, [])
 
   return (
     <Container>
@@ -47,7 +39,7 @@ const SelectedOption = (props) => {
             ))}
           </Num>
         </div>
-        <span>{parseInt(props.price * selectedNum).toLocaleString()}원</span>
+        <span>{parseInt(props.price * curNum).toLocaleString()}원</span>
       </Price>
     </Container>
   )

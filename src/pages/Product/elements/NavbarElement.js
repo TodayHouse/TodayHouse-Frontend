@@ -17,7 +17,7 @@ const Category = styled.li`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 20%;
+  width: 100%;
   height: 50px;
   color: ${(props) =>
     props.id === props.selectedElem ? props.theme.mainColor : 'black'};

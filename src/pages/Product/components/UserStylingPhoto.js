@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 
 const UserStylingPhoto = (props) => {
-  console.log(props)
   return (
     <Container>
       <Image src={props.src} />

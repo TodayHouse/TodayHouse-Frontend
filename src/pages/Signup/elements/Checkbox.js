@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 
 const Checkbox = (props) => {
-  console.log(props)
   return <Container isClicked={props.isClicked} />
 }
 
