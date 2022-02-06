@@ -11,6 +11,9 @@ import Review from './Review'
 import Ask from './Ask'
 import Delivery from './Delivery'
 import Recommend from './Recommend'
+import ReviewDetail from './ReviewDetail'
+import AskDetail from './AskDetail'
+
 export {
   ProductSimpleView,
   Option,
@@ -25,4 +28,6 @@ export {
   Ask,
   Delivery,
   Recommend,
+  ReviewDetail,
+  AskDetail,
 }

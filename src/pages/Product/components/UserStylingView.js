@@ -75,7 +75,7 @@ const UserStylingView = () => {
 const Container = styled.div`
   margin-top: 30px;
   display: flex;
-  width: 1000px;
+  width: 100%;
   flex-direction: column;
   align-items: center;
 `

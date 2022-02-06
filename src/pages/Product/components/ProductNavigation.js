@@ -4,7 +4,9 @@ import { NavbarElement } from '../elements'
 import { Link } from 'react-scroll'
 
 const element = ['상품정보', '리뷰', '문의', '배송/환불', '추천']
+const num = ['', '59,781', '56,354', '', '']
 const linkTo = ['productInfo', 'review', 'ask', 'delivery', 'recommend']
+
 const ProductNavigation = () => {
   const [selectedElem, setSelectedElem] = useState(null) //선택된 navbar element의 id
 
@@ -21,7 +23,7 @@ const ProductNavigation = () => {
           <Link style={{ width: '20%' }} to={linkTo[idx]} offset={-70}>
             <NavbarElement
               id={idx}
-              text={data}
+              text={data + '  ' + num[idx]}
               onClick={() => {
                 onNavbarSelect(idx)
               }}

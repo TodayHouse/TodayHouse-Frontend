@@ -10,7 +10,7 @@ const ProductSidebar = () => {
 }
 
 const Container = styled.div`
-  width: 383px;
+  width: 300px;
   height: calc(100vh - 50px);
   position: sticky;
   top: 50px;

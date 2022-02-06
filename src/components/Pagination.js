@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import Page from 'react-js-pagination'
 import '../css/pagination.css'
 
+//totalItems를 props로 받을 예정
 const Pagination = () => {
   const [page, setPage] = useState(1)
 

@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { OptionSelectView } from '.'
+import { Star } from '../../../components'
 
 const Option = () => {
   return (
@@ -8,7 +9,10 @@ const Option = () => {
       <NamePrice>
         <Company>폴인퍼니</Company>
         <Name>[연휴특가] 감성으로 채운 세라믹식탁/식탁의자 모음전</Name>
-        <Review>1093개 리뷰</Review>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <Star rating={4.5} size="20px" />
+          <Review>1093개 리뷰</Review>
+        </div>
         <Price>188,000원</Price>
       </NamePrice>
       <OptionSelectView />
@@ -35,6 +39,7 @@ const Review = styled.span`
   font-weight: bold;
   font-size: 15px;
   color: ${(props) => props.theme.mainColor};
+  margin-left: 10px;
 `
 const Price = styled.span`
   font-weight: bold;
