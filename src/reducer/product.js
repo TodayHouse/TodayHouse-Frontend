@@ -14,12 +14,7 @@ const productReducer = createSlice({
       state.imgSrc = action.payload
     },
     addOption: (state, action) => {
-      state.selectedOption.push({
-        name: action.payload.name,
-        price: action.payload.price,
-        id: action.payload.id,
-        num: action.payload.num,
-      })
+      state.selectedOption.push(action.payload)
     },
     removeOption: (state, action) => {
       return {
