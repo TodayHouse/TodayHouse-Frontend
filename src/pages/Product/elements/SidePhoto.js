@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useDispatch } from 'react-redux'
-import { changeImg } from '../../../reducer/product'
+import { changeImg } from '../../../redux/reducer/product'
 
 const SidePhoto = (props) => {
   const dispatch = useDispatch()

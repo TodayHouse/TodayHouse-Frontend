@@ -119,11 +119,10 @@ const NavText = styled.div`
   cursor: pointer;
 `
 const NavBar = styled.nav`
-    position: relative;
-    width : 1256px;
-    display: flex;
-    background-color: #fff;
-    border-bottom: 1px solid #ededed;
-    margin:0 auto;
-}
+  position: relative;
+  width: 1256px;
+  display: flex;
+  background-color: #fff;
+  border-bottom: 1px solid #ededed;
+  margin: 0 auto;
 `

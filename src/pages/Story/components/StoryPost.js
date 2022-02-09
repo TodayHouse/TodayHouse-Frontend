@@ -8,7 +8,7 @@ const StoryPost = (props) => {
   return (
     <Container
       onClick={() => {
-        navigate('/story-post-detail')
+        navigate('/story/post')
       }}
     >
       <div style={{ position: 'relative', width: '100%' }}>

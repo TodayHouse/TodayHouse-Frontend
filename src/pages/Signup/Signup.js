@@ -2,6 +2,12 @@ import React, { Fragment, useState, useEffect } from 'react'
 import styled from 'styled-components'
 import $ from 'jquery'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import { EmailVerifyView, AgreeView } from './components'
+import theme from '../../theme'
+import { useSelector } from 'react-redux'
+
+const url = theme.apiUrl
 
 const Signup = () => {
   const navigate = useNavigate()
@@ -37,7 +43,6 @@ const Signup = () => {
       ...form,
       [e.target.name]: e.target.value,
     }
-    console.log(changed)
     setForm(changed)
   }
 
@@ -61,17 +66,42 @@ const Signup = () => {
   }
 
   const testEmailCertification = (str) => {
+    const fullEmail = form.email + '@' + form.emailSuffix
     // 이메일 인증하기 버튼 눌렀을 때 인증 실패하면 메시지 띄우면 됨(이메일 형식 예외 케이스 굳이 안 짜도 됨)
     // 이메일이 가입된 이메일인지, 아니라면 이메일 형식에 맞는지 -> 맞다면 인증 코드 전송
+    axios.get(url + `users/emails/${fullEmail}/exist`).then((response) => {
+      if (response.data.result) {
+        //중복된 이메일
+        setEmailCheckMsg('이미 가입된 이메일입니다.')
+      }
 
-    if (str === 'test@naver.com') {
-      setEmailCheckMsg('이미 가입된 이메일입니다.')
-    } else {
-      setEmailCheckMsg('')
-      emailCheckFunc()
-      if (emailCheckMsg === '') alert('이메일에서 인증 코드를 확인해주세요.')
-    }
-    setEmailCheck(str) // 어떤 경우에서든 emailCheck 값 변경
+      //이메일 중복 아닐 경우
+      else {
+        setEmailCheckMsg('')
+        emailCheckFunc()
+        if (emailCheckMsg === '') {
+          if (form.email === '') alert('이메일을 입력해주세요.')
+          else {
+            const data = { email: fullEmail }
+            axios
+              .post(url + 'emails/token/send', data, {
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              })
+              .then((response) => {
+                if (response.data.isSuccess) {
+                  alert('이메일에서 인증코드를 확인해주세요.')
+                }
+              })
+              .catch((e) => {
+                console.log('error log : ' + e)
+              })
+          }
+        }
+      }
+      setEmailCheck(str) // 어떤 경우에서든 emailCheck 값 변경
+    }) //end axios
   }
 
   // 비밀번호와 비밀번호 확인이 일치하거나, 비밀번호 확인 칸이 비어있는 경우 true 반환
@@ -95,7 +125,6 @@ const Signup = () => {
         '비밀번호는 영문, 숫자를 포함하여 8자 이상이어야 합니다.',
       )
       setTextColor({ password: 'red' })
-      console.log('red')
     }
   }
 
@@ -108,8 +137,18 @@ const Signup = () => {
   // 닉네임 형식 체크 함수
   const nicknameCheckFunc = () => {
     if (nicknameRegExp(form.nickname) || form.nickname.length === 0) {
-      setNicknameCheckMsg('')
-      setTextColor({ nickname: 'black' })
+      axios
+        .get(url + `users/nicknames/${form.nickname}/exist`)
+        .then((response) => {
+          if (response.data.result) {
+            //닉네임 중복
+            setNicknameCheckMsg('사용 중인 닉네임입니다.')
+            setTextColor({ nickname: 'red' })
+          } else {
+            setNicknameCheckMsg('')
+            setTextColor({ nickname: 'black' })
+          }
+        })
     } else if (form.nickname.length < 2) {
       setNicknameCheckMsg('2자 이상 입력해주세요.')
       setTextColor({ nickname: 'red' })
@@ -117,11 +156,30 @@ const Signup = () => {
       setNicknameCheckMsg('15자 이하로 입력해주세요.')
       setTextColor({ nickname: 'red' })
     }
+    //  else {
+    //   //형식에 맞을 경우
+    //   if (form.nickname === '이준수') {
+    //     setNicknameCheckMsg('사용 중인 닉네임입니다.')
+    //     setTextColor({ nickname: 'red' })
+    //   }
+    //   //
+    //   //
+    //   //
+    //   //
+    //   //
+    //   //
+    //   //
+    //   //
+    //   //
+    // }
   }
 
+  const agree = useSelector((state) => state.signup.agree)
+
   const signupCheckFunc = () => {
+    const fullEmail = form.email + '@' + form.emailSuffix
     if (
-      form.email + '@' + form.emailSuffix === emailCheck && // 임시 저장 값 == 현재 이메일 칸에 들어있는 값 이어야함
+      fullEmail === emailCheck && // 임시 저장 값 == 현재 이메일 칸에 들어있는 값 이어야함
       form.email.length > 0 &&
       emailCheckMsg === '' &&
       form.password.length > 0 &&
@@ -131,7 +189,29 @@ const Signup = () => {
       form.nickname.length > 0 &&
       nicknameCheckMsg === ''
     ) {
-      alert('회원가입이 완료되었습니다.')
+      axios
+        .post(
+          url + 'users/signup',
+          {
+            email: fullEmail,
+            password1: form.password,
+            password2: form.repassword,
+            nickname: form.nickname,
+            agreeAge: agree[0],
+            agreeTOS: agree[1],
+            agreePICU: agree[2],
+            agreePromotion: agree[3],
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          },
+        )
+        .then((response) => {
+          if (response.data.isSuccess) alert('회원가입이 완료되었습니다.')
+        })
+        .catch((e) => console.log(e))
     } else alert('입력하신 정보를 다시 확인해주세요.')
   }
 
@@ -285,6 +365,7 @@ const Signup = () => {
             >
               <ButtonText>이메일 인증하기</ButtonText>
             </EmailButton>
+            <EmailVerifyView email={form.email + '@' + form.emailSuffix} />
           </EmailContainer>
           <PasswordContainer>
             <Label style={{ color: textColor.password }}>비밀번호</Label>
@@ -330,6 +411,7 @@ const Signup = () => {
             </Nickname>
             <ErrorText>{nicknameCheckMsg}</ErrorText>
           </NicknameContainer>
+          <AgreeView />
           <div
             style={{
               display: 'flex',

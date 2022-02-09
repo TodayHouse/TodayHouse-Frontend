@@ -1631,7 +1631,7 @@ const SelectedCategoryContainer = styled.div`
   margin-left: 12px;
   height: 30px;
   position: absolute;
-  top: 210px;
+  top: 160px;
   z-index: 1;
 `
 const ResetButton = styled.button`

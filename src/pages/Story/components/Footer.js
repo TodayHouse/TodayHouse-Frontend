@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import Comment from '../elements/Comment'
-import Pagination from 'react-js-pagination'
-import '../pagination.css'
+import Pagination from '../../../components/Pagination'
+
 //집들이 게시글 상세 페이지의 가장 아래 부분에 있는 글쓴이 프로필 및 댓글창 컴포넌트
 const mockComment = [
   {
@@ -51,11 +51,6 @@ const mockComment = [
 
 const Footer = () => {
   const [text, setText] = useState('')
-  const [page, setPage] = useState(1)
-
-  const handlePageChange = (page) => {
-    setPage(page)
-  }
 
   const onChange = (e) => {
     setText(e.target.value)
@@ -113,24 +108,7 @@ const Footer = () => {
             time={e.time}
           />
         ))}
-        <PaginationContainer>
-          <Pagination
-            innerClass="paginationBtn"
-            activeClass="active"
-            itemClass="item"
-            itemClassPrev="prev"
-            itemClassNext="next"
-            activePage={page}
-            totalItemsCount={51}
-            itemsCountPerPage={5}
-            pageRangeDisplayed={9}
-            firstPageText={''}
-            lastPageText={''}
-            prevPageText={'<'}
-            nextPageText={'>'}
-            onChange={handlePageChange}
-          />
-        </PaginationContainer>
+        <Pagination />
       </CommentContainer>
     </Container>
   )
@@ -196,11 +174,5 @@ const CommentInput = styled.input`
   ::placeholder {
     color: #cccccc;
   }
-`
-const PaginationContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
 `
 export default Footer

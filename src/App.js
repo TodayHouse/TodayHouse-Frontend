@@ -44,7 +44,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
-        <div>
+        <div style={{ width: '100vw' }}>
           <Routes>
             <Route path="/" element={<Main />}>
               <Route path="/advices" element={<Advices />}></Route>
