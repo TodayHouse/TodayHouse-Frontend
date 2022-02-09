@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { SelectedOption } from '.'
 import $ from 'jquery'
 import { useDispatch, useSelector } from 'react-redux'
-import { addOption } from '../../../reducer/product'
+import { addOption } from '../../../redux/reducer/product'
 
 const mockOptions = [
   {

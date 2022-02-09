@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { AgreeElement, Checkbox } from '../elements'
 import { useDispatch } from 'react-redux'
-import { changeAgree } from '../../../reducer/signup'
+import { changeAgree } from '../../../redux/reducer/signup'
 
 const texts = [
   '만 14세 이상입니다.',

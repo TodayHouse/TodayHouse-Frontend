@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux'
-import { changeNum, removeOption } from '../../../reducer/product'
+import { changeNum, removeOption } from '../../../redux/reducer/product'
 import $ from 'jquery'
 
 const SelectedOption = (props) => {

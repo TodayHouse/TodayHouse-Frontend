@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import logo from '../../img/logo.jpg'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { navChange } from '../../Store'
+import { navChange } from '../../redux/Store'
 
 const Navbar = ({ isLogin, changeNavSelect, navSelect }) => {
   const buttonLogout = () => {
@@ -107,7 +107,7 @@ const NavListFront = styled.ul`
 `
 const NavListBack = styled.ul`
   display: flex;
-  margint-left: 0;
+  margin-left: 0;
   margin-bottom: 0;
   list-style: none;
 `
@@ -127,11 +127,10 @@ const NavText = styled.div`
   cursor: pointer;
 `
 const NavBar = styled.nav`
-    position: relative;
-    width : 1256px;
-    display: flex;
-    background-color: #fff;
-    border-bottom: 1px solid #ededed;
-    margin:0 auto;
-}
+  position: relative;
+  width: 1256px;
+  display: flex;
+  background-color: #fff;
+  border-bottom: 1px solid #ededed;
+  margin: 0 auto;
 `
