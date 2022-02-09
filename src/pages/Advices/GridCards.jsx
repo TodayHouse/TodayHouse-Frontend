@@ -26,7 +26,7 @@ export default GridCards
 //이미지 확대시 overflow관리를 위한 프레임
 const Frame = styled.div` 
 width: 100%;
-height: 320px;
+height: 300px;
 border-radius: 5%;
 overflow: hidden;
 cursor: pointer;

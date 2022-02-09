@@ -1,14 +1,18 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import { connect } from 'react-redux'
-const SubNavbar = ({ navSelect }) => {
+import { useSelector } from 'react-redux'
+
+
+const SubNavbar = () => {
   let now = null
+  const navSelect = useSelector((state)=>state.navbar.navSelect)
+  console.log(navSelect);
 
   if (navSelect === 'community') {
     //0번탭
     now = (
-      <NavBar>
+      <NavBar id="subNavBar">
         <NavList>
           <NavItem>
             <Link to="/story">
@@ -27,7 +31,7 @@ const SubNavbar = ({ navSelect }) => {
   } else {
     //1번 탭
     now = (
-      <NavBar>
+      <NavBar id="subNavBar">
         <NavList>
           <NavItem>
             <NavText>카테고리</NavText>
@@ -45,11 +49,9 @@ const SubNavbar = ({ navSelect }) => {
 
   return <div>{now}</div>
 }
-function mapStateToProps(state, ownProps) {
-  //navSelect를 스토어에서 가져옴
-  return { navSelect: state.navSelect }
-}
-export default connect(mapStateToProps)(SubNavbar)
+
+
+export default SubNavbar
 const NavItem = styled.li`
   display: flex;
   text-align: -webkit-match-parent;
@@ -72,10 +74,10 @@ const NavList = styled.ul`
   list-style: none;
 `
 const NavBar = styled.nav`
-    position: relative;
-    display: flex;
-    background-color: #fff;
-    border-bottom: 1px solid #ededed;
-    
+width : 1256px;
+display: flex;
+background-color: #fff;
+border-bottom: 1px solid #ededed;
+margin:0 auto;
 }
 `

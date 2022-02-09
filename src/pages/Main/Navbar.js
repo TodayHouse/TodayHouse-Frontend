@@ -2,16 +2,20 @@ import React from 'react'
 import styled from 'styled-components'
 import logo from '../../img/logo.jpg'
 import { Link } from 'react-router-dom'
-import { connect } from 'react-redux'
-import { navChange } from '../../Store'
+import {useDispatch} from'react-redux'
+import { navChange } from '../../reducer/navBar'
 
-const Navbar = ({ isLogin, changeNavSelect, navSelect }) => {
+const Navbar = ({isLogin}) => {
   const buttonLogout = () => {
     console.log('로그아웃')
   }
+  const dispatch= useDispatch();
+  const changeNavSelect =(value)=>{
+    dispatch(navChange(value))
+  }
 
   return (
-    <NavBar>
+    <NavBar id="navBar">
       <NavListFront>
         <NavBrand>
           <Link to="/">
@@ -78,19 +82,7 @@ const Navbar = ({ isLogin, changeNavSelect, navSelect }) => {
     </NavBar>
   )
 }
-function mapStateToProps(state, ownProps) {
-  return {
-    isLogin: state.isLogin,
-    navSelect: state.navSelect,
-  } //여기서 반환한 객체가 props에 추가됨. navSelect를 store에서 가져옴.
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    changeNavSelect: (navSelect) => dispatch(navChange(navSelect)),
-  } //디스패치함수를 props에 추가.
-}
-export default connect(mapStateToProps, mapDispatchToProps)(Navbar)
+export default Navbar
 const NavBrand = styled.div`
   padding-top: 0.3125rem;
   padding-bottom: 0.3125rem;
@@ -107,7 +99,7 @@ const NavListFront = styled.ul`
 `
 const NavListBack = styled.ul`
   display: flex;
-  margint-left: 0;
+  margin-left: 0;
   margin-bottom: 0;
   list-style: none;
 `

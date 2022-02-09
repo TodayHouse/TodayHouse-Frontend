@@ -9,8 +9,10 @@ import { connect } from 'react-redux'
 const Main = ({ selPage }) => {
   return (
     <Container>
-      <Navbar></Navbar>
-      <SubNavbar></SubNavbar>
+      <NavBarContainer>
+        <Navbar/>
+        <SubNavbar/>
+      </NavBarContainer> 
       <Outlet />
     </Container>
   )
@@ -21,4 +23,15 @@ function mapStateToProps(state, ownProps) {
   }
 }
 export default connect(mapStateToProps)(Main)
-const Container = styled.div``
+const Container = styled.div`
+display:flex;
+flex-direction:column;
+align-items:center;
+`
+const NavBarContainer = styled.div`
+display: flex;
+flex-direction: column;
+height: 100%;
+align-items: center;
+
+`

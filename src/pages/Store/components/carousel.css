@@ -1,0 +1,10 @@
+.slick-dots{
+    position: absolute;
+    top:210px;
+}
+.slick-slide img
+{
+    display: block;
+    height: 250px;
+    width: 956px;
+}

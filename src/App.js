@@ -5,6 +5,7 @@ import {
   Login,
   Main,
   Signup,
+  Store,
   Story,
   StoryPostDetail,
   Product,
@@ -14,8 +15,10 @@ import {
   Board,
 } from '../src/pages/index'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import { Cookies } from 'react-cookie'
+
 const cookies = new Cookies()
 
 export const setCookie = (name, value, option) => {
@@ -47,6 +50,8 @@ function App() {
               <Route path="/advices" element={<Advices />}></Route>
               <Route path="/advices/:id" element={<AdviceDetail />}></Route>
               <Route path="/event" element={<Board />}></Route>
+              <Route path="/store" element={<Store/>}></Route>
+              
             </Route>
             <Route path="/editor" element={<Edit />}></Route>
             <Route path="/login" element={<Login />} />
@@ -54,6 +59,7 @@ function App() {
             <Route path="/story" element={<Story />} />
             <Route path="/story/post" element={<StoryPostDetail />} />
             <Route path="/product/:id" element={<Product />} />
+            
           </Routes>
         </div>
       </BrowserRouter>

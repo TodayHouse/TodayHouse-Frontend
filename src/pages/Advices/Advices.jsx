@@ -8,10 +8,9 @@ import house3 from"./img/house3.jpg"
 import house4 from"./img/house4.jpg"
 import "antd/dist/antd.css"
 const Advices =() =>{
-    const [images,setImages] =useState([house1,house2,house3,house4])//임시 이미지
+    const [images] =useState([house1,house2,house3,house4])//임시 이미지
     const [items,setItems] = useState([])
     const load = () =>{
-        console.log("load");
         setItems([...items,...images]) //기존 아이템리스트에 이미지 추가(임시)
     }
     useEffect(() => {
