@@ -8,7 +8,7 @@ const ModalBox2 = ({isOpen, onSubmit, onCancel}) => {
    
     return (
       <ReactModal isOpen = {isOpen}>
-        <div>모달 입니다.</div>
+        <div>추후 기능이 요구될 시 추가 구현할 부분입니다.</div>
         <div>
             <button onClick = {handleClickSubmit}>확인</button>
         </div>

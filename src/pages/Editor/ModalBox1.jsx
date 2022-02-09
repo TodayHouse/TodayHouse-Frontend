@@ -35,6 +35,7 @@ const SubmitButton = styled.button`
   width : 120px;
   height : 40px;
   border-radius : 10px;
+  border-color : skyblue;
   padding-left : 43px;
   padding-top : 5px;
 `

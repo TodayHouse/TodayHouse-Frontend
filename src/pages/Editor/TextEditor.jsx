@@ -1,61 +1,32 @@
-import React, { Component, useState } from 'react';
-import styled from "styled-components";
-import { Editor } from "react-draft-wysiwyg";
-import {EditorState} from "draft-js";
-import GuideBar_1 from "./GuideBar1";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";//involve css
+import React from 'react';
+import 'react-quill/dist/quill.snow.css';
+import ReactQuill, {Quill} from 'react-quill';
+import ImageResize from 'quill-image-resize';
+Quill.register('modules/ImageResize', ImageResize);
 
-
-export default class TextEditor extends Component{
-    state = {
-        editorState : EditorState.createEmpty(),
-    }
-    onEditorStateChange = (editorState) => {
-        this.setState({
-            editorState,
-        });
-    } 
+const modules = {
+	toolbar: [
+		//[{ 'font': [] }],
+		[{ header: [1, 2, false] }],
+		['bold', 'italic', 'underline', 'strike', 'blockquote'],
+		[{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
+		['image'],
+		[{ align: [] }, { color: [] }, { background: [] }], // dropdown with defaults from theme
+		['clean']
+	],
     
-    render(){
-        const {editorState} = this.state;
-        let guideState = false;
-        const guideController = (guideState) => {
-            return 
-        }
-        
-        const showGuide = () => {
-                <div id = "sub-section" className = "sub-section">
-                    Some Results
-                </div>
-        }
+	ImageResize: {
+		parchment: Quill.import('parchment')
+	}
+};
 
-        return (
-            <>
-            
-            <EditorContainer>
-               <Editor
-                editorState={editorState}
-                toolbarClassName="toolbarClassName"
-                wrapperClassName="wrapperClassName"
-                editorClassName="editorClassName"
-                onEditorStateChange={this.onEditorStateChange}
-                />
-            </EditorContainer>
-            </>
-        )
-    };
-}
+const TextEditor = () => {
+	return (
+		//
+		<div>
+			<ReactQuill style={{ height: '600px' }} theme="snow" modules={modules} />
+		</div>
+	);
+};
 
-
-
-
-
-const EditorContainer = styled.div`
-    text-align : center;
-    border: 1px solid;
-    margin-top :100px;
-    border-color : #bdbebd;
-    height : 800px;
-    width : 1200px;
-`
-
+export default TextEditor;

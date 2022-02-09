@@ -45,7 +45,7 @@ export default GuideBar_1
 
 const GuideDetail = styled.ul`
   border: 2px solid;
-  border-color : #bdbebd;
+  border-color : skyblue;
   display: block;
   width : auto;
   margin-top : 0px;

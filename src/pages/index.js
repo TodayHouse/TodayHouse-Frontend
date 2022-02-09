@@ -9,6 +9,7 @@ import Advices from './Advices/Advices'
 import AdviceDetail from './Advices/AdviceDetail'
 import Edit from './Editor/Edit'
 import Board from './Event/Board'
+import Search from './SearchPW/Search'
 
 export {
   Login,
@@ -22,4 +23,5 @@ export {
   Advices,
   Edit,
   Board,
+  Search,
 }
