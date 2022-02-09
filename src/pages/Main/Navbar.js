@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import logo from '../../img/logo.jpg'
 import { Link } from 'react-router-dom'
 import {useDispatch} from'react-redux'
-import { navChange } from '../../reducer/navBar'
+import { navChange } from '../../redux/reducer/navBar'
 
 const Navbar = ({isLogin}) => {
   const buttonLogout = () => {

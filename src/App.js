@@ -51,14 +51,15 @@ function App() {
               <Route path="/advices/:id" element={<AdviceDetail />}></Route>
               <Route path="/event" element={<Board />}></Route>
               <Route path="/store" element={<Store/>}></Route>
-              
+              <Route path="/story" element={<Story />} />
+              <Route path="/product/:id" element={<Product />} />
             </Route>
             <Route path="/editor" element={<Edit />}></Route>
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />}></Route>
-            <Route path="/story" element={<Story />} />
+            
             <Route path="/story/post" element={<StoryPostDetail />} />
-            <Route path="/product/:id" element={<Product />} />
+            
             
           </Routes>
         </div>

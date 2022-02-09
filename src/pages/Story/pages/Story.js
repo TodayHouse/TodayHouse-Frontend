@@ -51,7 +51,6 @@ const Story = () => {
 
   return (
     <Fragment>
-      <Main />
       <Category />
       <CardContainer>
         <TotalNum>전체 5,882</TotalNum>
