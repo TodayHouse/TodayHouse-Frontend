@@ -1,3 +1,3 @@
 import product from './product'
-
-export { product }
+import signup from './signup'
+export { product, signup }
