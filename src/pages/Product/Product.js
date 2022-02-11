@@ -28,7 +28,6 @@ const Product = () => {
 
   return (
     <Container id="container">
-      <Main />
       <ProductSimpleView />
       <ProductNavigation />
       <Wrap>

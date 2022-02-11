@@ -8,6 +8,7 @@ import Advices from './Advices/Advices'
 import AdviceDetail from './Advices/AdviceDetail'
 import Edit from './Editor/Edit'
 import Board from './Event/Board'
+import Order from './Order/Order'
 
 export {
   Login,
@@ -20,4 +21,5 @@ export {
   Advices,
   Edit,
   Board,
+  Order,
 }

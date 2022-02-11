@@ -12,6 +12,7 @@ import {
   Advices,
   Edit,
   Board,
+  Order,
 } from '../src/pages/index'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
@@ -47,13 +48,14 @@ function App() {
               <Route path="/advices" element={<Advices />}></Route>
               <Route path="/advices/:id" element={<AdviceDetail />}></Route>
               <Route path="/event" element={<Board />}></Route>
+              <Route path="/story" element={<Story />} />
+              <Route path="/story/post" element={<StoryPostDetail />} />
+              <Route path="/product/:id" element={<Product />} />
+              <Route path="/order" element={<Order />} />
             </Route>
             <Route path="/editor" element={<Edit />}></Route>
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />}></Route>
-            <Route path="/story" element={<Story />} />
-            <Route path="/story/post" element={<StoryPostDetail />} />
-            <Route path="/product/:id" element={<Product />} />
           </Routes>
         </div>
       </BrowserRouter>
