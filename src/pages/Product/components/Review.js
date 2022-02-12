@@ -106,8 +106,8 @@ const Review = (props) => {
           >
             별점
             <img
-              alt="expandArrow"
-              src={require('../../../img/ExpandArrow.png')}
+              alt="ExpandMoreArrow"
+              src={require('../../../img/ExpandMoreArrow.png')}
             />
           </Select>
           <Select
@@ -118,8 +118,8 @@ const Review = (props) => {
           >
             옵션
             <img
-              alt="expandArrow"
-              src={require('../../../img/ExpandArrow.png')}
+              alt="ExpandMoreArrow"
+              src={require('../../../img/ExpandMoreArrow.png')}
             />
           </Select>
           <SelectRating id="rating">
