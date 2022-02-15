@@ -15,6 +15,7 @@ import {
   Board,
   Search,
   Order,
+  SocialSignup,
 } from "../src/pages/index"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import "slick-carousel/slick/slick.css"
@@ -58,6 +59,7 @@ function App() {
               <Route path="/search" element={<Search />}></Route>
               <Route path="/story/post" element={<StoryPostDetail />} />
               <Route path="/order" element={<Order />} />
+              <Route path="/social-signup" element={<SocialSignup />} />
             </Route>
             <Route path="/editor" element={<Edit />}></Route>
             <Route path="/login" element={<Login />} />

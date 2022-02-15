@@ -11,7 +11,7 @@ import Edit from "./Editor/Edit"
 import Board from "./Event/Board"
 import Search from "./SearchPW/Search"
 import Order from "./Order/Order"
-
+import SocialSignup from "./SocialSignup/SocialSignup"
 export {
   Login,
   Main,
@@ -26,4 +26,5 @@ export {
   Board,
   Search,
   Order,
+  SocialSignup,
 }
