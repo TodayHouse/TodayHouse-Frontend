@@ -148,17 +148,16 @@ const SocialSignup = () => {
   )
 }
 const Container = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 50px;
-  //background-color: pink;
 `
 const SignupContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 30%;
-  //background-color: skyblue;
 `
 const Label = styled.span`
   font-size: 28px;
