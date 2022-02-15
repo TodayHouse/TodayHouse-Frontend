@@ -30,7 +30,6 @@ const StoryPostDetail = () => {
 
   return (
     <Container id="container">
-      <Main />
       <MainImage
         width="100%"
         height="500px"

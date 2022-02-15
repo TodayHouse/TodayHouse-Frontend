@@ -294,7 +294,7 @@ const Category = () => {
         <CategoryElement style={{ width: 70 }}>
           <Select onMouseOver={showSort} onMouseLeave={hideSort}>
             정렬
-            <img src={require('../../../img/ExpandArrow.png')} />
+            <img src={require('../../../img/ExpandMoreArrow.png')} />
           </Select>
           <SortBox id="sort" onMouseOver={showSort} onMouseLeave={hideSort}>
             <div style={{ overflow: 'auto' }}>
@@ -348,7 +348,7 @@ const Category = () => {
         <CategoryElement>
           <Select onMouseOver={showLivingType} onMouseLeave={hideLivingType}>
             주거형태
-            <img src={require('../../../img/ExpandArrow.png')} />
+            <img src={require('../../../img/ExpandMoreArrow.png')} />
           </Select>
           <LivingTypeBox
             id="livingtype"
@@ -439,7 +439,7 @@ const Category = () => {
         <CategoryElement style={{ width: 70 }}>
           <Select onMouseOver={showFlatArea} onMouseLeave={hideFlatArea}>
             평수
-            <img src={require('../../../img/ExpandArrow.png')} />
+            <img src={require('../../../img/ExpandMoreArrow.png')} />
           </Select>
           <FlatAreaBox
             id="flatarea"
@@ -601,7 +601,7 @@ const Category = () => {
         <CategoryElement style={{ width: 70 }}>
           <Select onMouseOver={showBudget} onMouseLeave={hideBudget}>
             예산
-            <img src={require('../../../img/ExpandArrow.png')} />
+            <img src={require('../../../img/ExpandMoreArrow.png')} />
           </Select>
           <BudgetBox
             id="budget"
@@ -746,7 +746,7 @@ const Category = () => {
         <CategoryElement>
           <Select onMouseOver={showFamily} onMouseLeave={hideFamily}>
             가족형태
-            <img src={require('../../../img/ExpandArrow.png')} />
+            <img src={require('../../../img/ExpandMoreArrow.png')} />
           </Select>
           <FamilyBox
             id="family"
@@ -826,7 +826,7 @@ const Category = () => {
         <CategoryElement style={{ width: 85 }}>
           <Select onMouseOver={showStyle} onMouseLeave={hideStyle}>
             스타일
-            <img src={require('../../../img/ExpandArrow.png')} />
+            <img src={require('../../../img/ExpandMoreArrow.png')} />
           </Select>
           <StyleBox id="style" onMouseOver={showStyle} onMouseLeave={hideStyle}>
             <div style={{ overflow: 'visible auto' }}>
@@ -957,7 +957,7 @@ const Category = () => {
         <CategoryElement style={{ width: 70 }}>
           <Select onMouseOver={showColor} onMouseLeave={hideColor}>
             컬러
-            <img src={require('../../../img/ExpandArrow.png')} />
+            <img src={require('../../../img/ExpandMoreArrow.png')} />
           </Select>
           <ColorBox id="color" onMouseOver={showColor} onMouseLeave={hideColor}>
             <div style={{ overflow: 'auto' }}>
@@ -1012,7 +1012,7 @@ const Category = () => {
             onMouseLeave={hideConstruction}
           >
             세부공사
-            <img src={require('../../../img/ExpandArrow.png')} />
+            <img src={require('../../../img/ExpandMoreArrow.png')} />
           </Select>
           <ConstructionBox
             id="construction"
@@ -1169,7 +1169,7 @@ const Category = () => {
         <CategoryElement style={{ width: 70 }}>
           <Select onMouseOver={showField} onMouseLeave={hideField}>
             분야
-            <img src={require('../../../img/ExpandArrow.png')} />
+            <img src={require('../../../img/ExpandMoreArrow.png')} />
           </Select>
           <FieldBox id="field" onMouseOver={showField} onMouseLeave={hideField}>
             <div style={{ overflow: 'auto' }}>
@@ -1223,7 +1223,7 @@ const Category = () => {
         <CategoryElement style={{ width: 85 }}>
           <Select onMouseOver={showWorker} onMouseLeave={hideWorker}>
             작업자
-            <img src={require('../../../img/ExpandArrow.png')} />
+            <img src={require('../../../img/ExpandMoreArrow.png')} />
           </Select>
           <WorkerBox
             id="worker"
