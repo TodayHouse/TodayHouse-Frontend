@@ -1,41 +1,43 @@
-import React, { Fragment, useState, useEffect } from 'react'
-import styled from 'styled-components'
-import $ from 'jquery'
-import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
-import { EmailVerifyView, AgreeView } from './components'
-import theme from '../../theme'
-import { useSelector } from 'react-redux'
+import React, { Fragment, useState, useEffect } from "react"
+import styled from "styled-components"
+import $ from "jquery"
+import { useNavigate } from "react-router-dom"
+import axios from "axios"
+import { EmailVerifyView, AgreeView } from "./components"
+import theme from "../../theme"
+import { useSelector, useDispatch } from "react-redux"
+import { changeAgree } from "../../reducer/signup"
 
 const url = theme.apiUrl
 
 const Signup = () => {
+  const dispatch = useDispatch()
   const navigate = useNavigate()
 
   // 회원가입에 필요한 기본적인 계정 정보 관리하는 state
   const [form, setForm] = useState({
-    email: '',
-    emailSuffix: '',
-    password: '',
-    repassword: '',
-    nickname: '',
+    email: "",
+    emailSuffix: "",
+    password: "",
+    repassword: "",
+    nickname: "",
   })
 
   // 형식에 맞지 않을 때 글씨를 빨간색으로 바꿔줄 state
   const [textColor, setTextColor] = useState({
-    email: 'black',
-    password: 'black',
-    repassword: 'black',
-    nickname: 'black',
+    email: "black",
+    password: "black",
+    repassword: "black",
+    nickname: "black",
   })
 
   // 형식에 맞는지 여부를 알려주는 text를 관리하는 state
-  const [emailCheckMsg, setEmailCheckMsg] = useState('')
-  const [passwordCheckMsg, setPasswordCheckMsg] = useState('')
-  const [passwordRightMsg, setPasswordRightMsg] = useState('')
-  const [nicknameCheckMsg, setNicknameCheckMsg] = useState('')
+  const [emailCheckMsg, setEmailCheckMsg] = useState("")
+  const [passwordCheckMsg, setPasswordCheckMsg] = useState("")
+  const [passwordRightMsg, setPasswordRightMsg] = useState("")
+  const [nicknameCheckMsg, setNicknameCheckMsg] = useState("")
 
-  const [emailCheck, setEmailCheck] = useState('') // 이메일 중복 확인 완료 상태 임시 저장
+  const [emailCheck, setEmailCheck] = useState("") // 이메일 중복 확인 완료 상태 임시 저장
 
   // form값을 불러오고 바뀐 값만 form에 새로 대체해줌
   const handleChange = (e) => {
@@ -48,54 +50,55 @@ const Signup = () => {
 
   // 이메일 형식 체크 정규식
   const emailRegExp = (str) => {
-    str = str + '@' + form.emailSuffix
-    var regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i
+    str = str + "@" + form.emailSuffix
+    var regExp =
+      /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i
     return regExp.test(str) ? true : false
   }
 
   // 이메일 형식 체크 함수
   const emailCheckFunc = () => {
     if (emailRegExp(form.email) || form.email.length === 0) {
-      setEmailCheckMsg('')
-      setTextColor({ email: 'black' })
+      setEmailCheckMsg("")
+      setTextColor({ email: "black" })
     } else {
-      setEmailCheckMsg('이메일 형식이 올바르지 않습니다.')
-      setTextColor({ email: 'red' })
+      setEmailCheckMsg("이메일 형식이 올바르지 않습니다.")
+      setTextColor({ email: "red" })
     }
-    setEmailCheck('') // emailCheckFunc이 실행될 때마다(email 값이 바뀔 때마다) ''로 초기화
+    setEmailCheck("") // emailCheckFunc이 실행될 때마다(email 값이 바뀔 때마다) ''로 초기화
   }
 
   const testEmailCertification = (str) => {
-    const fullEmail = form.email + '@' + form.emailSuffix
+    const fullEmail = form.email + "@" + form.emailSuffix
     // 이메일 인증하기 버튼 눌렀을 때 인증 실패하면 메시지 띄우면 됨(이메일 형식 예외 케이스 굳이 안 짜도 됨)
     // 이메일이 가입된 이메일인지, 아니라면 이메일 형식에 맞는지 -> 맞다면 인증 코드 전송
     axios.get(url + `users/emails/${fullEmail}/exist`).then((response) => {
       if (response.data.result) {
         //중복된 이메일
-        setEmailCheckMsg('이미 가입된 이메일입니다.')
+        setEmailCheckMsg("이미 가입된 이메일입니다.")
       }
 
       //이메일 중복 아닐 경우
       else {
-        setEmailCheckMsg('')
+        setEmailCheckMsg("")
         emailCheckFunc()
-        if (emailCheckMsg === '') {
-          if (form.email === '') alert('이메일을 입력해주세요.')
+        if (emailCheckMsg === "") {
+          if (form.email === "") alert("이메일을 입력해주세요.")
           else {
             const data = { email: fullEmail }
             axios
-              .post(url + 'emails/token/send', data, {
+              .post(url + "emails/token/send", data, {
                 headers: {
-                  'Content-Type': 'application/json',
+                  "Content-Type": "application/json",
                 },
               })
               .then((response) => {
                 if (response.data.isSuccess) {
-                  alert('이메일에서 인증코드를 확인해주세요.')
+                  alert("이메일에서 인증코드를 확인해주세요.")
                 }
               })
               .catch((e) => {
-                console.log('error log : ' + e)
+                console.log("error log : " + e)
               })
           }
         }
@@ -118,13 +121,13 @@ const Signup = () => {
   // 비밀번호 형식 체크 함수
   const passwordCheckFunc = () => {
     if (passwordRegExp(form.password) || form.password.length === 0) {
-      setPasswordCheckMsg('')
-      setTextColor({ password: 'black' })
+      setPasswordCheckMsg("")
+      setTextColor({ password: "black" })
     } else {
       setPasswordCheckMsg(
-        '비밀번호는 영문, 숫자를 포함하여 8자 이상이어야 합니다.',
+        "비밀번호는 영문, 숫자를 포함하여 8자 이상이어야 합니다."
       )
-      setTextColor({ password: 'red' })
+      setTextColor({ password: "red" })
     }
   }
 
@@ -142,19 +145,19 @@ const Signup = () => {
         .then((response) => {
           if (response.data.result) {
             //닉네임 중복
-            setNicknameCheckMsg('사용 중인 닉네임입니다.')
-            setTextColor({ nickname: 'red' })
+            setNicknameCheckMsg("사용 중인 닉네임입니다.")
+            setTextColor({ nickname: "red" })
           } else {
-            setNicknameCheckMsg('')
-            setTextColor({ nickname: 'black' })
+            setNicknameCheckMsg("")
+            setTextColor({ nickname: "black" })
           }
         })
     } else if (form.nickname.length < 2) {
-      setNicknameCheckMsg('2자 이상 입력해주세요.')
-      setTextColor({ nickname: 'red' })
+      setNicknameCheckMsg("2자 이상 입력해주세요.")
+      setTextColor({ nickname: "red" })
     } else if (form.nickname.length > 15) {
-      setNicknameCheckMsg('15자 이하로 입력해주세요.')
-      setTextColor({ nickname: 'red' })
+      setNicknameCheckMsg("15자 이하로 입력해주세요.")
+      setTextColor({ nickname: "red" })
     }
     //  else {
     //   //형식에 맞을 경우
@@ -177,21 +180,21 @@ const Signup = () => {
   const agree = useSelector((state) => state.signup.agree)
 
   const signupCheckFunc = () => {
-    const fullEmail = form.email + '@' + form.emailSuffix
+    const fullEmail = form.email + "@" + form.emailSuffix
     if (
       fullEmail === emailCheck && // 임시 저장 값 == 현재 이메일 칸에 들어있는 값 이어야함
       form.email.length > 0 &&
-      emailCheckMsg === '' &&
+      emailCheckMsg === "" &&
       form.password.length > 0 &&
-      passwordCheckMsg === '' &&
-      passwordRightMsg === '' &&
+      passwordCheckMsg === "" &&
+      passwordRightMsg === "" &&
       form.password === form.repassword &&
       form.nickname.length > 0 &&
-      nicknameCheckMsg === ''
+      nicknameCheckMsg === ""
     ) {
       axios
         .post(
-          url + 'users/signup',
+          url + "users/signup",
           {
             email: fullEmail,
             password1: form.password,
@@ -204,27 +207,30 @@ const Signup = () => {
           },
           {
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
-          },
+          }
         )
         .then((response) => {
-          if (response.data.isSuccess) alert('회원가입이 완료되었습니다.')
+          if (response.data.isSuccess) {
+            alert("회원가입이 완료되었습니다.")
+            dispatch(changeAgree([false, false, false, false]))
+          }
         })
         .catch((e) => console.log(e))
-    } else alert('입력하신 정보를 다시 확인해주세요.')
+    } else alert("입력하신 정보를 다시 확인해주세요.")
   }
 
   useEffect(() => {
     // selectBar에서 직접입력을 선택했을 때, selectBar 가리고 이메일 주소 직접 입력 창 띄움
     $(function () {
-      $('#direct').hide()
-      $('#selectBar').on('change', function () {
-        if ($('#selectBar').val() === 'direct') {
-          $('#direct').show()
-          $('#selectBar').hide()
+      $("#direct").hide()
+      $("#selectBar").on("change", function () {
+        if ($("#selectBar").val() === "direct") {
+          $("#direct").show()
+          $("#selectBar").hide()
         } else {
-          $('#direct').hide()
+          $("#direct").hide()
         }
       })
     })
@@ -233,10 +239,10 @@ const Signup = () => {
   const backToSelectBar = () => {
     // 이메일 주소 직접 입력 창에서 x 버튼 눌렀을 때 수행
     $(function () {
-      $('#direct').hide()
-      $('#selectBar').show()
-      $('#selectBar').val('selected')
-      $('#directBox').val('')
+      $("#direct").hide()
+      $("#selectBar").show()
+      $("#selectBar").val("selected")
+      $("#directBox").val("")
     })
   }
 
@@ -253,11 +259,11 @@ const Signup = () => {
   useEffect(() => {
     // 비밀번호 확인 칸의 값이 바뀔 때마다 비밀번호가 일치하는지 확인
     if (pEqualR()) {
-      setPasswordRightMsg('')
-      setTextColor({ repassword: 'black' })
+      setPasswordRightMsg("")
+      setTextColor({ repassword: "black" })
     } else {
-      setPasswordRightMsg('비밀번호가 일치하지 않습니다.')
-      setTextColor({ repassword: 'red' })
+      setPasswordRightMsg("비밀번호가 일치하지 않습니다.")
+      setTextColor({ repassword: "red" })
     }
   }, [form.password, form.repassword])
 
@@ -271,7 +277,7 @@ const Signup = () => {
       <Container>
         <Header
           onClick={() => {
-            navigate('/')
+            navigate("/")
           }}
         >
           <LogoImage src="https://image.rocketpunch.com/company/2425/bucketplace_logo_1520495612.png?s=400x400&t=inside" />
@@ -310,10 +316,10 @@ const Signup = () => {
               />
               <p
                 style={{
-                  fontWeight: 'bold',
-                  margin: '0px 2px',
-                  fontSize: '20px',
-                  color: '#cccccc',
+                  fontWeight: "bold",
+                  margin: "0px 2px",
+                  fontSize: "20px",
+                  color: "#cccccc",
                 }}
               >
                 @
@@ -346,8 +352,8 @@ const Signup = () => {
                 />
                 <button
                   style={{
-                    backgroundColor: 'white',
-                    border: 'none',
+                    backgroundColor: "white",
+                    border: "none",
                     color: textColor.email,
                   }}
                   id="backToSelectBar"
@@ -360,12 +366,12 @@ const Signup = () => {
             <ErrorText>{emailCheckMsg}</ErrorText>
             <EmailButton
               onClick={() => {
-                testEmailCertification(form.email + '@' + form.emailSuffix)
+                testEmailCertification(form.email + "@" + form.emailSuffix)
               }}
             >
               <ButtonText>이메일 인증하기</ButtonText>
             </EmailButton>
-            <EmailVerifyView email={form.email + '@' + form.emailSuffix} />
+            <EmailVerifyView email={form.email + "@" + form.emailSuffix} />
           </EmailContainer>
           <PasswordContainer>
             <Label style={{ color: textColor.password }}>비밀번호</Label>
@@ -414,38 +420,38 @@ const Signup = () => {
           <AgreeView />
           <div
             style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '100%',
-              marginTop: '8px',
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "100%",
+              marginTop: "8px",
             }}
           >
             <SignupButton onClick={signupCheckFunc}>
-              <ButtonText style={{ color: 'white' }}>회원가입하기</ButtonText>
+              <ButtonText style={{ color: "white" }}>회원가입하기</ButtonText>
             </SignupButton>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div style={{ display: "flex", alignItems: "center" }}>
               <p
                 style={{
-                  color: '#333333',
-                  fontSize: '14px',
-                  fontWeight: '400',
-                  margin: '20px 0px',
+                  color: "#333333",
+                  fontSize: "14px",
+                  fontWeight: "400",
+                  margin: "20px 0px",
                 }}
               >
                 이미 아이디가 있으신가요?
               </p>
               <p
                 style={{
-                  color: '#333333',
-                  fontSize: '14px',
-                  fontWeight: 'bold',
-                  margin: '0px 8px',
-                  textDecoration: 'underline',
+                  color: "#333333",
+                  fontSize: "14px",
+                  fontWeight: "bold",
+                  margin: "0px 8px",
+                  textDecoration: "underline",
                 }}
                 onClick={() => {
-                  navigate('/login')
+                  navigate("/login")
                 }}
               >
                 로그인

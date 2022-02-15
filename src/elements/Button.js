@@ -1,9 +1,13 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react"
+import styled from "styled-components"
 
 const Button = (props) => {
-  const { children } = props
-  return <Btn {...props}>{children}</Btn>
+  const { children, onClick } = props
+  return (
+    <Btn {...props} onClick={onClick}>
+      {children}
+    </Btn>
+  )
 }
 
 const Btn = styled.button`
