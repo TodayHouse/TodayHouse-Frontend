@@ -98,6 +98,7 @@ const Signup = () => {
                 }
               })
               .catch((e) => {
+                alert("오류가 발생했습니다.")
                 console.log("error log : " + e)
               })
           }
@@ -159,22 +160,6 @@ const Signup = () => {
       setNicknameCheckMsg("15자 이하로 입력해주세요.")
       setTextColor({ nickname: "red" })
     }
-    //  else {
-    //   //형식에 맞을 경우
-    //   if (form.nickname === '이준수') {
-    //     setNicknameCheckMsg('사용 중인 닉네임입니다.')
-    //     setTextColor({ nickname: 'red' })
-    //   }
-    //   //
-    //   //
-    //   //
-    //   //
-    //   //
-    //   //
-    //   //
-    //   //
-    //   //
-    // }
   }
 
   const agree = useSelector((state) => state.signup.agree)
