@@ -12,6 +12,7 @@ import Board from "./Event/Board"
 import Search from "./SearchPW/Search"
 import Order from "./Order/Order"
 import SocialSignup from "./SocialSignup/SocialSignup"
+import Error from "./SocialSignup/Error"
 export {
   Login,
   Main,
@@ -27,4 +28,5 @@ export {
   Search,
   Order,
   SocialSignup,
+  Error,
 }
