@@ -6,8 +6,10 @@ import axios from "axios"
 import theme from "../../theme"
 import { useDispatch, useSelector } from "react-redux"
 import { changeAgree } from "../../redux/reducer/signup"
+import { useNavigate } from "react-router-dom"
 
 const SocialSignup = () => {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const url = theme.apiUrl
   const agree = useSelector((state) => state.signup.agree)
@@ -81,6 +83,7 @@ const SocialSignup = () => {
         if (response.data.isSuccess) {
           alert("회원가입이 완료되었습니다.")
           dispatch(changeAgree([false, false, false, false]))
+          navigate("/login")
         }
       })
       .catch((e) => {
