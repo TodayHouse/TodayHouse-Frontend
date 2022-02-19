@@ -194,12 +194,14 @@ const Signup = () => {
             headers: {
               "Content-Type": "application/json",
             },
+            withCredentials: true,
           }
         )
         .then((response) => {
           if (response.data.isSuccess) {
             alert("회원가입이 완료되었습니다.")
             dispatch(changeAgree([false, false, false, false]))
+            navigate("/login")
           }
         })
         .catch((e) => console.log(e))
@@ -254,7 +256,7 @@ const Signup = () => {
 
   useEffect(() => {
     // 닉네임 값이 바뀔 때마다 닉네임이 형식에 맞는지 확인
-    nicknameCheckFunc()
+    if (form.nickname.length !== 0) nicknameCheckFunc()
   }, [form.nickname])
 
   return (
@@ -279,12 +281,12 @@ const Signup = () => {
                 </a>
               </SocialLoginImage>
               <SocialLoginImage>
-                <a href="https://www.kakao.com">
+                <a href="http://localhost:8080/oauth2/authorize/kakao">
                   <SNSImage src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/KakaoTalk_logo.svg/2500px-KakaoTalk_logo.svg.png" />
                 </a>
               </SocialLoginImage>
               <SocialLoginImage>
-                <a href="https://www.naver.com">
+                <a href="http://localhost:8080/oauth2/authorize/naver">
                   <SNSImage src="https://play-lh.googleusercontent.com/jYtnK__ibJh9emODIgTyjZdbKym1iAj4RfoVhQZcfbG-DuTSHR5moHVx9CQnqg1yoco9" />
                 </a>
               </SocialLoginImage>

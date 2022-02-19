@@ -19,6 +19,7 @@ const EmailVerifyView = (props) => {
         headers: {
           "Content-Type": "application/json",
         },
+        withCredentials: true,
       })
       .then((response) => {
         if (response.data.isSuccess) {
