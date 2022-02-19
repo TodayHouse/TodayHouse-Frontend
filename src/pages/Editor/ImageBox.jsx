@@ -46,17 +46,18 @@ export default ImageBox
 
 const CoverBox = styled.div`
 background-color : white;
-   
     display: table;
     vertical-align: middle;
     border : 1px solid;
     text-align : center;
     border-color : #bdbebd;
     border-radius : 15px;
+    position :relative;
+    left : 38%;
     height : 400px;
     width :400px;
     padding-top  : 170px;
-    margin : auto;
+
 `;
 
 const BoldAlert = styled.p`
@@ -68,7 +69,7 @@ const BoldAlert = styled.p`
 
 const AlignCompCenter = styled.div`
     position:absolute;
-    padding-left :500px;
+    left :43%;
 `;
 
 

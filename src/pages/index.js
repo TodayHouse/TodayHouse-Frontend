@@ -10,7 +10,9 @@ import AdviceDetail from './Advices/AdviceDetail'
 import Edit from './Editor/Edit'
 import Board from './Event/Board'
 import Search from './SearchPW/Search'
-
+import MyPage from './MyPage/MyPage'
+import CardCollections from './MyPage/CardCollections'
+import Setting from './MyPage/Setting'
 export {
   Login,
   Main,
@@ -24,4 +26,7 @@ export {
   Edit,
   Board,
   Search,
+  MyPage,
+  CardCollections,
+  Setting
 }

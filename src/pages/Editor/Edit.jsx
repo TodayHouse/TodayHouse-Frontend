@@ -76,10 +76,13 @@ const TitleText = styled.input`
   padding-left :20px;
   border-color : #d3d3d3;
   border-radius : 4px;
-  width : 1200px;
+  margin-bottom :15px;
+  width : 1500px;
   height : 100px;
   font-size : 40px;
   font-weight : 100;
+  position : relative;
+  left : 10%;
 `
 const ConfirmButton = styled.button`
   width : 200px;
@@ -88,8 +91,8 @@ const ConfirmButton = styled.button`
   border-radius : 4px;
   background-color : white;
   position : fixed;
-  right : 100px;
-  bottom : 20px;
+  top : 5%;
+  right : 0;
 `
 const BackgroundImage = styled.div`
     border-radius : 12px;
@@ -98,15 +101,17 @@ const BackgroundImage = styled.div`
     border-color : skyblue;
     background-repeat : no-repeat;
     background-position : center center;
-   
 `
 const MarginMaker = styled.div`
   margin-top : auto;
   margin-bottom : 100px;
+  position : relative;
+  text-algin : center;
 `
 const EditorTop=styled.a` 
     display: flex;
-    margin-left: 40%;
+    position : relative;
+    left : 41%;
 `;
 
 const ModalContainer = styled.div`
@@ -114,6 +119,20 @@ const ModalContainer = styled.div`
   padding-left: 0;
   margin-left : 0%;
   margin-bottom : 50px;
+  position : relative;
+  left : 17%;
+  @media only screen and (min-width : 375px){
+    left : 0%;
+}
+@media only screen and (min-width : 768px){
+  left : 3%;
+}
+@media only screen and (min-width : 1024px){
+  left: 9%;
+}
+  @media only screen and (min-width : 1256px){
+    left: 17%;
+  }
 `
 const LogoImage = styled.img`
     width : 200px;
