@@ -17,6 +17,9 @@ import {
   Order,
   SocialSignup,
   Error,
+  MyPage,
+  CardCollections,
+  Setting,
 } from "../src/pages/index"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import "slick-carousel/slick/slick.css"
@@ -57,11 +60,21 @@ function App() {
               <Route path="/store" element={<Store />}></Route>
               <Route path="/story" element={<Story />} />
               <Route path="/product/:id" element={<Product />} />
-              <Route path="/search" element={<Search />}></Route>
               <Route path="/story/post" element={<StoryPostDetail />} />
               <Route path="/order" element={<Order />} />
               <Route path="/social-signup" element={<SocialSignup />} />
               <Route path="/error" element={<Error />} />
+              <Route path="/search" element={<Search />}></Route>
+              <Route path="/mypage" element={<MyPage />}>
+                <Route
+                  path="/mypage/profile"
+                  element={<CardCollections></CardCollections>}
+                ></Route>
+                <Route
+                  path="/mypage/setting"
+                  element={<Setting></Setting>}
+                ></Route>
+              </Route>
             </Route>
             <Route path="/editor" element={<Edit />}></Route>
             <Route path="/login" element={<Login />} />

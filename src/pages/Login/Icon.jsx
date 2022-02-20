@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const Icon = ({color, children}) => {
     return (
-        <StyledIcon background = {color}>{children}</StyledIcon>
+        <StyledIcon background-image = {color}>{children}</StyledIcon>
     )
 }
 
@@ -15,7 +15,7 @@ const StyledIcon = styled.div`
     border-radius : 4rem;
     color : white;
     cursor : pointer;
-    background : ${(props) => props.background};
+    background-image : ${(props) => props.background};
     svg {
         width : 1.5rem;
         height : 1.5rem;

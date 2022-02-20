@@ -13,6 +13,9 @@ import Search from "./SearchPW/Search"
 import Order from "./Order/Order"
 import SocialSignup from "./SocialSignup/SocialSignup"
 import Error from "./SocialSignup/Error"
+import MyPage from "./MyPage/MyPage"
+import CardCollections from "./MyPage/CardCollections"
+import Setting from "./MyPage/Setting"
 export {
   Login,
   Main,
@@ -29,4 +32,7 @@ export {
   Order,
   SocialSignup,
   Error,
+  MyPage,
+  CardCollections,
+  Setting,
 }
