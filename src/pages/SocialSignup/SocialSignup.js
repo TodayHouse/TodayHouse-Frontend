@@ -37,28 +37,6 @@ const SocialSignup = () => {
     return regExp.test(str) ? true : false
   }
 
-  const checkNickname = (nick) => {
-    if (nicknameRegExp(nick) || nick.length === 0) {
-      axios.get(url + `users/nicknames/${nick}/exist`).then((response) => {
-        console.log(response)
-        if (response.data.result) {
-          //닉네임 중복
-          setNickMsg("사용 중인 닉네임입니다.")
-          setNickColor("red")
-        } else {
-          setNickMsg("")
-          setNickColor("#cccccc")
-        }
-      })
-    } else if (nick.length < 2) {
-      setNickMsg("2자 이상 입력해주세요.")
-      setNickColor("red")
-    } else if (nick.length > 15) {
-      setNickMsg("15자 이하로 입력해주세요.")
-      setNickColor("red")
-    }
-  }
-
   const onSubmit = () => {
     axios
       .put(
@@ -93,10 +71,32 @@ const SocialSignup = () => {
   }
 
   useEffect(() => {
-    checkNickname(form.nickname)
+    //닉네임 체크
+    if (nicknameRegExp(form.nickname) || form.nickname.length === 0) {
+      axios
+        .get(url + `users/nicknames/${form.nickname}/exist`)
+        .then((response) => {
+          console.log(response)
+          if (response.data.result) {
+            //닉네임 중복
+            setNickMsg("사용 중인 닉네임입니다.")
+            setNickColor("red")
+          } else {
+            setNickMsg("")
+            setNickColor("#cccccc")
+          }
+        })
+    } else if (form.nickname.length < 2) {
+      setNickMsg("2자 이상 입력해주세요.")
+      setNickColor("red")
+    } else if (form.nickname.length > 15) {
+      setNickMsg("15자 이하로 입력해주세요.")
+      setNickColor("red")
+    }
   }, [form.nickname])
 
   useEffect(() => {
+    //렌더링 시 해당 이메일 불러오기
     console.log("dd")
     axios
       .get(url + "oauth2/email", { withCredentials: true })

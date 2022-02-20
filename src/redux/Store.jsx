@@ -1,4 +1,4 @@
-import {configureStore,createSlice,combineReducers} from '@reduxjs/toolkit'
+import {configureStore,combineReducers} from '@reduxjs/toolkit'
 import {product,navBar,signup} from './reducer'
 
 const rootReducer = combineReducers({navbar: navBar.reducer, product:product.reducer, signup:signup.reducer})
