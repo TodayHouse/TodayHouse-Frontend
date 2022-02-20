@@ -1,4 +1,4 @@
-import React, { Fragment } from "react"
+import React from "react"
 import styled from "styled-components"
 import { Category, StoryPost } from "../components/index"
 import d from "../../../img/house1.jpg"
@@ -49,7 +49,7 @@ const Story = () => {
   ]
 
   return (
-    <Fragment>
+    <Container>
       <Category />
       <CardContainer>
         <TotalNum>전체 5,882</TotalNum>
@@ -68,9 +68,14 @@ const Story = () => {
           })}
         </CardItem>
       </CardContainer>
-    </Fragment>
+    </Container>
   )
 }
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+`
 const CardContainer = styled.div`
   position: absolute;
   z-index: 1;

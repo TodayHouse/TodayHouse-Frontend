@@ -1,195 +1,136 @@
-import React, { useState, useEffect, Fragment } from "react"
+import React, { useState, useEffect } from "react"
 import styled from "styled-components"
 import $ from "jquery"
 import SelectedCategoryElement from "../elements/SelectedCategoryElement"
-import { Palette } from "../components/index"
+import { Palette, CategoryElement, DetailBox } from "."
+import { useDispatch, useSelector } from "react-redux"
+import { changeCategoryList } from "../../../redux/reducer/story"
 
 const Category = () => {
+  const dispatch = useDispatch()
   const [flatText, setFlatText] = useState("모든 평수")
   const [allColorIsChecked, setAllColorIsChecked] = useState(false)
   const [wallColorIsChecked, setwallColorIsChecked] = useState(false)
-  const [selectedCategoryList, setSelectedCategoryList] = useState({
-    sort: "",
-    livingType: "",
-    flatArea: "",
-    budget: "",
-    family: "",
-    style: "",
-    allColor: "",
-    wallColor: "",
-    floorColor: "",
-    construction: "",
-    field: "",
-    worker: "",
-  })
+  const selectedCategoryList = useSelector(
+    (state) => state.story.selectedCategoryList
+  )
 
+  //리덕스에서 받아온 객체를 배열로 변환
   const categoryList = Object.entries(selectedCategoryList)
+
+  const flatList = [
+    "1-9평",
+    "10평대",
+    "20평대",
+    "30평대",
+    "40평대",
+    "50평대",
+    "60평대",
+    "70평 이상",
+  ]
+
+  const priceList = [
+    "1백만원 미만",
+    "1백만원대",
+    "2백만원대",
+    "3백만원대",
+    "4백만원대",
+    "5백만원대",
+    "1천만원대",
+    "2천만원대",
+    "3천만원대",
+    "4천만원 이상",
+  ]
+
+  const workerList = [
+    ["셀프·DIY", "인테리어 전과정을 직접 하는 것"],
+    [
+      "반셀프",
+      "디자인, 공정순서 등 시공계획은 본인이 직접 하고, 실제 공사는 각 분야 전문가를 찾아 맡기는 것",
+    ],
+    ["전문가", "인테리어 업체/전문가가 리모델링 계획부터 공사까지 총괄하는 것"],
+  ]
+
+  //선택된 필터의 id 목록
+  const selectedList = [
+    "selectedSort",
+    "selectedLivingType",
+    "selectedFlatArea",
+    "selectedBudget",
+    "selectedFamily",
+    "selectedStyle",
+    "selectedAllColor",
+    "selectedWallColor",
+    "selectedFloorColor",
+    "selectedConstruction",
+    "selectedField",
+    "selectedWorker",
+  ]
 
   const setFlatValue = (data) => {
     if (1 <= data && data < 10) {
       setFlatText("1-9평")
-      setSelectedCategoryList({
-        ...selectedCategoryList,
-        flatArea: "1-9평",
-      })
+      dispatch(changeCategoryList({ name: "flatArea", data: "1-9평" }))
       $("#selectedFlatArea").show()
     }
     if (10 <= data && data < 20) {
       setFlatText("10평대")
-      setSelectedCategoryList({
-        ...selectedCategoryList,
-        flatArea: "10평대",
-      })
+      dispatch(changeCategoryList({ name: "flatArea", data: "10평대" }))
       $("#selectedFlatArea").show()
     }
     if (20 <= data && data < 30) {
       setFlatText("20평대")
-      setSelectedCategoryList({
-        ...selectedCategoryList,
-        flatArea: "20평대",
-      })
+      dispatch(changeCategoryList({ name: "flatArea", data: "20평대" }))
       $("#selectedFlatArea").show()
     }
     if (30 <= data && data < 40) {
       setFlatText("30평대")
-      setSelectedCategoryList({
-        ...selectedCategoryList,
-        flatArea: "30평대",
-      })
+      dispatch(changeCategoryList({ name: "flatArea", data: "30평대" }))
       $("#selectedFlatArea").show()
     }
     if (40 <= data && data < 50) {
       setFlatText("40평대")
-      setSelectedCategoryList({
-        ...selectedCategoryList,
-        flatArea: "40평대",
-      })
+      dispatch(changeCategoryList({ name: "flatArea", data: "40평대" }))
       $("#selectedFlatArea").show()
     }
     if (50 <= data && data < 60) {
       setFlatText("50평대")
-      setSelectedCategoryList({
-        ...selectedCategoryList,
-        flatArea: "50평대",
-      })
+      dispatch(changeCategoryList({ name: "flatArea", data: "50평대" }))
       $("#selectedFlatArea").show()
     }
     if (60 <= data && data < 70) {
       setFlatText("60평대")
-      setSelectedCategoryList({
-        ...selectedCategoryList,
-        flatArea: "60평대",
-      })
+      dispatch(changeCategoryList({ name: "flatArea", data: "60평대" }))
       $("#selectedFlatArea").show()
     }
     if (70 <= data && data < 80) {
       setFlatText("70평 이상")
-      setSelectedCategoryList({
-        ...selectedCategoryList,
-        flatArea: "70평대 이상",
-      })
+      dispatch(changeCategoryList({ name: "flatArea", data: "70평 이상" }))
       $("#selectedFlatArea").show()
     }
   }
 
   const categoryListAllhide = () => {
     // 초기화 버튼 누를 때 실행
-    $("#selectedSort").hide()
-    $("#selectedLivingType").hide()
-    $("#selectedFlatArea").hide()
-    $("#selectedBudget").hide()
-    $("#selectedFamily").hide()
-    $("#selectedStyle").hide()
-    $("#selectedAllColor").hide()
-    $("#selectedWallColor").hide()
-    $("#selectedFloorColor").hide()
-    $("#selectedConstruction").hide()
-    $("#selectedField").hide()
-    $("#selectedWorker").hide()
-    $("#reset").hide()
-    setSelectedCategoryList({
-      sort: "",
-      livingType: "",
-      flatArea: "",
-      budget: "",
-      family: "",
-      style: "",
-      allColor: "",
-      wallColor: "",
-      floorColor: "",
-      construction: "",
-      field: "",
-      worker: "",
+    selectedList.forEach((data) => {
+      $(`#${data}`).hide()
     })
+    $("#reset").hide()
+    //selectedList 초기화
   }
 
   // 카테고리 상세항목 보이기/숨기기
-  const showSort = () => {
-    $("#sort").show()
+  const showOption = (id) => {
+    $(`#${id}`).show()
   }
-  const hideSort = () => {
-    $("#sort").hide()
+  const hideOption = (id) => {
+    $(`#${id}`).hide()
   }
-  const showLivingType = () => {
-    $("#livingtype").show()
-  }
-  const hideLivingType = () => {
-    $("#livingtype").hide()
-  }
-  const showFlatArea = () => {
-    $("#flatarea").show()
-  }
-  const hideFlatArea = () => {
-    $("#flatarea").hide()
-  }
-  const showBudget = () => {
-    $("#budget").show()
-  }
-  const hideBudget = () => {
-    $("#budget").hide()
-  }
-  const showFamily = () => {
-    $("#family").show()
-  }
-  const hideFamily = () => {
-    $("#family").hide()
-  }
-  const showStyle = () => {
-    $("#style").show()
-  }
-  const hideStyle = () => {
-    $("#style").hide()
-  }
-  const showColor = () => {
-    $("#color").show()
-  }
-  const hideColor = () => {
-    $("#color").hide()
-  }
-  const showConstruction = () => {
-    $("#construction").show()
-  }
-  const hideConstruction = () => {
-    $("#construction").hide()
-  }
-  const showField = () => {
-    $("#field").show()
-  }
-  const hideField = () => {
-    $("#field").hide()
-  }
-  const showWorker = () => {
-    $("#worker").show()
-  }
-  const hideWorker = () => {
-    $("#worker").hide()
-  }
-  // 카테고리 상세항목 보이기/숨기기
 
   useEffect(() => {
     $("#sort").hide()
-    $("#livingtype").hide()
-    $("#flatarea").hide()
+    $("#livingType").hide()
+    $("#flatArea").hide()
     $("#budget").hide()
     $("#family").hide()
     $("#style").hide()
@@ -200,25 +141,12 @@ const Category = () => {
     $("#all").hide()
     $("#wall").hide()
     $("#floor").hide()
-    $("#selectedSort").hide()
-    $("#selectedLivingType").hide()
-    $("#selectedFlatArea").hide()
-    $("#selectedBudget").hide()
-    $("#selectedFamily").hide()
-    $("#selectedStyle").hide()
-    $("#selectedAllColor").hide()
-    $("#selectedWallColor").hide()
-    $("#selectedFloorColor").hide()
-    $("#selectedConstruction").hide()
-    $("#selectedField").hide()
-    $("#selectedWorker").hide()
     $("#reset").hide()
+    categoryListAllhide()
   }, [])
 
   useEffect(() => {
     // 컬러 내의 전체톤 체크값이 변경될 때마다 실행됨
-    console.log("전체 : " + allColorIsChecked)
-
     if (allColorIsChecked) {
       // 전체톤 체크가 되어있으면
       $("#all").show() // 전체톤 색 목록을 보여줌
@@ -230,8 +158,6 @@ const Category = () => {
 
   useEffect(() => {
     // 컬러 내의 벽/바닥 컬러 체크값이 변경될 때마다 실행됨
-    console.log("벽 : " + wallColorIsChecked)
-
     if (wallColorIsChecked) {
       // 벽/바닥 체크가 되어있으면
       $("#wall").show() // 벽/바닥 색 목록을 보여줌
@@ -256,171 +182,75 @@ const Category = () => {
   }, [selectedCategoryList])
 
   return (
-    <Fragment>
+    <Container>
       <CategoryContainer>
-        <CategoryElement style={{ width: 70 }}>
-          <Select onMouseOver={showSort} onMouseLeave={hideSort}>
-            정렬
-            <img
-              alt="arrow"
-              src={require("../../../img/ExpandMoreArrow.png")}
-            />
-          </Select>
-          <SortBox id="sort" onMouseOver={showSort} onMouseLeave={hideSort}>
-            <div style={{ overflow: "auto" }}>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    sort: "최근 인기순",
-                  })
-                  $("#selectedSort").show()
-                }}
-              >
-                최근 인기순
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    sort: "최신순",
-                  })
-                  $("#selectedSort").show()
-                }}
-              >
-                최신순
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    sort: "역대 인기순",
-                  })
-                  $("#selectedSort").show()
-                }}
-              >
-                역대 인기순
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    sort: "과거순",
-                  })
-                  $("#selectedSort").show()
-                }}
-              >
-                과거순
-              </Detail>
-            </div>
-          </SortBox>
+        <CategoryElement
+          onMouseOver={() => {
+            showOption("sort")
+          }}
+          onMouseLeave={() => {
+            hideOption("sort")
+          }}
+          name="정렬"
+        >
+          <DetailBox
+            id="sort"
+            onMouseOver={() => {
+              showOption("sort")
+            }}
+            onMouseLeave={() => {
+              hideOption("sort")
+            }}
+            options={["최신순", "최근 인기순", "역대 인기순", "과거순"]}
+            selected="selectedSort"
+          />
         </CategoryElement>
-        <CategoryElement>
-          <Select onMouseOver={showLivingType} onMouseLeave={hideLivingType}>
-            주거형태
-            <img
-              alt="arrow"
-              src={require("../../../img/ExpandMoreArrow.png")}
-            />
-          </Select>
-          <LivingTypeBox
-            id="livingtype"
-            onMouseOver={showLivingType}
-            onMouseLeave={hideLivingType}
-          >
-            <div style={{ overflow: "auto" }}>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    livingType: "원룸&오피스텔",
-                  })
-                  $("#selectedLivingType").show()
-                }}
-              >
-                원룸&오피스텔
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    livingType: "아파트",
-                  })
-                  $("#selectedLivingType").show()
-                }}
-              >
-                아파트
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    livingType: "빌라&연립",
-                  })
-                  $("#selectedLivingType").show()
-                }}
-              >
-                빌라&연립
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    livingType: "단독주택",
-                  })
-                  $("#selectedLivingType").show()
-                }}
-              >
-                단독주택
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    livingType: "사무공간",
-                  })
-                  $("#selectedLivingType").show()
-                }}
-              >
-                사무공간
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    livingType: "상업공간",
-                  })
-                  $("#selectedLivingType").show()
-                }}
-              >
-                상업공간
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    livingType: "기타",
-                  })
-                  $("#selectedLivingType").show()
-                }}
-              >
-                기타
-              </Detail>
-            </div>
-          </LivingTypeBox>
+        <CategoryElement
+          onMouseOver={() => {
+            showOption("livingType")
+          }}
+          onMouseLeave={() => {
+            hideOption("livingType")
+          }}
+          name="주거형태"
+        >
+          <DetailBox
+            id="livingType"
+            onMouseOver={() => {
+              showOption("livingType")
+            }}
+            onMouseLeave={() => {
+              hideOption("livingType")
+            }}
+            options={[
+              "원룸&오피스텔",
+              "아파트",
+              "빌라&연립",
+              "단독주택",
+              "사무공간",
+              "상업공간",
+              "기타",
+            ]}
+            selected="selectedLivingType"
+          />
         </CategoryElement>
-        <CategoryElement style={{ width: 70 }}>
-          <Select onMouseOver={showFlatArea} onMouseLeave={hideFlatArea}>
-            평수
-            <img
-              alt="arrow"
-              src={require("../../../img/ExpandMoreArrow.png")}
-            />
-          </Select>
+        <CategoryElement
+          onMouseOver={() => {
+            showOption("flatArea")
+          }}
+          onMouseLeave={() => {
+            hideOption("flatArea")
+          }}
+          name="평수"
+        >
           <FlatAreaBox
-            id="flatarea"
-            onMouseOver={showFlatArea}
-            onMouseLeave={hideFlatArea}
+            id="flatArea"
+            onMouseOver={() => {
+              showOption("flatArea")
+            }}
+            onMouseLeave={() => {
+              hideOption("flatArea")
+            }}
           >
             <div style={{ overflow: "auto" }}>
               <div style={{ height: 300, padding: 16 }}>
@@ -462,130 +292,47 @@ const Category = () => {
                     </div>
                   </div>
                   <FlatContainer style={{ marginTop: 30 }}>
-                    <Flat
-                      onClick={() => {
-                        setSelectedCategoryList({
-                          ...selectedCategoryList,
-                          flatArea: "1-9평",
-                        })
-                        setFlatText("1-9평")
-                        $("#customRange1").val("9")
-                        $("#selectedFlatArea").show()
-                      }}
-                    >
-                      1-9평
-                    </Flat>
-                    <Flat
-                      onClick={() => {
-                        setSelectedCategoryList({
-                          ...selectedCategoryList,
-                          flatArea: "10평대",
-                        })
-                        setFlatText("10평대")
-                        $("#customRange1").val("19")
-                        $("#selectedFlatArea").show()
-                      }}
-                    >
-                      10평대
-                    </Flat>
-                    <Flat
-                      onClick={() => {
-                        setSelectedCategoryList({
-                          ...selectedCategoryList,
-                          flatArea: "20평대",
-                        })
-                        setFlatText("20평대")
-                        $("#customRange1").val("29")
-                        $("#selectedFlatArea").show()
-                      }}
-                    >
-                      20평대
-                    </Flat>
-                    <Flat
-                      onClick={() => {
-                        setSelectedCategoryList({
-                          ...selectedCategoryList,
-                          flatArea: "30평대",
-                        })
-                        setFlatText("30평대")
-                        $("#customRange1").val("39")
-                        $("#selectedFlatArea").show()
-                      }}
-                    >
-                      30평대
-                    </Flat>
-                  </FlatContainer>
-                  <FlatContainer>
-                    <Flat
-                      onClick={() => {
-                        setSelectedCategoryList({
-                          ...selectedCategoryList,
-                          flatArea: "40평대",
-                        })
-                        setFlatText("40평대")
-                        $("#customRange1").val("49")
-                        $("#selectedFlatArea").show()
-                      }}
-                    >
-                      40평대
-                    </Flat>
-                    <Flat
-                      onClick={() => {
-                        setSelectedCategoryList({
-                          ...selectedCategoryList,
-                          flatArea: "50평대",
-                        })
-                        setFlatText("50평대")
-                        $("#customRange1").val("59")
-                        $("#selectedFlatArea").show()
-                      }}
-                    >
-                      50평대
-                    </Flat>
-                    <Flat
-                      onClick={() => {
-                        setSelectedCategoryList({
-                          ...selectedCategoryList,
-                          flatArea: "60평대",
-                        })
-                        setFlatText("60평대")
-                        $("#customRange1").val("69")
-                        $("#selectedFlatArea").show()
-                      }}
-                    >
-                      60평대
-                    </Flat>
-                    <Flat
-                      onClick={() => {
-                        setSelectedCategoryList({
-                          ...selectedCategoryList,
-                          flatArea: "70평 이상",
-                        })
-                        setFlatText("70평 이상")
-                        $("#customRange1").val("79")
-                        $("#selectedFlatArea").show()
-                      }}
-                    >
-                      70평 이상
-                    </Flat>
+                    {flatList.map((data, idx) => (
+                      <Flat
+                        key={idx}
+                        onClick={() => {
+                          dispatch(
+                            changeCategoryList({
+                              name: "flatArea",
+                              data,
+                            })
+                          )
+                          setFlatText(data)
+                          $("#customRange1").val(idx * 10 + 9)
+                          $("#selectedFlatArea").show()
+                        }}
+                      >
+                        {data}
+                      </Flat>
+                    ))}
                   </FlatContainer>
                 </div>
               </div>
             </div>
           </FlatAreaBox>
         </CategoryElement>
-        <CategoryElement style={{ width: 70 }}>
-          <Select onMouseOver={showBudget} onMouseLeave={hideBudget}>
-            예산
-            <img
-              alt="arrow"
-              src={require("../../../img/ExpandMoreArrow.png")}
-            />
-          </Select>
+        <CategoryElement
+          onMouseOver={() => {
+            showOption("budget")
+          }}
+          onMouseLeave={() => {
+            hideOption("budget")
+          }}
+          name="예산"
+        >
           <BudgetBox
             id="budget"
-            onMouseOver={showBudget}
-            onMouseLeave={hideBudget}
+            onMouseOver={() => {
+              showOption("budget")
+            }}
+            onMouseLeave={() => {
+              hideOption("budget")
+            }}
           >
             <div style={{ overflow: "auto" }}>
               <div style={{ height: 230, padding: 16 }}>
@@ -601,120 +348,22 @@ const Category = () => {
                 >
                   <div style={{ marginTop: 8 }}>
                     <PriceContainer>
-                      <Price
-                        onClick={() => {
-                          setSelectedCategoryList({
-                            ...selectedCategoryList,
-                            budget: "1백만원 미만",
-                          })
-                          $("#selectedBudget").show()
-                        }}
-                      >
-                        1백만원 미만
-                      </Price>
-                      <Price
-                        onClick={() => {
-                          setSelectedCategoryList({
-                            ...selectedCategoryList,
-                            budget: "1백만원대",
-                          })
-                          $("#selectedBudget").show()
-                        }}
-                      >
-                        1백만원대
-                      </Price>
-                      <Price
-                        onClick={() => {
-                          setSelectedCategoryList({
-                            ...selectedCategoryList,
-                            budget: "2백만원대",
-                          })
-                          $("#selectedBudget").show()
-                        }}
-                      >
-                        2백만원대
-                      </Price>
-                      <Price
-                        onClick={() => {
-                          setSelectedCategoryList({
-                            ...selectedCategoryList,
-                            budget: "3백만원대",
-                          })
-                          $("#selectedBudget").show()
-                        }}
-                      >
-                        3백만원대
-                      </Price>
-                    </PriceContainer>
-                    <PriceContainer>
-                      <Price
-                        onClick={() => {
-                          setSelectedCategoryList({
-                            ...selectedCategoryList,
-                            budget: "4백만원대",
-                          })
-                          $("#selectedBudget").show()
-                        }}
-                      >
-                        4백만원대
-                      </Price>
-                      <Price
-                        onClick={() => {
-                          setSelectedCategoryList({
-                            ...selectedCategoryList,
-                            budget: "5백만원대",
-                          })
-                          $("#selectedBudget").show()
-                        }}
-                      >
-                        5백만원대
-                      </Price>
-                      <Price
-                        onClick={() => {
-                          setSelectedCategoryList({
-                            ...selectedCategoryList,
-                            budget: "1천만원대",
-                          })
-                          $("#selectedBudget").show()
-                        }}
-                      >
-                        1천만원대
-                      </Price>
-                      <Price
-                        onClick={() => {
-                          setSelectedCategoryList({
-                            ...selectedCategoryList,
-                            budget: "2천만원대",
-                          })
-                          $("#selectedBudget").show()
-                        }}
-                      >
-                        2천만원대
-                      </Price>
-                    </PriceContainer>
-                    <PriceContainer>
-                      <Price
-                        onClick={() => {
-                          setSelectedCategoryList({
-                            ...selectedCategoryList,
-                            budget: "3천만원대",
-                          })
-                          $("#selectedBudget").show()
-                        }}
-                      >
-                        3천만원대
-                      </Price>
-                      <Price
-                        onClick={() => {
-                          setSelectedCategoryList({
-                            ...selectedCategoryList,
-                            budget: "4천만원 이상",
-                          })
-                          $("#selectedBudget").show()
-                        }}
-                      >
-                        4천만원 이상
-                      </Price>
+                      {priceList.map((data, idx) => (
+                        <Price
+                          key={idx}
+                          onClick={() => {
+                            dispatch(
+                              changeCategoryList({
+                                name: "budget",
+                                data,
+                              })
+                            )
+                            $("#selectedBudget").show()
+                          }}
+                        >
+                          {data}
+                        </Price>
+                      ))}
                     </PriceContainer>
                   </div>
                 </div>
@@ -722,232 +371,85 @@ const Category = () => {
             </div>
           </BudgetBox>
         </CategoryElement>
-        <CategoryElement>
-          <Select onMouseOver={showFamily} onMouseLeave={hideFamily}>
-            가족형태
-            <img
-              alt="arrow"
-              src={require("../../../img/ExpandMoreArrow.png")}
-            />
-          </Select>
-          <FamilyBox
+        <CategoryElement
+          onMouseOver={() => {
+            showOption("family")
+          }}
+          onMouseLeave={() => {
+            hideOption("family")
+          }}
+          name="가족형태"
+        >
+          <DetailBox
             id="family"
-            onMouseOver={showFamily}
-            onMouseLeave={hideFamily}
+            onMouseOver={() => {
+              showOption("family")
+            }}
+            onMouseLeave={() => {
+              hideOption("family")
+            }}
+            options={[
+              "싱글라이프",
+              "신혼 부부",
+              "아기가 있는 집",
+              "취학 자녀가 있는 집",
+              "부모님과 함께 사는 집",
+              "기타",
+            ]}
+            selected="selectedFamily"
+          />
+        </CategoryElement>
+        <CategoryElement
+          onMouseOver={() => {
+            showOption("style")
+          }}
+          onMouseLeave={() => {
+            hideOption("style")
+          }}
+          name="스타일"
+        >
+          <DetailBox
+            id="style"
+            onMouseOver={() => {
+              showOption("style")
+            }}
+            onMouseLeave={() => {
+              hideOption("style")
+            }}
+            options={[
+              "모던",
+              "미니멀&심플",
+              "내추럴",
+              "북유럽",
+              "빈티지&레트로",
+              "클래식&앤틱",
+              "프렌치&프로방스",
+              "러블리&로맨틱",
+              "인더스트리얼",
+              "한국&아시아",
+              "유니크&믹스매치",
+            ]}
+            selected="selectedStyle"
+          />
+        </CategoryElement>
+        <CategoryElement
+          onMouseOver={() => {
+            showOption("color")
+          }}
+          onMouseLeave={() => {
+            hideOption("color")
+          }}
+          name="컬러"
+        >
+          <ColorBox
+            id="color"
+            onMouseOver={() => {
+              showOption("color")
+            }}
+            onMouseLeave={() => {
+              hideOption("color")
+            }}
           >
-            <div style={{ overflow: "auto" }}>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    family: "싱글라이프",
-                  })
-                  $("#selectedFamily").show()
-                }}
-              >
-                싱글라이프
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    family: "신혼 부부",
-                  })
-                  $("#selectedFamily").show()
-                }}
-              >
-                신혼 부부
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    family: "아기가 있는 집",
-                  })
-                  $("#selectedFamily").show()
-                }}
-              >
-                아기가 있는 집
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    family: "취학 자녀가 있는 집",
-                  })
-                  $("#selectedFamily").show()
-                }}
-              >
-                취학 자녀가 있는 집
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    family: "부모님과 함께 사는 집",
-                  })
-                  $("#selectedFamily").show()
-                }}
-              >
-                부모님과 함께 사는 집
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    family: "기타",
-                  })
-                  $("#selectedFamily").show()
-                }}
-              >
-                기타
-              </Detail>
-            </div>
-          </FamilyBox>
-        </CategoryElement>
-        <CategoryElement style={{ width: 85 }}>
-          <Select onMouseOver={showStyle} onMouseLeave={hideStyle}>
-            스타일
-            <img
-              alt="arrow"
-              src={require("../../../img/ExpandMoreArrow.png")}
-            />
-          </Select>
-          <StyleBox id="style" onMouseOver={showStyle} onMouseLeave={hideStyle}>
-            <div style={{ overflow: "visible auto" }}>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    style: "모던",
-                  })
-                  $("#selectedStyle").show()
-                }}
-              >
-                모던
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    style: "미니멀&심플",
-                  })
-                  $("#selectedStyle").show()
-                }}
-              >
-                미니멀&심플
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    style: "내추럴",
-                  })
-                  $("#selectedStyle").show()
-                }}
-              >
-                내추럴
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    style: "북유럽",
-                  })
-                  $("#selectedStyle").show()
-                }}
-              >
-                북유럽
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    style: "빈티지&레트로",
-                  })
-                  $("#selectedStyle").show()
-                }}
-              >
-                빈티지&레트로
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    style: "클래식&앤틱",
-                  })
-                  $("#selectedStyle").show()
-                }}
-              >
-                클래식&앤틱
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    style: "프렌치&프로방스",
-                  })
-                  $("#selectedStyle").show()
-                }}
-              >
-                프렌치&프로방스
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    style: "러블리&로맨틱",
-                  })
-                  $("#selectedStyle").show()
-                }}
-              >
-                러블리&로맨틱
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    style: "인더스트리얼",
-                  })
-                  $("#selectedStyle").show()
-                }}
-              >
-                인더스트리얼
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    style: "한국&아시아",
-                  })
-                  $("#selectedStyle").show()
-                }}
-              >
-                한국&아시아
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    style: "유니크&믹스매치",
-                  })
-                  $("#selectedStyle").show()
-                }}
-              >
-                유니크&믹스매치
-              </Detail>
-            </div>
-          </StyleBox>
-        </CategoryElement>
-        <CategoryElement style={{ width: 70 }}>
-          <Select onMouseOver={showColor} onMouseLeave={hideColor}>
-            컬러
-            <img
-              alt="arrow"
-              src={require("../../../img/ExpandMoreArrow.png")}
-            />
-          </Select>
-          <ColorBox id="color" onMouseOver={showColor} onMouseLeave={hideColor}>
             <div style={{ overflow: "auto" }}>
               <div style={{ height: 350, padding: 16 }}>
                 <CheckboxContainer>
@@ -994,479 +496,129 @@ const Category = () => {
             </div>
           </ColorBox>
         </CategoryElement>
-        <CategoryElement>
-          <Select
-            onMouseOver={showConstruction}
-            onMouseLeave={hideConstruction}
-          >
-            세부공사
-            <img
-              alt="arrow"
-              src={require("../../../img/ExpandMoreArrow.png")}
-            />
-          </Select>
-          <ConstructionBox
+        <CategoryElement
+          onMouseOver={() => {
+            showOption("construction")
+          }}
+          onMouseLeave={() => {
+            hideOption("construction")
+          }}
+          name="세부공사"
+        >
+          <DetailBox
             id="construction"
-            onMouseOver={showConstruction}
-            onMouseLeave={hideConstruction}
-          >
-            <div style={{ overflow: "visible auto" }}>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    construction: "헤링본 마루",
-                  })
-                  $("#selectedConstruction").show()
-                }}
-              >
-                헤링본 마루
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    construction: "대리석 바닥",
-                  })
-                  $("#selectedConstruction").show()
-                }}
-              >
-                대리석 바닥
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    construction: "원목마루",
-                  })
-                  $("#selectedConstruction").show()
-                }}
-              >
-                원목마루
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    construction: "포세린타일",
-                  })
-                  $("#selectedConstruction").show()
-                }}
-              >
-                포세린타일
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    construction: "폴리싱타일",
-                  })
-                  $("#selectedConstruction").show()
-                }}
-              >
-                폴리싱타일
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    construction: "주방리모델링",
-                  })
-                  $("#selectedConstruction").show()
-                }}
-              >
-                주방리모델링
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    construction: "조명시공",
-                  })
-                  $("#selectedConstruction").show()
-                }}
-              >
-                조명시공
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    construction: "폴딩도어",
-                  })
-                  $("#selectedConstruction").show()
-                }}
-              >
-                폴딩도어
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    construction: "중문",
-                  })
-                  $("#selectedConstruction").show()
-                }}
-              >
-                중문
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    construction: "가벽&파티션",
-                  })
-                  $("#selectedConstruction").show()
-                }}
-              >
-                가벽&파티션
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    construction: "슬라이딩도어",
-                  })
-                  $("#selectedConstruction").show()
-                }}
-              >
-                슬라이딩도어
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    construction: "아트월",
-                  })
-                  $("#selectedConstruction").show()
-                }}
-              >
-                아트월
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    construction: "발코니확장",
-                  })
-                  $("#selectedConstruction").show()
-                }}
-              >
-                발코니확장
-              </Detail>
-            </div>
-          </ConstructionBox>
+            onMouseOver={() => {
+              showOption("construction")
+            }}
+            onMouseLeave={() => {
+              hideOption("construction")
+            }}
+            options={[
+              "헤링본 마루",
+              "대리석 바닥",
+              "원목마루",
+              "포세린타일",
+              "폴리싱타일",
+              "주방리모델링",
+              "조명시공",
+              "폴딩도어",
+              "중문",
+              "가벽&파티션",
+              "슬라이딩도어",
+              "아트월",
+              "발코니확장",
+            ]}
+            selected="selectedConstruction"
+          />
         </CategoryElement>
-        <CategoryElement style={{ width: 70 }}>
-          <Select onMouseOver={showField} onMouseLeave={hideField}>
-            분야
-            <img
-              alt="arrow"
-              src={require("../../../img/ExpandMoreArrow.png")}
-            />
-          </Select>
-          <FieldBox id="field" onMouseOver={showField} onMouseLeave={hideField}>
-            <div style={{ overflow: "auto" }}>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    field: "리모델링",
-                  })
-                  $("#selectedField").show()
-                }}
-              >
-                리모델링
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    field: "홈스타일링",
-                  })
-                  $("#selectedField").show()
-                }}
-              >
-                홈스타일링
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    field: "부분공사",
-                  })
-                  $("#selectedField").show()
-                }}
-              >
-                부분공사
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    field: "건축",
-                  })
-                  $("#selectedField").show()
-                }}
-              >
-                건축
-              </Detail>
-            </div>
-          </FieldBox>
+        <CategoryElement
+          onMouseOver={() => {
+            showOption("field")
+          }}
+          onMouseLeave={() => {
+            hideOption("field")
+          }}
+          name="분야"
+        >
+          <DetailBox
+            id="field"
+            onMouseOver={() => {
+              showOption("field")
+            }}
+            onMouseLeave={() => {
+              hideOption("field")
+            }}
+            options={["리모델링", "홈스타일링", "부분공사", "건축"]}
+            selected="selectedField"
+          />
         </CategoryElement>
-        <CategoryElement style={{ width: 85 }}>
-          <Select onMouseOver={showWorker} onMouseLeave={hideWorker}>
-            작업자
-            <img
-              alt="arrow"
-              src={require("../../../img/ExpandMoreArrow.png")}
-            />
-          </Select>
+        <CategoryElement
+          onMouseOver={() => {
+            showOption("worker")
+          }}
+          onMouseLeave={() => {
+            hideOption("worker")
+          }}
+          name="작업자"
+        >
           <WorkerBox
             id="worker"
-            onMouseOver={showWorker}
-            onMouseLeave={hideWorker}
+            onMouseOver={() => {
+              showOption("worker")
+            }}
+            onMouseLeave={() => {
+              hideOption("worker")
+            }}
           >
             <div style={{ overflow: "auto" }}>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    worker: "셀프·DIY",
-                  })
-                  $("#selectedWorker").show()
-                }}
-                style={{
-                  width: 400,
-                  height: 80,
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                }}
-              >
-                <div>셀프·DIY</div>
-                <div style={{ fontSize: 12, color: "#777777" }}>
-                  인테리어 전과정을 직접 하는 것
-                </div>
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    worker: "반셀프",
-                  })
-                  $("#selectedWorker").show()
-                }}
-                style={{
-                  width: 400,
-                  height: 80,
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                }}
-              >
-                <div>반셀프</div>
-                <div style={{ fontSize: 12, color: "#777777" }}>
-                  디자인, 공정순서 등 시공계획은 본인이 직접하고, 실제 공사는 각
-                  분야 전문가를 찾아 맡기는 것.
-                </div>
-              </Detail>
-              <Detail
-                onClick={() => {
-                  setSelectedCategoryList({
-                    ...selectedCategoryList,
-                    worker: "전문가",
-                  })
-                  $("#selectedWorker").show()
-                }}
-                style={{
-                  width: 400,
-                  height: 80,
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                }}
-              >
-                <div>전문가</div>
-                <div style={{ fontSize: 12, color: "#777777" }}>
-                  인테리어 업체/전문가가 리모델링 계획부터 공사까지 총괄하는 것
-                </div>
-              </Detail>
+              {workerList.map((data, idx) => (
+                <Detail
+                  key={idx}
+                  onClick={() => {
+                    dispatch(
+                      changeCategoryList({ name: "worker", data: data[0] })
+                    )
+                    $("#selectedWorker").show()
+                  }}
+                >
+                  <div>{data[0]}</div>
+                  <div style={{ fontSize: 12, color: "#777777" }}>
+                    {data[1]}
+                  </div>
+                </Detail>
+              ))}
             </div>
           </WorkerBox>
         </CategoryElement>
       </CategoryContainer>
       <SelectedCategoryContainer>
-        <SelectedCategoryElement
-          id="selectedSort"
-          onClick={() => {
-            $("#selectedSort").hide()
-            setSelectedCategoryList({ ...selectedCategoryList, sort: "" })
-          }}
-        >
-          {selectedCategoryList.sort}
-        </SelectedCategoryElement>
-        <SelectedCategoryElement
-          id="selectedLivingType"
-          onClick={() => {
-            $("#selectedLivingType").hide()
-            setSelectedCategoryList({ ...selectedCategoryList, livingType: "" })
-          }}
-        >
-          {selectedCategoryList.livingType}
-        </SelectedCategoryElement>
-        <SelectedCategoryElement
-          id="selectedFlatArea"
-          onClick={() => {
-            $("#selectedFlatArea").hide()
-            setSelectedCategoryList({ ...selectedCategoryList, flatArea: "" })
-          }}
-        >
-          {selectedCategoryList.flatArea}
-        </SelectedCategoryElement>
-        <SelectedCategoryElement
-          id="selectedBudget"
-          onClick={() => {
-            $("#selectedBudget").hide()
-            setSelectedCategoryList({ ...selectedCategoryList, budget: "" })
-          }}
-        >
-          {selectedCategoryList.budget}
-        </SelectedCategoryElement>
-        <SelectedCategoryElement
-          id="selectedFamily"
-          onClick={() => {
-            $("#selectedFamily").hide()
-            setSelectedCategoryList({ ...selectedCategoryList, family: "" })
-          }}
-        >
-          {selectedCategoryList.family}
-        </SelectedCategoryElement>
-        <SelectedCategoryElement
-          id="selectedStyle"
-          onClick={() => {
-            $("#selectedStyle").hide()
-            setSelectedCategoryList({ ...selectedCategoryList, style: "" })
-          }}
-        >
-          {selectedCategoryList.style}
-        </SelectedCategoryElement>
-        <SelectedCategoryElement
-          id="selectedAllColor"
-          onClick={() => {
-            $("#selectedAllColor").hide()
-            setSelectedCategoryList({ ...selectedCategoryList, allColor: "" })
-          }}
-        >
-          <div
-            style={{
-              width: 20,
-              height: 20,
-              borderRadius: 20,
-              backgroundColor: "pink",
+        {categoryList.map((data, idx) => (
+          <SelectedCategoryElement
+            id={selectedList[idx]}
+            onClick={() => {
+              $(`#${selectedList[idx]}`).hide()
+              dispatch(changeCategoryList({ name: data[0], data: "" }))
             }}
-          ></div>
-        </SelectedCategoryElement>
-        <SelectedCategoryElement
-          id="selectedWallColor"
-          onClick={() => {
-            $("#selectedWallColor").hide()
-            setSelectedCategoryList({ ...selectedCategoryList, wallColor: "" })
-          }}
-        >
-          {selectedCategoryList.wallColor}
-        </SelectedCategoryElement>
-        <SelectedCategoryElement
-          id="selectedFloorColor"
-          onClick={() => {
-            $("#selectedFloorColor").hide()
-            setSelectedCategoryList({ ...selectedCategoryList, floorColor: "" })
-          }}
-        >
-          {selectedCategoryList.floorColor}
-        </SelectedCategoryElement>
-        <SelectedCategoryElement
-          id="selectedConstruction"
-          onClick={() => {
-            $("#selectedConstruction").hide()
-            setSelectedCategoryList({
-              ...selectedCategoryList,
-              construction: "",
-            })
-          }}
-        >
-          {selectedCategoryList.construction}
-        </SelectedCategoryElement>
-        <SelectedCategoryElement
-          id="selectedField"
-          onClick={() => {
-            $("#selectedField").hide()
-            setSelectedCategoryList({ ...selectedCategoryList, field: "" })
-          }}
-        >
-          {selectedCategoryList.field}
-        </SelectedCategoryElement>
-        <SelectedCategoryElement
-          id="selectedWorker"
-          onClick={() => {
-            $("#selectedWorker").hide()
-            setSelectedCategoryList({ ...selectedCategoryList, worker: "" })
-          }}
-        >
-          {selectedCategoryList.worker}
-        </SelectedCategoryElement>
+          >
+            {data[1]}
+          </SelectedCategoryElement>
+        ))}
         <ResetButton id="reset" onClick={categoryListAllhide}>
           초기화
         </ResetButton>
       </SelectedCategoryContainer>
-    </Fragment>
+    </Container>
   )
 }
-
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+`
 const CategoryContainer = styled.div`
   display: flex;
   position: relative;
   z-index: 2;
   padding: 12px;
-`
-const Select = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #eeeeee;
-  height: 40px;
-  border: none;
-  color: #777777;
-  font-weight: bold;
-  font-size: 16px;
-  padding: 0px 8px;
-  border-radius: 4px;
-  cursor: pointer;
-  &:hover {
-    background-color: #dddddd;
-  }
-`
-const SortBox = styled.div`
-  width: 200px;
-  height: 199px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-shadow: 5px 5px 8px #aaaaaa;
-  border-radius: 8px;
-  cursor: pointer;
-  background-color: white;
-`
-const LivingTypeBox = styled.div`
-  width: 200px;
-  height: 349px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-shadow: 5px 5px 8px #aaaaaa;
-  border-radius: 8px;
-  cursor: pointer;
-  background-color: white;
 `
 const FlatAreaBox = styled.div`
   width: 370px;
@@ -1488,28 +640,6 @@ const BudgetBox = styled.div`
   border-radius: 8px;
   background-color: white;
 `
-const FamilyBox = styled.div`
-  width: 200px;
-  height: 299px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-shadow: 5px 5px 8px #aaaaaa;
-  border-radius: 8px;
-  cursor: pointer;
-  background-color: white;
-`
-const StyleBox = styled.div`
-  width: 200px;
-  height: 400px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-shadow: 5px 5px 8px #aaaaaa;
-  border-radius: 8px;
-  cursor: pointer;
-  background-color: white;
-`
 const ColorBox = styled.div`
   width: 500px;
   height: 349px;
@@ -1520,29 +650,9 @@ const ColorBox = styled.div`
   border-radius: 8px;
   background-color: white;
 `
-const ConstructionBox = styled.div`
-  width: 200px;
-  height: 400px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-shadow: 5px 5px 8px #aaaaaa;
-  border-radius: 8px;
-  cursor: pointer;
-  background-color: white;
-`
-const FieldBox = styled.div`
-  width: 200px;
-  height: 199px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-shadow: 5px 5px 8px #aaaaaa;
-  border-radius: 8px;
-  cursor: pointer;
-  background-color: white;
-`
 const WorkerBox = styled.div`
+  position: absolute;
+  top: 40px;
   width: 400px;
   height: 240px;
   display: flex;
@@ -1553,16 +663,13 @@ const WorkerBox = styled.div`
   cursor: pointer;
   background-color: white;
 `
-const CategoryElement = styled.div`
-  display: flex;
-  width: 100px;
-  flex-direction: column;
-  overflow: visible;
-  margin: 0px 4px;
-`
+
 const Detail = styled.div`
-  width: 200px;
-  height: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 400px;
+  height: 80px;
   padding: 16px;
   color: #555555;
   &:hover {
@@ -1572,6 +679,7 @@ const Detail = styled.div`
 const PriceContainer = styled.div`
   display: flex;
   overflow: auto;
+  flex-wrap: wrap;
 `
 const Price = styled.div`
   display: flex;
@@ -1597,6 +705,7 @@ const RangeSlider = styled.input`
 const FlatContainer = styled.div`
   display: flex;
   overflow: auto;
+  flex-wrap: wrap;
 `
 const Flat = styled.div`
   display: flex;
