@@ -11,8 +11,15 @@ const StoryPost = (props) => {
         navigate("/story/post")
       }}
     >
-      <div style={{ position: "relative", width: "100%" }}>
-        <Image width="100%" height="300px" src={props.src} />
+      <div
+        style={{
+          position: "relative",
+          width: "100%",
+          overflow: "hidden",
+          borderRadius: 8,
+        }}
+      >
+        <Image src={props.src} />
         <Bookmark
           onClick={() => {
             alert("스크랩했습니다")
@@ -35,8 +42,8 @@ const StoryPost = (props) => {
       </User>
       <Footer>
         <p>
-          스크랩 {props.scrap.toLocaleString("ko-KR")} · 조회{" "}
-          {props.view.toLocaleString("ko-KR")}
+          스크랩 {props.scrap.toLocaleString()} · 조회{" "}
+          {props.view.toLocaleString()}
         </p>
       </Footer>
     </Container>
@@ -49,12 +56,16 @@ const Container = styled.div`
   align-items: center;
   width: 100%;
   height: 450px;
-  //padding: 12px;
   cursor: pointer;
   position: relative;
 `
 const Image = styled.img`
-  border-radius: 10px;
+  width: 100%;
+  height: 300px;
+  transition: all 0.2s linear;
+  &:hover {
+    transform: scale(1.1);
+  }
 `
 const Bookmark = styled.img`
   position: absolute;
