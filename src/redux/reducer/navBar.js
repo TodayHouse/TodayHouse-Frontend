@@ -9,7 +9,6 @@ const navBarReducer = createSlice({
     },
     reducers:{//state를 변경하는 reducers
         navChange:(state,action)=>{
-            console.log(action.payload)
             state.navSelect = action.payload;
         },
     }

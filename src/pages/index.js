@@ -10,6 +10,7 @@ import AdviceDetail from './Advices/AdviceDetail'
 import Edit from './Editor/Edit'
 import Board from './Event/Board'
 import Search from './SearchPW/Search'
+import Cart from './Cart/Cart'
 
 export {
   Login,
@@ -24,4 +25,5 @@ export {
   Edit,
   Board,
   Search,
+  Cart,
 }

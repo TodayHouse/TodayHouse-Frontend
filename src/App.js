@@ -13,7 +13,8 @@ import {
   Advices,
   Edit,
   Board,
-  Search
+  Search,
+  Cart,
 } from '../src/pages/index'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import "slick-carousel/slick/slick.css";
@@ -55,6 +56,7 @@ function App() {
               <Route path="/story" element={<Story />} />
               <Route path="/product/:id" element={<Product />} />
               <Route path="/search" element={<Search/>}></Route>
+              <Route path="/cart" element={<Cart/>}/>
             </Route>
             <Route path="/editor" element={<Edit />}></Route>
             <Route path="/login" element={<Login />} />

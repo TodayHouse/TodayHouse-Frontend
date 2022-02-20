@@ -38,28 +38,19 @@ const Navbar = ({isLogin}) => {
 
       <NavListBack>
         <NavItem>
-          <form class="d-flex">
-            <input
-              class="form-control me-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-            <button
-              class="btn btn-outline-success"
-              type="submit"
-              style={{ width: 80 }}
-            >
+          <Form>
+            <Input/>
+            <Search>
               검색
-            </button>
-          </form>
+            </Search>
+          </Form>
         </NavItem>
 
-        {isLogin ? ( //로그인 여부에 따른 조건부 렌더링
+        {isLogin? ( //로그인 여부에 따른 조건부 렌더링
           <NavItem>
-            <button class="btn btn-danger" onClick={buttonLogout}>
+            <Logout onClick={buttonLogout}>
               로그아웃
-            </button>
+            </Logout>
           </NavItem>
         ) : (
           <>
@@ -91,19 +82,19 @@ const NavBrand = styled.div`
   text-decoration: none;
   white-space: nowrap;
 `
-const NavListFront = styled.ul`
+const NavListFront = styled.div`
   display: flex;
   padding-left: 0;
   margin-bottom: 0;
   list-style: none;
 `
-const NavListBack = styled.ul`
+const NavListBack = styled.div`
   display: flex;
   margin-left: 0;
   margin-bottom: 0;
   list-style: none;
 `
-const NavItem = styled.li`
+const NavItem = styled.div`
   display: flex;
   text-align: -webkit-match-parent;
 `
@@ -125,4 +116,46 @@ const NavBar = styled.nav`
   background-color: #fff;
   border-bottom: 1px solid #ededed;
   margin: 0 auto;
+`
+const Search=styled.button`
+  background-color: white;
+  &:hover {
+    background-color: lightgrey;
+  }
+  border: 1px solid lightgrey;
+  border-radius: 4px;
+  width: 60px;
+  font-size: 15px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left:10px;
+`
+
+const Input = styled.input`
+  font-size: 15px;
+  font-weight: 500;
+  width: 200px;
+  margin:10px;
+  padding: 10px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+`
+const Form = styled.form`
+  display: flex;
+`
+
+const Logout=styled.button`
+  background-color: red;
+  color:white;
+  &:hover {
+    background-color: coral;
+  }
+  border: 1px solid coral;
+  border-radius: 4px;
+  width: 100px;
+  font-size: 15px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left:10px;
 `

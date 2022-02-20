@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux'
 const SubNavbar = () => {
   let now = null
   const navSelect = useSelector((state)=>state.navbar.navSelect)
-  console.log(navSelect);
 
   if (navSelect === 'community') {
     //0번탭
@@ -79,5 +78,4 @@ display: flex;
 background-color: #fff;
 border-bottom: 1px solid #ededed;
 margin:0 auto;
-}
 `
