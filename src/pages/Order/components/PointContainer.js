@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
-import { Title } from '../elements'
-import { Button } from '../../../elements'
+import React from "react"
+import styled from "styled-components"
+import { Title } from "../elements"
 
 const PointContainer = () => {
   return (

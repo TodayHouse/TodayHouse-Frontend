@@ -1,28 +1,29 @@
-import React, { useEffect } from 'react'
-import styled from 'styled-components'
-import $ from 'jquery'
+import React, { useEffect } from "react"
+import styled from "styled-components"
+import $ from "jquery"
 
 const EmailInput = (props) => {
+  const { namePrefix, nameSuffix, onChange } = props
   const backToSelectBar = () => {
     // 이메일 주소 직접 입력 창에서 x 버튼 눌렀을 때 수행
     $(function () {
-      $('#direct').hide()
-      $('#selectBar').show()
-      $('#selectBar').val('selected')
-      $('#directBox').val('')
+      $("#direct").hide()
+      $("#selectBar").show()
+      $("#selectBar").val("selected")
+      $("#directBox").val("")
     })
   }
 
   useEffect(() => {
     // selectBar에서 직접입력을 선택했을 때, selectBar 가리고 이메일 주소 직접 입력 창 띄움
     $(function () {
-      $('#direct').hide()
-      $('#selectBar').on('change', function () {
-        if ($('#selectBar').val() === 'direct') {
-          $('#direct').show()
-          $('#selectBar').hide()
+      $("#direct").hide()
+      $("#selectBar").on("change", function () {
+        if ($("#selectBar").val() === "direct") {
+          $("#direct").show()
+          $("#selectBar").hide()
         } else {
-          $('#direct').hide()
+          $("#direct").hide()
         }
       })
     })
@@ -33,21 +34,21 @@ const EmailInput = (props) => {
       <LabelContainer>
         <Label>이메일</Label>
       </LabelContainer>
-      <Input name="email" placeholder="이메일" onChange={props.handleChange} />
+      <Input name={namePrefix} placeholder="이메일" onChange={onChange} />
       <p
         style={{
-          fontWeight: 'bold',
-          margin: '0px 2px',
-          fontSize: '20px',
-          color: '#cccccc',
+          fontWeight: "bold",
+          margin: "0px 2px",
+          fontSize: "20px",
+          color: "#cccccc",
         }}
       >
         @
       </p>
       <SelectBar
         id="selectBar"
-        name="emailSuffix"
-        onChange={props.handleChange}
+        name={nameSuffix}
+        onChange={onChange}
         defaultValue="selected"
       >
         <option value="selected">선택해주세요</option>
@@ -64,14 +65,14 @@ const EmailInput = (props) => {
       <DirectBoxContainer id="direct">
         <Input
           id="directBox"
-          name="emailSuffix"
+          name={nameSuffix}
           placeholder="입력해주세요"
-          onChange={props.handleChange}
+          onChange={onChange}
         />
         <button
           style={{
-            backgroundColor: 'white',
-            border: 'none',
+            backgroundColor: "white",
+            border: "none",
           }}
           id="backToSelectBar"
           onClick={backToSelectBar}

@@ -1,13 +1,14 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react"
+import styled from "styled-components"
 
 const Input = (props) => {
+  const { label, onChange, name } = props
   return (
     <Container>
       <LabelContainer>
-        <Label>{props.label}</Label>
+        <Label>{label}</Label>
       </LabelContainer>
-      <InputBox name={props.label} onChange={props.handleChange} />
+      <InputBox name={name} onChange={onChange} />
     </Container>
   )
 }

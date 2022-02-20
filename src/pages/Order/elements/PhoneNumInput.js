@@ -1,40 +1,38 @@
-import React, { useEffect } from 'react'
-import styled from 'styled-components'
-import { Button } from '../../../elements'
-import $ from 'jquery'
-import { FaLeaf } from 'react-icons/fa'
+import React, { useEffect } from "react"
+import styled from "styled-components"
+import { Button } from "../../../elements"
+import $ from "jquery"
 
-const prefix = ['010', '011', '016', '017', '018', '019']
+const prefix = ["010", "011", "016", "017", "018", "019"]
 
 const PhoneNumInput = (props) => {
-  const label = props.label
-  const button = props.button
+  const { label, button, namePrefix, nameSuffix, onChange } = props
 
   useEffect(() => {
-    $('#buttonViewtrue').show()
-    $('#buttonViewfalse').hide()
+    $("#buttonViewtrue").show()
+    $("#buttonViewfalse").hide()
   }, [])
 
   return (
     <Container>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
+      <div style={{ display: "flex", alignItems: "center" }}>
         <LabelContainer>
           <Label>{label}</Label>
         </LabelContainer>
         <ContentContainer>
-          <SelectBox>
+          <SelectBox onChange={onChange} name={namePrefix}>
             {prefix.map((data) => (
               <option value={data}>{data}</option>
             ))}
           </SelectBox>
           <InputBox
-            name="phone"
+            name={nameSuffix}
             placeholder="입력해주세요"
-            onChange={props.handleChange}
+            onChange={onChange}
           />
         </ContentContainer>
       </div>
-      <div id={'buttonView' + button}>
+      <div id={"buttonView" + button}>
         {/* 인증번호 발송 성공하면 버튼 밑에 인증번호 입력칸 띄움 */}
         <Button width="283px" margin="10px 0px 0px 100px">
           인증번호 발송
