@@ -10,13 +10,17 @@ const Item = (props) =>{
     const handleClick = () => {
         setOpen(true);
     };
+    
     return(
         <>
         
             <Container>
                 <ShipCompany>{props.item.shipCompany} 배송</ShipCompany>
                 <Content>
-                    <CheckBox type= "checkbox"></CheckBox>
+                    <CheckBox type= "checkbox"
+                     onChange={(e) => props.handleSingleCheck(e.target.checked, props.item.id)}
+                     // checkItems에 data.id가 있으면 체크 아니면 체크 해제
+                     checked={props.checkItems.includes(props.item.id) ? true : false}></CheckBox>
                     <First>
                         <TitleBlock>
                             
@@ -27,7 +31,7 @@ const Item = (props) =>{
                                 <Title>{props.item.title}</Title>
                                 <SubText>{props.item.shipCost ? props.item.shipcost:"무료배송"}</SubText>
                             </TextBlock>
-                            <Delete onClick={()=>props.delete(props.index)}>X</Delete>
+                            <Delete onClick={()=>props.delete(props.item.id)}>X</Delete>
                         </TitleBlock>
                         {
                             props.item.options.map((option,index) =>

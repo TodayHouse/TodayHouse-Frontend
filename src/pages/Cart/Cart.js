@@ -6,23 +6,63 @@ import { OmitProps } from 'antd/lib/transfer/ListBody'
 import { deleteProduct } from '../../redux/reducer/cart'
 const Cart = () =>{
     const [items,setItems]=useState([])
-    const [selected,setSelected]=useState([])
+    const [checkItems, setCheckItems] = useState([]);
     const data= useSelector((state) => state.cart.items)
     const [totalCost,setTotalcost]=useState(0);
-    const shipCost = useSelector((state) =>state.cart.shipCost)
-    const dispatch = useDispatch();
+    const [shipCost,setShipCost]=useState(0);
 
     useEffect(()=>{
         setItems(data)
-        
     },[data]);
 
-    const useDeleteItem = (index) =>{
-        dispatch(deleteProduct(index))
-        console.log(data)
-        data = useSelector((state)=>state.cart.data)
-        
+    useEffect(()=>{
+        calTotalCost();
+        calShipCost();
+    },[checkItems])
+
+    const deleteItem = (id) =>{
+        setItems(items.filter((item)=>item.id !== id))
+        setCheckItems(checkItems.filter((el)=> el!== id))
+        calTotalCost();
+        calShipCost();
     }
+    const calTotalCost=()=>{
+        var cost =0;
+        items.map((item) =>{
+            checkItems.includes(item.id) && item.options.map((option)=>{
+                cost +=option.price *option.number;
+            })
+
+        })
+        setTotalcost(cost);
+    }
+    const calShipCost=()=>{
+        var cost =0;
+        items.map((item) =>{
+            cost += item.shipCost;
+
+        })
+        setShipCost(cost);
+    }
+    const handleCheckAll =(checked)=>{
+        if (checked) {
+            const Array = [];
+            items.forEach((item) => Array.push(item.id));
+            setCheckItems(Array);
+          }
+      
+          // 반대의 경우 전체 체크 박스 체크 삭제
+          else {
+            setCheckItems([]);
+          }
+    }
+    const handleSingleCheck = (checked, id) => {
+        if (checked) {
+          setCheckItems([...checkItems, id]);
+        } else {
+          setCheckItems(checkItems.filter((el) => el !== id));
+        }
+      };
 
     return (
         <>
@@ -30,13 +70,21 @@ const Cart = () =>{
                 <Container2>
                     <Container1>
                         <SelectLine>
-                            <CheckBlock><Check type="checkbox"/>모두선택 </CheckBlock>
+                            <CheckBlock><Check 
+                            type="checkbox" 
+                            onChange={(e)=>handleCheckAll(e.target.checked)}
+                            checked={checkItems.length === items.length ? true : false}/>모두선택 </CheckBlock>
                             <Choice/>
                         </SelectLine>
                         <CartContainer>
                         {
                             items && items.map((item,index)=>(
-                                <Item item={item} index={index} key={index} delete={useDeleteItem}/>
+                                <Item item={item} 
+                                      index={index} 
+                                      key={index} 
+                                      delete={deleteItem}
+                                      handleSingleCheck={handleSingleCheck}
+                                      checkItems={checkItems}/>
                             ))
                         }
                         </CartContainer>

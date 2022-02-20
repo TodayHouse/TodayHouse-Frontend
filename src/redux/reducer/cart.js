@@ -8,6 +8,7 @@ const cartReducer = createSlice({
         items:
             [
                 {
+                    id:1,
                     title:"[오늘의딜] 아이닉 대용량 스텐 에어프라이어 3colors",
                     img:"https://image.ohou.se/i/bucketplace-v2-development/uploads/productions/163090404341558104.jpg?w=480&h=480&c=c&webp=1",
                     options:
@@ -32,6 +33,7 @@ const cartReducer = createSlice({
     
                 },
                 {
+                    id:2,
                     title:"[오늘의딜] 아이닉 대용량 스텐 에어프라이어 3colors",
                     img:"https://image.ohou.se/i/bucketplace-v2-development/uploads/productions/163090404341558104.jpg?w=480&h=480&c=c&webp=1",
                     options:

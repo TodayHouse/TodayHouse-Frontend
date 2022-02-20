@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import {FaFacebookF, FaInstagram, FaTwitter} from 'react-icons/fa';
-
 import Button from './Button';
 import Icon from './Icon';
 import React, {useState} from 'react';
@@ -73,9 +72,6 @@ const Login = () => {
     };
 
 
-    const FaceBookBackground = "linear-gradient(to right, #0546A0 0%, #663FB6 100%)";
-    const InstagramBackground = "linear-gradient(to right, #A12AC4 0%, #ED586C 40%, #F0A853 100%)";
-    const TwitterBackground = "linear-gradient(to right, #56C1E1 0%, #35A0CE 50%)";
     return (
         <form onSubmit = {submitHandler}>
         <MainContainer>
@@ -98,15 +94,8 @@ const Login = () => {
             <LoginWith>or login with</LoginWith>
             <HorizontalRule />
             <IconsContainer>
-                <Icon color = { FaceBookBackground }>
-                    <FaFacebookF />
-                </Icon>
-                <Icon color = { InstagramBackground }>
-                    <FaInstagram />
-                </Icon>
-                <Icon color = { TwitterBackground }>
-                    <FaTwitter />
-                </Icon>
+                <StyledIcon src = {require("./img/NaverIcon.png")}/>
+                <StyledIcon src = {require("./img/KakaoIcon.png")}/>
             </IconsContainer>
             
             <ForgotPassword>비밀번호를 잊으셨나요?</ForgotPassword>
@@ -137,7 +126,16 @@ background : rgba(255, 255, 255, 0.15);
     }
 `;
 
-
+const StyledIcon = styled.img`
+    height : 3.5rem;
+    width : 3.5rem;
+    display : flex;
+    justify-content : center;
+    align-items : center;
+    border-radius : 4rem;
+    color : white;
+    cursor : pointer;
+`;
 
 const AllCover = styled.div`
     background-size : cover;/*cover : 배경 크기가 항상 요소보다 크거나 같다*/
@@ -148,7 +146,8 @@ const AllCover = styled.div`
     width : 100vw;
 `;
 const MainContainer = styled.div`
-   
+   position : absolute;
+   left : 40%;
     display: flex;
     align-items : center;
     flex-direction: column;

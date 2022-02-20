@@ -11,7 +11,9 @@ import Edit from './Editor/Edit'
 import Board from './Event/Board'
 import Search from './SearchPW/Search'
 import Cart from './Cart/Cart'
-
+import MyPage from './MyPage/MyPage'
+import CardCollections from './MyPage/CardCollections'
+import Setting from './MyPage/Setting'
 export {
   Login,
   Main,
@@ -26,4 +28,7 @@ export {
   Board,
   Search,
   Cart,
+  MyPage,
+  CardCollections,
+  Setting
 }
