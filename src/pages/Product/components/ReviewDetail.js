@@ -1,7 +1,6 @@
-import React from 'react'
-import styled from 'styled-components'
-import { Star } from '../../../components'
-import theme from '../../../theme'
+import React from "react"
+import styled from "styled-components"
+import { Star } from "../../../components"
 
 //프로필사진, 닉네임, 총 평점, 각 평점 4개, 상품옵션, 상품사진, 리뷰 내용, 도움된 사람 수 -> props로 받아야함
 const ReviewDetail = () => {
@@ -11,7 +10,7 @@ const ReviewDetail = () => {
         <ProfileImg src="https://search.pstatic.net/sunny/?src=http%3A%2F%2Fflash24.co.kr%2Fg4%2Fdata%2Fmw.cheditor%2F2103%2FxwRixFeqUpE6cUOCL2psAM85.jpg&type=a340" />
         <NicknameStar>
           <Nickname>이준수</Nickname>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div style={{ display: "flex", alignItems: "center" }}>
             <Star rating={4} size="20px" />
             <Date>2022.01.16</Date>
           </div>
@@ -19,21 +18,21 @@ const ReviewDetail = () => {
       </ProfileContainer>
       <Rating>
         <div>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div style={{ display: "flex", alignItems: "center" }}>
             <span style={{ marginRight: 3 }}>내구성</span>
             <Star rating={4} size="16px" />
           </div>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div style={{ display: "flex", alignItems: "center" }}>
             <span style={{ marginRight: 3 }}>디자인</span>
             <Star rating={4} size="16px" />
           </div>
         </div>
         <div style={{ marginLeft: 10 }}>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div style={{ display: "flex", alignItems: "center" }}>
             <span style={{ marginRight: 3 }}>가격</span>
             <Star rating={4} size="16px" />
           </div>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div style={{ display: "flex", alignItems: "center" }}>
             <span style={{ marginRight: 3 }}>배송</span>
             <Star rating={4} size="16px" />
           </div>
@@ -57,7 +56,7 @@ const ReviewDetail = () => {
       <Footer>
         <RecommendBtn>도움이 돼요</RecommendBtn>
         <NumOfRecommend>
-          <span style={{ fontWeight: 'bold' }}>5</span>명에게 도움이 되었습니다.
+          <span style={{ fontWeight: "bold" }}>5</span>명에게 도움이 되었습니다.
         </NumOfRecommend>
       </Footer>
     </Container>

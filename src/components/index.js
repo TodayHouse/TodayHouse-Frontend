@@ -1,3 +1,4 @@
 import Pagination from './Pagination'
 import Star from './Star'
-export { Pagination, Star }
+import Modal from './Modal'
+export { Pagination, Star, Modal }

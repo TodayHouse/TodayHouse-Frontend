@@ -1,6 +1,6 @@
-import React from 'react'
-import styled from 'styled-components'
-import { useNavigate } from 'react-router-dom'
+import React from "react"
+import styled from "styled-components"
+import { useNavigate } from "react-router-dom"
 
 //집들이 페이지의 그리드로 뿌려져있는 게시글 하나하나의 미리보기
 const StoryPost = (props) => {
@@ -8,23 +8,24 @@ const StoryPost = (props) => {
   return (
     <Container
       onClick={() => {
-        navigate('/story/post')
+        navigate("/story/post")
       }}
     >
-      <div style={{ position: 'relative', width: '100%' }}>
+      <div style={{ position: "relative", width: "100%" }}>
         <Image width="100%" height="300px" src={props.src} />
         <Bookmark
           onClick={() => {
-            alert('스크랩했습니다')
+            alert("스크랩했습니다")
           }}
           width="40px"
           height="40px"
-          src={require('../../../img/bookmark.png')}
+          src={require("../../../img/bookmark.png")}
         />
       </div>
       <Title>{props.title}</Title>
       <User>
         <img
+          alt="img"
           style={{ borderRadius: 20 }}
           width="20px"
           height="20px"
@@ -34,8 +35,8 @@ const StoryPost = (props) => {
       </User>
       <Footer>
         <p>
-          스크랩 {props.scrap.toLocaleString('ko-KR')} · 조회{' '}
-          {props.view.toLocaleString('ko-KR')}
+          스크랩 {props.scrap.toLocaleString("ko-KR")} · 조회{" "}
+          {props.view.toLocaleString("ko-KR")}
         </p>
       </Footer>
     </Container>

@@ -1,45 +1,45 @@
-import React, { useState, useEffect } from 'react'
-import styled from 'styled-components'
-import { SelectedOption } from '.'
-import $ from 'jquery'
-import { useDispatch, useSelector } from 'react-redux'
-import { addOption } from '../../../redux/reducer/product'
+import React, { useState, useEffect } from "react"
+import styled from "styled-components"
+import { SelectedOption } from "."
+import $ from "jquery"
+import { useDispatch, useSelector } from "react-redux"
+import { addOption } from "../../../redux/reducer/product"
 
 const mockOptions = [
   {
-    name: '베네치아 4인용 12T 포셀린 세라믹 식탁테이블 1400(직각)',
+    name: "베네치아 4인용 12T 포셀린 세라믹 식탁테이블 1400(직각)",
     price: 118000,
   },
   {
-    name: '베네치아 4인용 12T 포셀린 세라믹 식탁테이블 1400(타원)',
+    name: "베네치아 4인용 12T 포셀린 세라믹 식탁테이블 1400(타원)",
     price: 128000,
   },
   {
-    name: '베네치아 4인용 12T 포셀린 세라믹 식탁테이블 1600(직각)',
+    name: "베네치아 4인용 12T 포셀린 세라믹 식탁테이블 1600(직각)",
     price: 138000,
   },
   {
-    name: '베네치아 4인용 12T 포셀린 세라믹 식탁테이블 1600(타원)',
+    name: "베네치아 4인용 12T 포셀린 세라믹 식탁테이블 1600(타원)",
     price: 148000,
   },
   {
-    name: '베네치아 4인용 12T 포셀린 세라믹 식탁테이블 1800(직각)',
+    name: "베네치아 4인용 12T 포셀린 세라믹 식탁테이블 1800(직각)",
     price: 158000,
   },
   {
-    name: '베네치아 4인용 12T 포셀린 세라믹 식탁테이블 1800(타원)',
+    name: "베네치아 4인용 12T 포셀린 세라믹 식탁테이블 1800(타원)",
     price: 168000,
   },
   {
-    name: '베네치아 4인용 12T 포셀린 세라믹 식탁테이블 2000(직각)',
+    name: "베네치아 4인용 12T 포셀린 세라믹 식탁테이블 2000(직각)",
     price: 178000,
   },
   {
-    name: '베네치아 4인용 12T 포셀린 세라믹 식탁테이블 2000(타원)',
+    name: "베네치아 4인용 12T 포셀린 세라믹 식탁테이블 2000(타원)",
     price: 188000,
   },
   {
-    name: '베네치아 4인용 12T 포셀린 세라믹 식탁테이블 2200(직각)',
+    name: "베네치아 4인용 12T 포셀린 세라믹 식탁테이블 2200(직각)",
     price: 198000,
   },
 ]
@@ -52,21 +52,21 @@ const OptionSelectView = () => {
 
   const onOptionSelected = (e) => {
     const value = e.target.value
-    const id = $('#selectOption').val(`${value}`)[0].selectedIndex
+    const id = $("#selectOption").val(`${value}`)[0].selectedIndex
     dispatch(
       addOption({
         name: e.target.value,
         price: price[id - 1],
         id: id,
         num: 1,
-      }),
+      })
     )
   }
 
   useEffect(() => {
     let total = 0
     selectedOption &&
-      selectedOption.map((data) => {
+      selectedOption.forEach((data) => {
         total += data.price * data.num
       })
     setTotalPrice(total)
@@ -75,7 +75,7 @@ const OptionSelectView = () => {
   useEffect(() => {
     //상품 가격을 따로 배열에 저장
     let arr = []
-    mockOptions.map((data) => {
+    mockOptions.forEach((data) => {
       arr.push(data.price)
     })
     setPrice(arr)
@@ -83,15 +83,15 @@ const OptionSelectView = () => {
 
   return (
     <Container>
-      <div style={{ overflow: 'auto' }}>
+      <div style={{ overflow: "auto" }}>
         <SelectedView>
           <Selected id="selectOption" onChange={onOptionSelected}>
             <option disabled selected>
               옵션을 선택하세요.
             </option>
             {mockOptions.map((data, idx) => (
-              <option id={'option' + idx} value={data.name}>
-                {data.name + '(' + data.price.toLocaleString() + '원)'}
+              <option id={"option" + idx} value={data.name}>
+                {data.name + "(" + data.price.toLocaleString() + "원)"}
               </option>
             ))}
           </Selected>
