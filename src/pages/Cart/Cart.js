@@ -89,14 +89,16 @@ const Cart = () =>{
                         }
                         </CartContainer>
                     </Container1>
-                    <Container1>
+                    
+                    <ContainerSticky>
                         <Receipt>
                             <Price>총 상품금액<Won>{totalCost}원</Won></Price>
                             <ShipPrice>총 배송비<Won>{shipCost}원</Won></ShipPrice>
                             <Cost>결제금액<Won>{totalCost + shipCost}원</Won></Cost>
                         </Receipt>
                         <Purchase>구매하기</Purchase>
-                    </Container1>
+                    </ContainerSticky>
+                    
                 </Container2>
             
             </Container>
@@ -112,7 +114,7 @@ const Container = styled.div`
     align-items: center;
     background-color : #f4f4f4;
     width: 100vw;
-    height: 100vw;
+    height: auto;
 
 
 `
@@ -121,8 +123,16 @@ const Container1 =styled.div`
     flex-direction : column;
     align-items: center;
 `
+const ContainerSticky =styled.div`
+    display:flex;
+    flex-direction : column;
+    align-items: center;
+    position: sticky;
+    top: 0px;
+`
 const Container2 =styled.div`
     display:flex;
+    height:auto;
 `
 const SelectLine = styled.div`
     display:flex;

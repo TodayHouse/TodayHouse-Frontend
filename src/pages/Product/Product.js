@@ -1,7 +1,6 @@
-import React from 'react'
-import { useParams } from 'react-router-dom'
-import styled from 'styled-components'
-import Main from '../Main/Main'
+import React from "react"
+import { useParams } from "react-router-dom"
+import styled from "styled-components"
 import {
   ProductSimpleView,
   ProductNavigation,
@@ -12,18 +11,19 @@ import {
   Ask,
   Delivery,
   Recommend,
-} from '../Product/components'
-import $ from 'jquery'
+} from "../Product/components"
+import $ from "jquery"
 
 const Product = () => {
   // 상품 상세정보 불러오는 api 호출할 때 productId 넣어서 보내면 해당 id에 맞는 정보를 서버에서 받아옴
   const productId = useParams().id
 
-  window.addEventListener('scroll', () => {
-    const offset = document.querySelector('#container').getBoundingClientRect()
-      .top
-    if (offset === 0) $('#scrollToTop').hide()
-    else $('#scrollToTop').show()
+  window.addEventListener("scroll", () => {
+    const offset = document
+      .querySelector("#container")
+      .getBoundingClientRect().top
+    if (offset === 0) $("#scrollToTop").hide()
+    else $("#scrollToTop").show()
   })
 
   return (
@@ -48,6 +48,7 @@ const Product = () => {
         }}
       >
         <img
+          alt="top"
           width="25px"
           height="25px"
           src="https://img.icons8.com/external-dreamstale-lineal-dreamstale/32/000000/external-up-arrow-arrows-dreamstale-lineal-dreamstale.png"

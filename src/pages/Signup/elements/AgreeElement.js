@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
-import { Checkbox } from '.'
+import React from "react"
+import styled from "styled-components"
+import { Checkbox } from "."
 
 const AgreeElement = (props) => {
   return (

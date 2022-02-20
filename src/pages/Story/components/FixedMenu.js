@@ -1,24 +1,27 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react"
+import styled from "styled-components"
 
 //집들이 게시글 상세 페이지의 상품 모아보기, 위로 가기, 목차 버튼이 있는 컴포넌트
 const FixedMenu = () => {
   return (
     <Container id="fixedMenu">
-      <div style={{ display: 'flex', alignItems: 'flex-end' }}>
+      <div style={{ display: "flex", alignItems: "flex-end" }}>
         <BlueButton>상품 모아보기</BlueButton>
       </div>
       <div
         style={{
-          display: 'flex',
-          height: '100%',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-          alignItems: 'center',
+          display: "flex",
+          height: "100%",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          alignItems: "center",
         }}
       >
         <WhiteButton id="index">
-          <img src="https://img.icons8.com/ios-glyphs/30/000000/overview-pages-3--v1.png" />
+          <img
+            alt="overview"
+            src="https://img.icons8.com/ios-glyphs/30/000000/overview-pages-3--v1.png"
+          />
         </WhiteButton>
         <WhiteButton
           id="scrollToTop"
@@ -27,6 +30,7 @@ const FixedMenu = () => {
           }}
         >
           <img
+            alt="top"
             width="25px"
             height="25px"
             src="https://img.icons8.com/external-dreamstale-lineal-dreamstale/32/000000/external-up-arrow-arrows-dreamstale-lineal-dreamstale.png"

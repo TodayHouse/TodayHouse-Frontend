@@ -133,6 +133,7 @@ const OptionName=styled.div`
 const Input=styled.input`
     width:100px;
     margin:10px;
+    border-radius: 5px;
 `
 const OptionPriceBlock = styled.div`
     display:flex;

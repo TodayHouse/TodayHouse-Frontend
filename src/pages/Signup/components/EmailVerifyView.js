@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
-import axios from 'axios'
-import theme from '../../../theme'
+import React, { useState } from "react"
+import styled from "styled-components"
+import axios from "axios"
+import theme from "../../../theme"
 
 const EmailVerifyView = (props) => {
-  const [inputValue, setInputValue] = useState('')
+  const [inputValue, setInputValue] = useState("")
   const url = theme.apiUrl
 
   const onChange = (e) => {
@@ -15,18 +15,20 @@ const EmailVerifyView = (props) => {
   const onSubmit = (e) => {
     e.preventDefault()
     axios
-      .put(url + 'emails/token/verify', data, {
+      .put(url + "emails/token/verify", data, {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
+        withCredentials: true,
       })
       .then((response) => {
         if (response.data.isSuccess) {
-          alert('이메일 인증이 완료되었습니다.')
+          alert("이메일 인증이 완료되었습니다.")
         }
       })
       .catch((e) => {
-        console.log('error log : ' + e)
+        alert("인증에 실패했습니다.")
+        console.log("error log : " + e)
       })
   }
 
@@ -38,8 +40,8 @@ const EmailVerifyView = (props) => {
         <Button onClick={onSubmit}>확인</Button>
       </InputContainer>
       <p style={{ marginTop: 5 }}>
-        이메일을 받지 못하셨나요?{' '}
-        <span style={{ fontWeight: 'bold', textDecoration: 'underline' }}>
+        이메일을 받지 못하셨나요?{" "}
+        <span style={{ fontWeight: "bold", textDecoration: "underline" }}>
           이메일 재전송하기
         </span>
       </p>

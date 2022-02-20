@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
-import { AgreeElement, Checkbox } from '../elements'
-import { useDispatch } from 'react-redux'
-import { changeAgree } from '../../../redux/reducer/signup'
+import React, { useEffect, useState } from "react"
+import styled from "styled-components"
+import { AgreeElement, Checkbox } from "../elements"
+import { useDispatch } from "react-redux"
+import { changeAgree } from "../../../redux/reducer/signup"
 
 const texts = [
-  '만 14세 이상입니다.',
-  '이용약관',
-  '개인정보수집 및 이용동의',
-  '이벤트, 프로모션 알림 메일 및 SMS 수신',
+  "만 14세 이상입니다.",
+  "이용약관",
+  "개인정보수집 및 이용동의",
+  "이벤트, 프로모션 알림 메일 및 SMS 수신 (선택)",
 ]
 const AgreeView = () => {
   const dispatch = useDispatch()

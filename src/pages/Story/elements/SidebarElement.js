@@ -1,12 +1,12 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react"
+import styled from "styled-components"
 
 //사이드바의 각 버튼
 const SidebarElement = (props) => {
   return (
     <Element>
       <Icon onClick={props.onClick}>
-        <img width="25px" height="25px" src={props.src} />
+        <img alt={props.alt} width="25px" height="25px" src={props.src} />
       </Icon>
       <Num>{props.num.toLocaleString()}</Num>
     </Element>
