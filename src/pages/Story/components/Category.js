@@ -621,6 +621,8 @@ const CategoryContainer = styled.div`
   padding: 12px;
 `
 const FlatAreaBox = styled.div`
+  position: absolute;
+  top: 40px;
   width: 370px;
   height: 299px;
   display: flex;
@@ -631,6 +633,8 @@ const FlatAreaBox = styled.div`
   background-color: white;
 `
 const BudgetBox = styled.div`
+  position: absolute;
+  top: 40px;
   width: 400px;
   height: 229px;
   display: flex;
@@ -641,6 +645,8 @@ const BudgetBox = styled.div`
   background-color: white;
 `
 const ColorBox = styled.div`
+  position: absolute;
+  top: 40px;
   width: 500px;
   height: 349px;
   display: flex;
