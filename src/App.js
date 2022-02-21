@@ -52,7 +52,15 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
-        <div style={{ width: "100vw" }}>
+        <div
+          style={{
+            width: "100vw",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            backgroundColor: "skyblue",
+          }}
+        >
           <Routes>
             <Route path="/" element={<Main />}>
               <Route path="/advices" element={<Advices />}></Route>
@@ -60,7 +68,7 @@ function App() {
               <Route path="/event" element={<Board />}></Route>
               <Route path="/store" element={<Store />}></Route>
               <Route path="/story" element={<Story />} />
-              <Route path="/cart" element={<Cart/>}/>
+              <Route path="/cart" element={<Cart />} />
               <Route path="/product/:id" element={<Product />} />
               <Route path="/story/post" element={<StoryPostDetail />} />
               <Route path="/order" element={<Order />} />

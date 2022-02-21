@@ -1,16 +1,16 @@
-import React from 'react'
-import styled from 'styled-components'
-import logo from '../../img/logo.jpg'
-import { Link } from 'react-router-dom'
-import {useDispatch} from'react-redux'
-import { navChange } from '../../redux/reducer/navBar'
+import React from "react"
+import styled from "styled-components"
+import logo from "../../img/logo.jpg"
+import { Link } from "react-router-dom"
+import { useDispatch } from "react-redux"
+import { navChange } from "../../redux/reducer/navBar"
 
-const Navbar = ({isLogin}) => {
+const Navbar = ({ isLogin }) => {
   const buttonLogout = () => {
-    console.log('로그아웃')
+    console.log("로그아웃")
   }
-  const dispatch= useDispatch();
-  const changeNavSelect =(value)=>{
+  const dispatch = useDispatch()
+  const changeNavSelect = (value) => {
     dispatch(navChange(value))
   }
 
@@ -24,13 +24,13 @@ const Navbar = ({isLogin}) => {
         </NavBrand>
 
         <NavItem>
-          <Link to="community" onMouseOver={() => changeNavSelect('community')}>
+          <Link to="community" onMouseOver={() => changeNavSelect("community")}>
             <NavText>커뮤니티</NavText>
           </Link>
         </NavItem>
 
         <NavItem>
-          <Link to="store" onMouseOver={() => changeNavSelect('store')}>
+          <Link to="store" onMouseOver={() => changeNavSelect("store")}>
             <NavText>스토어</NavText>
           </Link>
         </NavItem>
@@ -39,18 +39,14 @@ const Navbar = ({isLogin}) => {
       <NavListBack>
         <NavItem>
           <Form>
-            <Input/>
-            <Search>
-              검색
-            </Search>
+            <Input />
+            <Search>검색</Search>
           </Form>
         </NavItem>
 
-        {isLogin? ( //로그인 여부에 따른 조건부 렌더링
+        {isLogin ? ( //로그인 여부에 따른 조건부 렌더링
           <NavItem>
-            <Logout onClick={buttonLogout}>
-              로그아웃
-            </Logout>
+            <Logout onClick={buttonLogout}>로그아웃</Logout>
           </NavItem>
         ) : (
           <>
@@ -111,13 +107,13 @@ const NavText = styled.div`
 `
 const NavBar = styled.nav`
   position: relative;
-  width: 1256px;
   display: flex;
-  background-color: #fff;
+  //background-color: #fff;
+  //background-color: skyblue;
   border-bottom: 1px solid #ededed;
   margin: 0 auto;
 `
-const Search=styled.button`
+const Search = styled.button`
   background-color: white;
   &:hover {
     background-color: lightgrey;
@@ -128,14 +124,14 @@ const Search=styled.button`
   font-size: 15px;
   margin-top: 20px;
   margin-bottom: 20px;
-  margin-left:10px;
+  margin-left: 10px;
 `
 
 const Input = styled.input`
   font-size: 15px;
   font-weight: 500;
   width: 200px;
-  margin:10px;
+  margin: 10px;
   padding: 10px;
   border: 1px solid #cccccc;
   border-radius: 5px;
@@ -145,9 +141,9 @@ const Form = styled.form`
   display: flex;
 `
 
-const Logout=styled.button`
+const Logout = styled.button`
   background-color: red;
-  color:white;
+  color: white;
   &:hover {
     background-color: coral;
   }
@@ -157,5 +153,5 @@ const Logout=styled.button`
   font-size: 15px;
   margin-top: 20px;
   margin-bottom: 20px;
-  margin-left:10px;
+  margin-left: 10px;
 `

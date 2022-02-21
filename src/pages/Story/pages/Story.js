@@ -74,9 +74,9 @@ const Story = () => {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
 `
 const CardContainer = styled.div`
+  width: 80%;
   position: absolute;
   z-index: 1;
   top: 300px;

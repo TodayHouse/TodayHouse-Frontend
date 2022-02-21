@@ -24,11 +24,14 @@ function mapStateToProps(state, ownProps) {
 }
 export default connect(mapStateToProps)(Main)
 const Container = styled.div`
+  width: 80%;
+  background-color: pink;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  //align-items: center;
 `
 const NavBarContainer = styled.div`
+  background-color: lightyellow;
   display: flex;
   flex-direction: column;
   height: 100%;
