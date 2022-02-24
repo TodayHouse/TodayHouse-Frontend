@@ -1,13 +1,12 @@
-import React from "react"
-import styled from "styled-components"
-import $ from "jquery"
-import { useDispatch } from "react-redux"
-import { changeCategoryList } from "../../../redux/reducer/story"
+import React from 'react';
+import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
+import { changeCategoryList } from '../../../redux/reducer/story';
 
 //필터바 상세 옵션 박스
 const DetailBox = (props) => {
-  const dispatch = useDispatch()
-  const { id, onMouseOver, onMouseLeave, options, selected } = props
+  const dispatch = useDispatch();
+  const { id, onMouseOver, onMouseLeave, options } = props;
   return (
     <Container
       num={options.length}
@@ -15,12 +14,12 @@ const DetailBox = (props) => {
       onMouseOver={onMouseOver}
       onMouseLeave={onMouseLeave}
     >
-      <div style={{ overflow: "auto" }}>
+      <div style={{ overflow: 'auto' }}>
         {options.map((data, idx) => (
           <Detail
+            key={idx}
             onClick={() => {
-              dispatch(changeCategoryList({ name: id, data }))
-              $(`#${selected}`).show()
+              dispatch(changeCategoryList({ type: id, data }));
             }}
           >
             {data}
@@ -28,8 +27,8 @@ const DetailBox = (props) => {
         ))}
       </div>
     </Container>
-  )
-}
+  );
+};
 
 const Container = styled.div`
   width: 200px;
@@ -44,7 +43,7 @@ const Container = styled.div`
   background-color: white;
   position: absolute;
   top: 40px;
-`
+`;
 const Detail = styled.div`
   width: 200px;
   height: 50px;
@@ -53,5 +52,5 @@ const Detail = styled.div`
   &:hover {
     background-color: #dbf2ff;
   }
-`
-export default DetailBox
+`;
+export default DetailBox;

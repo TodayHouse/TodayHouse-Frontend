@@ -1,14 +1,16 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from 'react';
+import styled from 'styled-components';
 
 const PaletteElement = (props) => {
-  const { border } = props
-  return <Pal {...props} style={{ backgroundColor: props.color }} />
-}
+  const { border, color, onClick } = props;
+  return (
+    <Pal onClick={onClick} {...props} style={{ backgroundColor: color }} />
+  );
+};
 
 PaletteElement.defaultProps = {
   border: false,
-}
+};
 
 const Pal = styled.div`
   width: 25px;
@@ -18,6 +20,6 @@ const Pal = styled.div`
   &:hover {
     cursor: pointer;
   }
-`
+`;
 
-export default PaletteElement
+export default PaletteElement;
