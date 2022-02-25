@@ -98,7 +98,7 @@ const Login = () => {
                 <StyledIcon src = {require("./img/KakaoIcon.png")}/>
             </IconsContainer>
             
-            <ForgotPassword>비밀번호를 잊으셨나요?</ForgotPassword>
+            <ForgotPassword><a href = "/search">비밀번호를 잊으셨나요?</a></ForgotPassword>
         </MainContainer>
         </form>
         
@@ -118,7 +118,7 @@ background : rgba(255, 255, 255, 0.15);
     color : #3c354e;
     font-size : 14px;
     font-weight : bold;
-    &: focus {
+    &:focus {
         display : inline-block;
         box-shadow : 0 0 0 0.2rem #4f4f4f;
         backdrop-filter : blur(12rem);
@@ -222,7 +222,7 @@ const ButtonContainer = styled.div`
 const LoginWith = styled.h5`
     cursor: pointer;
     font-size : 5px;
-    text-shadow: -1px 0 #fff, 0 1px #fff, 1px 0 #fff, 0 -1px #fff;"
+    text-shadow: -1px 0 #fff, 0 1px #fff, 1px 0 #fff, 0 -1px #fff;
 `;
 
 const HorizontalRule = styled.hr`
@@ -245,7 +245,7 @@ const IconsContainer = styled.div`
 
 const ForgotPassword = styled.h4`
     cursor : pointer;
-    text-shadow: -1px 0 #fff, 0 1px #fff, 1px 0 #fff, 0 -1px #fff;"
+    text-shadow: -1px 0 #fff, 0 1px #fff, 1px 0 #fff, 0 -1px #fff;
 `;
 
 const LogoImage = styled.img`

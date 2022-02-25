@@ -9,7 +9,7 @@ const CardCollections = () => {
 
     return (
         <AllCover id = "CardCover">
-            <InfoContainer>
+            <InfoContainer  id = "infobox">
                 <PrivateInfo id = "PrivateInfo">
                     <ProfileBox id = "ProfileBox">
                         <ProfileBorder>
@@ -26,12 +26,15 @@ const CardCollections = () => {
                     </ProfileBox>
                 </PrivateInfo>
             </InfoContainer>
+        <InfoBoard>
 
+        </InfoBoard>
         </AllCover>
     )
 }
 
 const AllCover = styled.div`
+    display : inline-flex;
     width : 1200px;
     padding : 0 60px;
     @media only screen and (min-width: 1256px){
@@ -50,6 +53,7 @@ const AllCover = styled.div`
 
 const InfoContainer = styled.div`
     margin : 0 -10px;
+    
     @media only screen and (min-width : 1256px){
         margin : 0 -10px;
     }
@@ -64,7 +68,7 @@ const InfoContainer = styled.div`
     }
 `
 const PrivateInfo = styled.div`
-    margin-top : 10px;
+    margin-top : 30px;
     width : 260px;
     padding : 30px 25px 18px;
     border-radius : 4px;
@@ -75,7 +79,7 @@ const PrivateInfo = styled.div`
 
 const ProfileBox = styled.div`
     position :relative;
-    margin 0 auto 24px;
+    margin : 0 auto 24px;
     height : 350px;
 `
 const ProfileBorder = styled.div`
@@ -114,5 +118,14 @@ const SettingButton = styled.button`
 const Line = styled.div`
     margin-top : 15px;
     border-bottom : 1px solid #dadce0;
+`
+
+const InfoBoard = styled.div`
+    border : 1px solid #dadce0;
+    width  : 700px;
+    height : 430px;
+    margin-top : 30px;
+    margin-left : 30px;
+    border-radius : 4px;
 `
 export default CardCollections

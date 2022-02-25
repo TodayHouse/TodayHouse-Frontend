@@ -71,7 +71,8 @@ function App() {
                 <Route
                   path="/mypage/profile"
                   element={<CardCollections></CardCollections>}
-                ></Route>
+                >
+                </Route>
                 <Route
                   path="/mypage/setting"
                   element={<Setting></Setting>}
