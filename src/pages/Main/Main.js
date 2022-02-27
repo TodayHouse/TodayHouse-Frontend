@@ -5,13 +5,33 @@ import SubNavbar from "./SubNavbar"
 import { Outlet, Route, Routes } from "react-router-dom"
 import Advices from "../Advices/Advices"
 import { connect } from "react-redux"
+import $ from "jquery"
 
 const Main = ({ selPage }) => {
+  const navOver = () =>{
+    $(`#subNavBar`).css("display","flex")
+    didScroll=false;
+  }
+  const navOut = () =>{
+    $(`#subNavBar`).css("display","none")
+  }
+  var didScroll;
+  window.onscroll = function(e) {
+    didScroll = true;
+  }
+
+  setInterval(function(){
+    if(didScroll){
+        navOut();
+        didScroll = false;
+    }
+}, 250);
+
   return (
     <Container>
-      <NavBarContainer>
+      <NavBarContainer onMouseOver={navOver}>
         <Navbar />
-        <SubNavbar />
+        <SubNavbar/>
       </NavBarContainer>
       <Outlet />
     </Container>
@@ -32,8 +52,10 @@ const Container = styled.div`
 `
 const NavBarContainer = styled.div`
   background-color: lightyellow;
+  position: sticky;
+  top:0;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   height: 100%;
-  align-items: center;
 `
