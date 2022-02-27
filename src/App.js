@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react"
-import styled, { ThemeProvider } from "styled-components"
-import theme from "./theme"
+import React, { useState, useEffect } from 'react';
+import styled, { ThemeProvider } from 'styled-components';
+import theme from './theme';
 import {
   Login,
   Main,
@@ -21,21 +21,21 @@ import {
   MyPage,
   CardCollections,
   Setting,
-} from "../src/pages/index"
-import { BrowserRouter, Routes, Route } from "react-router-dom"
-import "slick-carousel/slick/slick.css"
-import "slick-carousel/slick/slick-theme.css"
-import { Cookies } from "react-cookie"
+} from '../src/pages/index';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import { Cookies } from 'react-cookie';
 
-const cookies = new Cookies()
+const cookies = new Cookies();
 
 export const setCookie = (name, value, option) => {
-  return cookies.set(name, value, option) //이름,밸류
-}
+  return cookies.set(name, value, option); //이름,밸류
+};
 
 export const getCookie = (name) => {
-  return cookies.get(name) //쿠키 가져오기 (이름으로)
-}
+  return cookies.get(name); //쿠키 가져오기 (이름으로)
+};
 
 function App() {
   /*
@@ -54,11 +54,11 @@ function App() {
       <BrowserRouter>
         <div
           style={{
-            width: "100vw",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            backgroundColor: "skyblue",
+            width: '100vw',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            backgroundColor: 'skyblue',
           }}
         >
           <Routes>
@@ -93,7 +93,7 @@ function App() {
         </div>
       </BrowserRouter>
     </ThemeProvider>
-  )
+  );
 }
 
-export default App
+export default App;
