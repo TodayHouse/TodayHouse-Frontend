@@ -1,19 +1,19 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
-import { NavbarElement } from '../elements'
-import { Link } from 'react-scroll'
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { NavbarElement } from '../elements';
+import { Link } from 'react-scroll';
 
-const element = ['상품정보', '리뷰', '문의', '배송/환불', '추천']
-const num = ['', '59,781', '56,354', '', '']
-const linkTo = ['productInfo', 'review', 'ask', 'delivery', 'recommend']
+const element = ['상품정보', '리뷰', '문의', '배송/환불', '추천'];
+const num = ['', '59,781', '56,354', '', ''];
+const linkTo = ['productInfo', 'review', 'ask', 'delivery', 'recommend'];
 
 const ProductNavigation = () => {
-  const [selectedElem, setSelectedElem] = useState(null) //선택된 navbar element의 id
+  const [selectedElem, setSelectedElem] = useState(null); //선택된 navbar element의 id
 
   const onNavbarSelect = (idx) => {
     //선택된 navbar element의 id 저장 후 props로 하위 컴포넌트에 넘겨줌
-    setSelectedElem(idx)
-  }
+    setSelectedElem(idx);
+  };
 
   return (
     <Container>
@@ -25,7 +25,7 @@ const ProductNavigation = () => {
               id={idx}
               text={data + '  ' + num[idx]}
               onClick={() => {
-                onNavbarSelect(idx)
+                onNavbarSelect(idx);
               }}
               selectedElem={selectedElem}
             />
@@ -33,8 +33,8 @@ const ProductNavigation = () => {
         ))}
       </Nav>
     </Container>
-  )
-}
+  );
+};
 const Container = styled.nav`
   margin-top: 50px;
   display: flex;
@@ -44,9 +44,9 @@ const Container = styled.nav`
   border: 1px solid #dddddd;
   width: 100%;
   position: sticky;
-  top: 0px;
+  top: 70px;
   z-index: 1;
-`
+`;
 const Nav = styled.ol`
   display: flex;
   align-items: center;
@@ -56,5 +56,5 @@ const Nav = styled.ol`
   font-weight: bold;
   margin: 0px;
   padding: 0px;
-`
-export default ProductNavigation
+`;
+export default ProductNavigation;
