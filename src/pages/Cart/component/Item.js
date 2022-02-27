@@ -66,9 +66,10 @@ const Container = styled.div`
     flex-direction: column;
     border-radius: 7px;
     background-color: white;
-    align-items:center;
-    width:550px;
+    align-items: center;
+    width:50vw;
     margin-bottom: 20px;
+    padding-right: 30px;
 
 `
 const ShipCompany = styled.div`
@@ -80,7 +81,6 @@ const ShipCompany = styled.div`
 const TitleBlock = styled.div`
     display:flex;
     margin:10px;
-    width:450px;
     
 `
 const Frame = styled.div` 
@@ -122,7 +122,7 @@ const OptionBlock=styled.div`
     display:flex;
     flex-direction: column;
     margin:10px;
-    width:450px;
+    width:90%;
     border-radius: 8px;
 `
 const OptionName=styled.div`
@@ -131,7 +131,7 @@ const OptionName=styled.div`
     
 `
 const Input=styled.input`
-    width:100px;
+    width:20%;
     margin:10px;
     border-radius: 5px;
 `
@@ -140,11 +140,12 @@ const OptionPriceBlock = styled.div`
     
 `
 const Price = styled.div`
-    margin: 10px;
+    margin: 20px;
     font-size: large;
 `
 const Number= styled.div`
-    margin:10px 200px 10px 10px;
+    margin:20px;
+    margin-right: auto;
 `
 const ShipCost=styled.div`
     font-weight:bold;
@@ -152,30 +153,33 @@ const ShipCost=styled.div`
     padding:10px;
 `
 const CheckBox=styled.input`
-    width: 20px;
+    width: 10%;
     height: 20px;
     margin-left: 20px;
     margin-top: 10px;
     cursor: pointer;
 `
 const Content = styled.div`
-    display :flex;
+    width:100%;
+    display: flex;
 `
 const First =styled.div`
+    width:90%;
 `
 const Delete=styled.button`
 background-color: white;
   color: black;
   &:hover {
-    background-color: grey;
+    background-color: black;
+    color:white;
   }
   height:20px;
   width:20px;
-  
-  border: 1px solid;
   border-radius: 4px;
+  border: 0;
   font-size: 10px;
-  margin-left: 5px;
+  font-weight: bolder;
+  margin-left: auto;
 `
 const OptionNav = styled.div`
     display:flex;

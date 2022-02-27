@@ -65,6 +65,9 @@ const NavText = styled.div`
   font-weight: 700;
   color: #424242;
   cursor: pointer;
+  &:hover{
+    color:${(props) => props.theme.mainColor}
+  }
 `
 const NavList = styled.ul`
   display: flex;
@@ -73,9 +76,7 @@ const NavList = styled.ul`
   list-style: none;
 `
 const NavBar = styled.nav`
-width : 1256px;
-display: flex;
-background-color: #fff;
+display: none;
 border-bottom: 1px solid #ededed;
 margin:0 auto;
 `
