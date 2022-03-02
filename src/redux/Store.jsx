@@ -1,7 +1,7 @@
 import {configureStore, combineReducers} from '@reduxjs/toolkit'
-import {product,navBar,signup, mpageBar,cart} from './reducer'
+import {product,navBar,signup, mpageBar,cart, login} from './reducer'
 
-const rootReducer = combineReducers({navbar: navBar.reducer, product:product.reducer, signup:signup.reducer, mpagebar : mpageBar.reducer, cart:cart.reducer})
+const rootReducer = combineReducers({navbar: navBar.reducer, product:product.reducer, signup:signup.reducer, mpagebar : mpageBar.reducer, cart:cart.reducer, login : login.reducer})
 const store = configureStore({reducer: rootReducer}) //redux toolkit 사용가능
 
 

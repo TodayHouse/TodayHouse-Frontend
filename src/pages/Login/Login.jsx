@@ -4,17 +4,18 @@ import Button from './Button';
 import Icon from './Icon';
 import React, {useState} from 'react';
 import {useCookies} from "react-cookie";
-
+import { useSelector, useDispatch } from 'react-redux';
+import { cookieSet } from '../../redux/reducer/login';
 import axios from "axios";
 axios.defaults.withCredentails = true;
 const headers = {withCredentails : true};
 
 const Login = () => {
-   const [cookies, setCookie, removeCookie] = useCookies(['cookie-name'])
-
-   
+   const [cookie, setCookie, removeCookie] = useCookies(['cookie-name'])
     const [user, setUser] = useState({uid : "", password : ""});
     const [error, setError] = useState("");
+    
+    const dispatch = useDispatch();
 
     const submitHandler = e => {
         e.preventDefault();
@@ -49,10 +50,15 @@ const Login = () => {
             }
             const accessToken = response.data.result.accessToken;
             axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
-            console.log(accessToken);
+            
             if(accessToken){
                 setCookie('login_id', accessToken, { path : "/"});
+                dispatch(cookieSet(accessToken));
+               
+                console.log("토큰 : " + accessToken);
                 alert("login success");
+                let mainUrl = "/";
+                window.location.replace(mainUrl);
             }
             else{
                 alert("login failed");
@@ -65,12 +71,6 @@ const Login = () => {
         })
     };
     //임시 저장 아이디 및 패스워드
-    const testUser = {
-        headers,
-        id : "sortinghyeok",
-        password : "sorting123"
-    };
-
 
     return (
         <form onSubmit = {submitHandler}>
@@ -163,7 +163,7 @@ const MainContainer = styled.div`
         width : 40vw;
         height : 70vh;
         hr{
-            margi-bottom : 0.3rem;
+            margin-bottom : 0.3rem;
         }
         h4 {
             font-size : small;
