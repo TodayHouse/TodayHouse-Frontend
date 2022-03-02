@@ -4,17 +4,18 @@ import Button from './Button';
 import Icon from './Icon';
 import React, {useState} from 'react';
 import {useCookies} from "react-cookie";
-
+import { useSelector, useDispatch } from 'react-redux';
+import { cookieSet } from '../../redux/reducer/login';
 import axios from "axios";
 axios.defaults.withCredentails = true;
 const headers = {withCredentails : true};
 
 const Login = () => {
-   const [cookies, setCookie, removeCookie] = useCookies(['cookie-name'])
-
-   
+   const [cookie, setCookie, removeCookie] = useCookies(['cookie-name'])
     const [user, setUser] = useState({uid : "", password : ""});
     const [error, setError] = useState("");
+    
+    const dispatch = useDispatch();
 
     const submitHandler = e => {
         e.preventDefault();
@@ -49,10 +50,15 @@ const Login = () => {
             }
             const accessToken = response.data.result.accessToken;
             axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
-            console.log(accessToken);
+            
             if(accessToken){
                 setCookie('login_id', accessToken, { path : "/"});
+                dispatch(cookieSet(accessToken));
+               
+                console.log("토큰 : " + accessToken);
                 alert("login success");
+                let mainUrl = "/";
+                window.location.replace(mainUrl);
             }
             else{
                 alert("login failed");
@@ -65,12 +71,6 @@ const Login = () => {
         })
     };
     //임시 저장 아이디 및 패스워드
-    const testUser = {
-        headers,
-        id : "sortinghyeok",
-        password : "sorting123"
-    };
-
 
     return (
         <form onSubmit = {submitHandler}>
@@ -98,7 +98,7 @@ const Login = () => {
                 <StyledIcon src = {require("./img/KakaoIcon.png")}/>
             </IconsContainer>
             
-            <ForgotPassword>비밀번호를 잊으셨나요?</ForgotPassword>
+            <ForgotPassword><a href = "/search">비밀번호를 잊으셨나요?</a></ForgotPassword>
         </MainContainer>
         </form>
         
@@ -118,7 +118,7 @@ background : rgba(255, 255, 255, 0.15);
     color : #3c354e;
     font-size : 14px;
     font-weight : bold;
-    &: focus {
+    &:focus {
         display : inline-block;
         box-shadow : 0 0 0 0.2rem #4f4f4f;
         backdrop-filter : blur(12rem);
@@ -163,7 +163,7 @@ const MainContainer = styled.div`
         width : 40vw;
         height : 70vh;
         hr{
-            margi-bottom : 0.3rem;
+            margin-bottom : 0.3rem;
         }
         h4 {
             font-size : small;
@@ -222,7 +222,7 @@ const ButtonContainer = styled.div`
 const LoginWith = styled.h5`
     cursor: pointer;
     font-size : 5px;
-    text-shadow: -1px 0 #fff, 0 1px #fff, 1px 0 #fff, 0 -1px #fff;"
+    text-shadow: -1px 0 #fff, 0 1px #fff, 1px 0 #fff, 0 -1px #fff;
 `;
 
 const HorizontalRule = styled.hr`
@@ -245,7 +245,7 @@ const IconsContainer = styled.div`
 
 const ForgotPassword = styled.h4`
     cursor : pointer;
-    text-shadow: -1px 0 #fff, 0 1px #fff, 1px 0 #fff, 0 -1px #fff;"
+    text-shadow: -1px 0 #fff, 0 1px #fff, 1px 0 #fff, 0 -1px #fff;
 `;
 
 const LogoImage = styled.img`

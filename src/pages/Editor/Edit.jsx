@@ -1,6 +1,6 @@
 import TextEditor from "./TextEditor";
 import ImageBox from "./ImageBox";
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import ModalBox1 from "./ModalBox1";
 import ModalBox2 from "./ModalBox2";
 import ReactModal from 'react-modal';
@@ -8,11 +8,34 @@ import { ReactDOM } from 'react-dom';
 import styled from 'styled-components';
 import icon1 from "./img/view.png";
 import backImage from "./img/o_back.jpeg";
+import axios from "axios";
+import {Link} from 'react-router-dom';
+import { useSelector } from "react-redux";
 
 const Edit = () => {
-  const [Images, setImage] = useState([icon1])
+  const [cookie, setCookie] = useState("");
+  const [titleText, setTitle] = useState("");
+  const [contentText, setContent] = useState("");
+  const [Images, setImage] = useState([icon1]);
   const [isOpen1, setOpen1] = useState(false);
   const [isOpen2, setOpen2] = useState(false);
+  const cookieState= useSelector((state) => state.login.cookieState);
+ 
+  useEffect(() => {
+    console.log("쿠키 로딩");
+    setCookie(cookieState);
+    console.log(cookieState);
+  }, [cookieState]);
+  
+  const handleTitle = (e) => {
+    setTitle(e.target.value);
+    console.log(e.target.value);
+  };
+  const handleContent = (e) =>{
+    setContent(e.target.value);
+    console.log(e.target.value);
+  };
+
   const handleClick1 = () => {
     setOpen1(true);
   };
@@ -25,9 +48,40 @@ const Edit = () => {
   const handleSubmit2 = () => {
     setOpen2(false);
   };
+  const param = {
+    category : "KNOWHOW",
+    content : contentText,
+    title : titleText,
+  }
+  const upload = () => {
+    const formData = new FormData();
+    const file = document.getElementById("file");
+    console.log("쿠키 상태" + cookieState);
+    formData.append("file", file.files[0]);
+    console.log(file.files[0]);
+    axios.post("http://localhost:8080/stories", formData, {
+    
+        headers : 
+        {
+            "Content-Type" : "multipart/form-data"
+        }
+    }).then(function(res){
+      const isSuccess = res.data.isSuccess;
+      if(isSuccess !== true)
+      {
+          console.log(res.data.message);
+          return;
+      }
+      window.location.href = "/advices";
+     
+    });
+  };
+
   return (
     <>
-       <ConfirmButton>글 발행</ConfirmButton>
+    <Link to = "/advices">
+       <ConfirmButton className = 'EditConfirm' id = 'EditConfirm' onClick = {upload}>글 발행</ConfirmButton>
+    </Link>
     <EditorTop href = "/">
                     <LogoImage src = "https://img.etnews.com/photonews/2104/1403026_20210419140535_358_0003.jpg"/>               
     </EditorTop>  
@@ -62,9 +116,11 @@ const Edit = () => {
       </BackgroundImage>
 
    
-      <TitleText placeholder="제목을 입력해주세요"></TitleText>
+      <TitleText placeholder="제목을 입력해주세요" type = "text" id ="title" onChange = {handleTitle} value={titleText}>
       
-      <TextEditor></TextEditor>
+      </TitleText>
+      <input type = "text" onChange = {handleContent} placeholder = "test"></input>
+      <TextEditor onChange = {handleContent}></TextEditor>
       
       </>
     );
@@ -93,6 +149,7 @@ const ConfirmButton = styled.button`
   position : fixed;
   top : 5%;
   right : 0;
+  z-index : 3;
 `
 const BackgroundImage = styled.div`
     border-radius : 12px;
@@ -106,11 +163,12 @@ const MarginMaker = styled.div`
   margin-top : auto;
   margin-bottom : 100px;
   position : relative;
-  text-algin : center;
+  text-align : center;
 `
 const EditorTop=styled.a` 
     display: flex;
     position : relative;
+    width :250px;
     left : 41%;
 `;
 
@@ -180,5 +238,4 @@ background-color : white;
   border-radius : 4px;
   border-color : #d3d3d3;
 `;
-
 export default Edit;
