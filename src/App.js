@@ -21,6 +21,7 @@ import {
   MyPage,
   CardCollections,
   Setting,
+  Seller,
 } from '../src/pages/index';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import 'slick-carousel/slick/slick.css';
@@ -89,6 +90,7 @@ function App() {
             <Route path="/editor" element={<Edit />}></Route>
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />}></Route>
+            <Route path="/seller" element={<Seller />}></Route>
           </Routes>
         </div>
       </BrowserRouter>
