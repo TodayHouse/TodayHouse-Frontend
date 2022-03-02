@@ -10,7 +10,8 @@ import icon1 from "./img/view.png";
 import backImage from "./img/o_back.jpeg";
 import axios from "axios";
 import {Link} from 'react-router-dom';
-import { useSelector } from "react-redux";
+//import { useSelector } from "react-redux";
+import { getCookie } from '../../App';
 
 const Edit = () => {
   const [cookie, setCookie] = useState("");
@@ -19,13 +20,14 @@ const Edit = () => {
   const [Images, setImage] = useState([icon1]);
   const [isOpen1, setOpen1] = useState(false);
   const [isOpen2, setOpen2] = useState(false);
-  const cookieState= useSelector((state) => state.login.cookieState);
- 
+  //const cookieState= useSelector((state) => state.login.cookieState);
+  const accessToken = getCookie('login_id');
+
   useEffect(() => {
     console.log("쿠키 로딩");
-    setCookie(cookieState);
-    console.log(cookieState);
-  }, [cookieState]);
+    setCookie(accessToken);
+    console.log(accessToken);
+  }, []);
   
   const handleTitle = (e) => {
     setTitle(e.target.value);
@@ -48,24 +50,23 @@ const Edit = () => {
   const handleSubmit2 = () => {
     setOpen2(false);
   };
-  const param = {
-    category : "KNOWHOW",
-    content : contentText,
-    title : titleText,
-  }
+  
   const upload = () => {
     const formData = new FormData();
     const file = document.getElementById("file");
-    console.log("쿠키 상태" + cookieState);
+    console.log("쿠키 상태" + cookie);
     formData.append("file", file.files[0]);
     console.log(file.files[0]);
-    axios.post("http://localhost:8080/stories", formData, {
-    
-        headers : 
-        {
-            "Content-Type" : "multipart/form-data"
-        }
-    }).then(function(res){
+
+    const param = {
+      category : "KNOWHOW",
+      content : contentText,
+      title : titleText,
+    }
+    formData.append("data", new Blob([JSON.stringify(param)],{type : "application/json"}))
+    //formData를 넣어야하는데 어떻게 줄지
+    axios.post("http://localhost:8080/stories", formData, {headers : {'content-type' : 'application/json',  Authorization: `Bearer ${accessToken}`}})
+    .then(function(res){
       const isSuccess = res.data.isSuccess;
       if(isSuccess !== true)
       {
