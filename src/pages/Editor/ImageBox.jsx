@@ -1,10 +1,13 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import { useLinkClickHandler } from 'react-router-dom';
 import styled from "styled-components";
 import GuideBar_1 from "./GuideBar1";
 
 const ImageBox = () => {
     //파일 미리볼 url을 저장해줄 state 
+    //업로드시 파일 추가
+   
     const [fileImage, setFileImage] = useState(""); // 파일 저장 
     const saveFileImage = (e) => { setFileImage(URL.createObjectURL(e.target.files[0])); }; // 파일 삭제 
     const deleteFileImage = () => 
@@ -35,9 +38,8 @@ const ImageBox = () => {
         </table> 
         </CoverBox>
         <AlignCompCenter>
-                <ImageUploadButton name="imgUpload" type="file" accept="image/*" onChange={saveFileImage} />              
+            <ImageUploadButton type="file" id ="file" accept="image/*" onChange={saveFileImage} />        
         </AlignCompCenter>
-       
     </>
     );  
 }
@@ -68,7 +70,7 @@ const BoldAlert = styled.p`
 `;
 
 const AlignCompCenter = styled.div`
-    position:absolute;
+    position : absolute;
     left :43%;
 `;
 
@@ -77,7 +79,7 @@ const ImageUploadButton = styled.input`
     background-color : white;
     opacity : 0.7;
     margin-top : 10px;
-    display : flex
+    display : flex;
     vertical-align : middle;
 `;
 
