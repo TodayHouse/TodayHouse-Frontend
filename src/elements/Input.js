@@ -2,20 +2,26 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Input = (props) => {
-  const { width, fontSize, margin, placeholder, name, onChange, label, type } =
-    props;
+  const {
+    width,
+    fontSize,
+    margin,
+    placeholder,
+    name,
+    onChange,
+    label,
+    type,
+    style,
+    id,
+    center,
+  } = props;
+
   return (
-    <Container>
-      <LabelContainer>
+    <Container center={center}>
+      <LabelContainer label={label}>
         <Label>{label}</Label>
       </LabelContainer>
-      <InputBox
-        {...props}
-        placeholder={placeholder}
-        name={name}
-        onChange={onChange}
-        type={type}
-      />
+      <InputBox {...props} />
     </Container>
   );
 };
@@ -24,14 +30,18 @@ Input.defaultProps = {
   width: '',
   fontSize: '18px',
   margin: '',
+  label: '',
+  center: false,
 };
 
 const Container = styled.div`
+  width: 100%;
   display: flex;
   align-items: center;
+  justify-content: ${(props) => (props.center ? 'center' : '')};
 `;
 const LabelContainer = styled.div`
-  width: 100px;
+  width: ${(props) => (props.label === '' ? '' : '100px')};
 `;
 const Label = styled.span`
   font-size: 16px;
