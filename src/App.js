@@ -22,7 +22,6 @@ import {
   CardCollections,
   Setting,
   Seller,
-  UploadProduct,
 } from '../src/pages/index';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import 'slick-carousel/slick/slick.css';
@@ -92,7 +91,6 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />}></Route>
             <Route path="/seller" element={<Seller />}></Route>
-            <Route path="/upload-product" element={<UploadProduct />}></Route>
           </Routes>
         </div>
       </BrowserRouter>
