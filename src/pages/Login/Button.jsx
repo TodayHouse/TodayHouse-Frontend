@@ -21,7 +21,7 @@ const StyledButton = styled.button`
     cursor : pointer;
     font-size : 15px;
     font-weight : bold;
-    &: focus {
+    &:focus {
         display : inline-block;
         box-shadow : 0 0 0 0.2rem #4f4f4f;
         backdrop-filter : blur(12rem);
