@@ -57,25 +57,36 @@ const Edit = () => {
     console.log("쿠키 상태" + cookie);
     formData.append("file", file.files[0]);
     console.log(file.files[0]);
-
+    console.log(formData);
     const param = {
       category : "KNOWHOW",
       content : contentText,
       title : titleText,
-    }
-    formData.append("data", new Blob([JSON.stringify(param)],{type : "application/json"}))
+    }//`Bearer ${accessToken}`
+    formData.append("request", new Blob([JSON.stringify(param)], {type : "application/json"}))
     //formData를 넣어야하는데 어떻게 줄지
-    axios.post("http://localhost:8080/stories", formData, {headers : {'content-type' : 'application/json',  Authorization: `Bearer ${accessToken}`}})
-    .then(function(res){
-      const isSuccess = res.data.isSuccess;
-      if(isSuccess !== true)
-      {
-          console.log(res.data.message);
-          return;
-      }
-      window.location.href = "/advices";
-     
-    });
+    try{
+      axios.post("http://localhost:8080/stories", formData, {
+        headers : {
+          'Content-Type' : 'multipart/form-data', 
+           'Authorization': `Bearer ${accessToken}`,
+           }, 
+           withCredentials:true,
+          })
+      .then(function(res){
+        const isSuccess = res.data.isSuccess;
+        if(isSuccess !== true)
+        {
+            console.log(res.data.message);
+            return;
+        }
+        window.location.href = "/advices";
+       
+      });
+    }
+    catch(e){
+      console.log(e);
+    }
   };
 
   return (

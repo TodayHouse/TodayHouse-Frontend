@@ -9,7 +9,7 @@ const ImageBox = () => {
     //업로드시 파일 추가
    
     const [fileImage, setFileImage] = useState(""); // 파일 저장 
-    const saveFileImage = (e) => { setFileImage(URL.createObjectURL(e.target.files[0])); }; // 파일 삭제 
+    const saveFileImage = (e) => { setFileImage(URL.createObjectURL(e.target.files[0])); }; // 파일 저장
     const deleteFileImage = () => 
     { URL.revokeObjectURL(fileImage); setFileImage(""); }; //삭제 기능. 그러나 아직 필요없을듯
      return ( 
