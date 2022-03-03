@@ -18,6 +18,7 @@ import CardCollections from './MyPage/CardCollections';
 import Setting from './MyPage/Setting';
 import Cart from './Cart/Cart';
 import Seller from './Seller/Seller';
+import UploadProduct from './UploadProduct/UploadProduct';
 export {
   Login,
   Main,
@@ -39,4 +40,5 @@ export {
   CardCollections,
   Setting,
   Seller,
+  UploadProduct,
 };
