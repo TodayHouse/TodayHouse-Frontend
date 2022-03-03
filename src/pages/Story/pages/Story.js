@@ -77,16 +77,14 @@ const Container = styled.div`
   flex-direction: column;
 `;
 const CardContainer = styled.div`
-  width: 80%;
-  position: absolute;
-  z-index: 1;
-  top: 300px;
   padding: 12px;
+  margin-top: 60px;
+  width: 100%;
 `;
 const TotalNum = styled.p``;
 const CardItem = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, minmax(350px, 1fr));
+  grid-template-columns: repeat(3, minmax(calc(33% - 20px), 1fr));
   gap: 20px;
 `;
 export default Story;

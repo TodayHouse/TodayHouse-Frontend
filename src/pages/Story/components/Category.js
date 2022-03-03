@@ -583,7 +583,6 @@ const Container = styled.div`
 const CategoryContainer = styled.div`
   display: flex;
   position: relative;
-  z-index: 2;
   padding: 12px;
 `;
 const FlatAreaBox = styled.div`

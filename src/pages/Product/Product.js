@@ -1,6 +1,6 @@
-import React from "react"
-import { useParams } from "react-router-dom"
-import styled from "styled-components"
+import React from 'react';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 import {
   ProductSimpleView,
   ProductNavigation,
@@ -11,20 +11,20 @@ import {
   Ask,
   Delivery,
   Recommend,
-} from "../Product/components"
-import $ from "jquery"
+} from '../Product/components';
+import $ from 'jquery';
 
 const Product = () => {
   // 상품 상세정보 불러오는 api 호출할 때 productId 넣어서 보내면 해당 id에 맞는 정보를 서버에서 받아옴
-  const productId = useParams().id
+  const productId = useParams().id;
 
-  window.addEventListener("scroll", () => {
+  window.addEventListener('scroll', () => {
     const offset = document
-      .querySelector("#container")
-      .getBoundingClientRect().top
-    if (offset === 0) $("#scrollToTop").hide()
-    else $("#scrollToTop").show()
-  })
+      .querySelector('#container')
+      .getBoundingClientRect().top;
+    if (offset === 0) $('#scrollToTop').hide();
+    else $('#scrollToTop').show();
+  });
 
   return (
     <Container id="container">
@@ -44,7 +44,7 @@ const Product = () => {
       <WhiteButton
         id="scrollToTop"
         onClick={() => {
-          window.scrollTo(0, 0)
+          window.scrollTo(0, 0);
         }}
       >
         <img
@@ -55,8 +55,8 @@ const Product = () => {
         />
       </WhiteButton>
     </Container>
-  )
-}
+  );
+};
 
 const Container = styled.div`
   display: flex;
@@ -64,19 +64,19 @@ const Container = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
-`
+`;
 const Wrap = styled.div`
-  width: 1150px;
+  width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
-`
+`;
 const ProductContents = styled.div`
   width: 850px;
   display: flex;
   flex-direction: column;
   padding: 0px 50px;
-`
+`;
 const WhiteButton = styled.button`
   position: fixed;
   bottom: 30px;
@@ -89,5 +89,5 @@ const WhiteButton = styled.button`
   &:hover {
     background-color: #eeeeee;
   }
-`
-export default Product
+`;
+export default Product;

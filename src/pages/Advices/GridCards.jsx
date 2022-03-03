@@ -6,16 +6,18 @@ function GridCards(props) {
     return (
         <Col lg={6} md={8} xs={24}>
             <div style ={{position: 'relative'}}>
-                <Link to={`/advices/${props.id}`}>
-                    <Frame>
-                    <Image src={props.image}/>
-                    </Frame>
-                    <Text>
-                        제목
-                        <Textsmall>작성자</Textsmall>
-                        <Textsmall>조회수</Textsmall>
-                    </Text>
-                </Link>
+                <Container>
+                    <Link to={`/advices/${props.id}`}>
+                        <Frame>
+                        <Image src={props.image}/>
+                        </Frame>
+                        <Text style={{color:"black"}}>
+                            제목
+                            <Textsmall>작성자</Textsmall>
+                            <Textsmall>조회수</Textsmall>
+                        </Text>
+                    </Link>
+                </Container>
                 
             </div>
         </Col>
@@ -24,34 +26,38 @@ function GridCards(props) {
 
 export default GridCards
 //이미지 확대시 overflow관리를 위한 프레임
+const Container= styled.div`
+    display:flex;
+    flex-direction: column;
+    width:100%;
+`
 const Frame = styled.div` 
-width: 100%;
-height: 300px;
-border-radius: 5%;
+height: 250px;
+width:100%;
+border-radius: 10px;
 overflow: hidden;
 cursor: pointer;
 `
 //마우스 갖다대면 확대(hover)
 const Image = styled.img`
-width: 100%;
-height: 320px;
+height: 250px;
+width:100%;
 transition: all 0.2s linear;
 &:hover{
-    transform: scale(1.4);
+    transform: scale(1.2);
     
 }
-
-
 `
 const Text =styled.div`
   position: relative;
   display: inline-block;
-  margin: 6px 10px 0;
-  padding: 14px 6px;
+  margin-left: 5px;
+  margin-top: 10px;
+  margin-bottom: 25px;
   font-size: 18px;
   line-height: 26px;
   font-weight: 700;
-  color: #0;
+  color: black;
   cursor: pointer;
 `
 const Textsmall=styled.div`

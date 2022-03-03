@@ -8,7 +8,7 @@ const rootReducer = combineReducers({
   mpagebar: mpageBar.reducer,
   cart: cart.reducer,
   story: story.reducer,
-  login: login.reducer
+  login: login.reducer,
 })
 const store = configureStore({ reducer: rootReducer }) //redux toolkit 사용가능
 
