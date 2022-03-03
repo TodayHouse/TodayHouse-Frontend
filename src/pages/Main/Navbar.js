@@ -1,21 +1,32 @@
-import React from 'react'
-import styled from 'styled-components'
-import logo from '../../img/logo.jpg'
-import { Link } from 'react-router-dom'
-import {useDispatch} from'react-redux'
-import { navChange } from '../../redux/reducer/navBar'
+import React,{useState} from "react"
+import styled from "styled-components"
+import logo from "../../img/logo.jpg"
+import { Link } from "react-router-dom"
+import { useDispatch } from "react-redux"
+import { navChange } from "../../redux/reducer/navBar"
+import $ from "jquery"
 
-const Navbar = ({isLogin}) => {
+const Navbar = () => {
+  const [login,setLogin]=useState(true);
   const buttonLogout = () => {
-    console.log('로그아웃')
+    setLogin(false);
   }
-  const dispatch= useDispatch();
-  const changeNavSelect =(value)=>{
+  const dispatch = useDispatch()
+  const changeNavSelect = (value) => {
     dispatch(navChange(value))
   }
+  const dropDownOver = (id) => {
+    $(`#${id}`).css("display","flex")
+
+  }
+  const dropDownOut = (id) => {
+    $(`#${id}`).css("display","none")
+
+  }
+  
 
   return (
-    <NavBar id="navBar">
+    <NavBar id="navBar" >
       <NavListFront>
         <NavBrand>
           <Link to="/">
@@ -24,13 +35,13 @@ const Navbar = ({isLogin}) => {
         </NavBrand>
 
         <NavItem>
-          <Link to="community" onMouseOver={() => changeNavSelect('community')}>
+          <Link to="community" onMouseOver={() => changeNavSelect("community")}>
             <NavText>커뮤니티</NavText>
           </Link>
         </NavItem>
 
         <NavItem>
-          <Link to="store" onMouseOver={() => changeNavSelect('store')}>
+          <Link to="store" onMouseOver={() => changeNavSelect("store")}>
             <NavText>스토어</NavText>
           </Link>
         </NavItem>
@@ -39,31 +50,46 @@ const Navbar = ({isLogin}) => {
       <NavListBack>
         <NavItem>
           <Form>
-            <Input/>
-            <Search>
-              검색
-            </Search>
+            <Input />
+            <Search>검색</Search>
           </Form>
         </NavItem>
 
-        {isLogin? ( //로그인 여부에 따른 조건부 렌더링
+        {login ? ( //로그인 여부에 따른 조건부 렌더링
           <NavItem>
-            <Logout onClick={buttonLogout}>
-              로그아웃
-            </Logout>
+            <Menu onClick={()=>dropDownOver("menuDropDown")} onMouseLeave={()=>dropDownOut("menuDropDown")}>
+              <MenuIcon 
+                src="https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/7r5X/image/9djEiPBPMLu_IvCYyvRPwmZkM1g.jpg"
+                />
+            
+              <DropDown id="menuDropDown">
+                <Link to="/cart">
+                  <Item>장바구니</Item>
+                </Link>
+                <Link to="/mypage/profile">
+                  <Item>마이페이지</Item>
+                </Link>
+                <Item onClick={buttonLogout}>로그아웃</Item>
+              </DropDown>
+            </Menu>
+            <Link to="/editor">
+              <Writing>
+                글쓰기
+              </Writing>
+            </Link>
           </NavItem>
         ) : (
           <>
-            <span style={{ width: 300 }}></span>
+            
             <NavItem>
               <NavItem>
                 <Link to="/login">
-                  <NavText>로그인</NavText>
+                  <NavText style={{color:"grey",fontSize:"15px"}}>로그인</NavText>
                 </Link>
               </NavItem>
               <NavItem>
                 <Link to="/signup">
-                  <NavText>회원가입</NavText>
+                  <NavText style={{color:"grey",fontSize:"15px"}}>회원가입</NavText>
                 </Link>
               </NavItem>
             </NavItem>
@@ -84,22 +110,18 @@ const NavBrand = styled.div`
 `
 const NavListFront = styled.div`
   display: flex;
-  padding-left: 0;
-  margin-bottom: 0;
-  list-style: none;
+  
+  
 `
 const NavListBack = styled.div`
   display: flex;
-  margin-left: 0;
-  margin-bottom: 0;
-  list-style: none;
+  margin-left: auto;
+  
 `
 const NavItem = styled.div`
   display: flex;
-  text-align: -webkit-match-parent;
 `
 const NavText = styled.div`
-  position: relative;
   display: inline-block;
   margin: 6px 10px 0;
   padding: 14px 6px;
@@ -108,16 +130,17 @@ const NavText = styled.div`
   font-weight: 700;
   color: #424242;
   cursor: pointer;
+  &:hover{
+    color: ${(props) => props.theme.mainColor};
+  }
 `
 const NavBar = styled.nav`
-  position: relative;
-  width: 1256px;
   display: flex;
-  background-color: #fff;
   border-bottom: 1px solid #ededed;
-  margin: 0 auto;
+  height:70px;
+  
 `
-const Search=styled.button`
+const Search = styled.button`
   background-color: white;
   &:hover {
     background-color: lightgrey;
@@ -128,14 +151,14 @@ const Search=styled.button`
   font-size: 15px;
   margin-top: 20px;
   margin-bottom: 20px;
-  margin-left:10px;
+  margin-left: 10px;
 `
 
 const Input = styled.input`
   font-size: 15px;
   font-weight: 500;
   width: 200px;
-  margin:10px;
+  margin: 10px;
   padding: 10px;
   border: 1px solid #cccccc;
   border-radius: 5px;
@@ -145,17 +168,54 @@ const Form = styled.form`
   display: flex;
 `
 
-const Logout=styled.button`
-  background-color: red;
-  color:white;
-  &:hover {
-    background-color: coral;
+const MenuIcon=styled.img`
+width:50px;
+height:50px;
+margin:10px;
+border-radius: 100%;
+cursor: pointer;
+`
+
+const Menu=styled.div`
+display:flex;
+flex-direction: column;
+margin-left: 10px;
+
+`
+const Item=styled.div`
+  padding:10px;
+  color: black;
+  cursor: pointer;
+  font-size: medium;
+  &:hover{
+    background-color: lightgrey;
   }
-  border: 1px solid coral;
+`
+const DropDown=styled.div`
+display:none;
+position: absolute;
+z-index: 1;
+flex-direction: column;
+border-radius: 5px;
+box-shadow: 5px 5px 8px #aaaaaa;
+width:200px;
+background-color: white;
+padding:10px;
+top:60px;
+
+
+`
+const Writing=styled.button`
+  background-color: ${(props) => props.theme.mainColor};
+  color: white;
+  &:hover {
+    background-color: ${(props) => props.theme.hoverMainColor};
+  }
+  
+  padding: 10px 30px;
+  border: 1px solid ${(props) => props.theme.mainColor};
   border-radius: 4px;
-  width: 100px;
-  font-size: 15px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  margin-left:10px;
+  font-size: 20px;
+  font-weight: bold;
+  margin:10px;
 `

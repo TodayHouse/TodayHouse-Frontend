@@ -5,7 +5,7 @@ import $ from 'jquery'
 import { FixedMenu, Footer } from '../../pages/Story/components'
 const AdviceDetail = () => {
   window.addEventListener('scroll', () => {
-    const offset = document.querySelector('#navBar').getBoundingClientRect()
+    const offset = document.querySelector('#container').getBoundingClientRect()
       .top
     if (offset === 0) $('#fixedMenu').hide()
     else $('#fixedMenu').show()
@@ -84,7 +84,6 @@ export default AdviceDetail
 const Container = styled.div`
 display: flex;
 flex-direction: column;
-width: 100vw;
 height: 100%;
 align-items: center;
 `
@@ -95,12 +94,12 @@ height: 100%;
 justify-content: center;
 `
 const Post =styled.div`
-width: 100%
-margin-top:50px
+width: 100%;
+margin-top:50px;
 `
 const TitleImage = styled.img`
-height : 500px
-width: 100%
+height : 500px;
+width: 100%;
 
 `
 const Category = styled.div`
@@ -109,7 +108,7 @@ font-size: 18px;
 `
 const Title = styled.h1`
 color: #2f3438;
-font-weight: bold
+font-weight: bold;
 `
 const WriterInfo = styled.div`
 display: flex;
@@ -122,16 +121,15 @@ margin-top: 40px;
 
 `
 const WriterImage = styled.img`
-border-radius : 100%
-height: 300px
+border-radius : 100%;
 
 `
 const WriterName = styled.div`
 color: #2f3438;
 font-weight: bold;
-margin : 20px
+margin : 20px;
 word-wrap: break-word;
-width: parents
+width: parents;
 `
 const Date = styled.div`
 color: #555555;

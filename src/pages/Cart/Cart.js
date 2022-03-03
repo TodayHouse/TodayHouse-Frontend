@@ -73,8 +73,9 @@ const Cart = () =>{
                             <CheckBlock><Check 
                             type="checkbox" 
                             onChange={(e)=>handleCheckAll(e.target.checked)}
-                            checked={checkItems.length === items.length ? true : false}/>모두선택 </CheckBlock>
-                            <Choice/>
+                            checked={checkItems.length === items.length ? true : false}/>모두선택 
+                            </CheckBlock>
+                            <Choice>선택삭제</Choice>
                         </SelectLine>
                         <CartContainer>
                         {
@@ -113,8 +114,6 @@ const Container = styled.div`
     flex-direction : column;
     align-items: center;
     background-color : #f4f4f4;
-    width: 100vw;
-    height: auto;
 
 
 `
@@ -132,16 +131,18 @@ const ContainerSticky =styled.div`
 `
 const Container2 =styled.div`
     display:flex;
-    height:auto;
 `
 const SelectLine = styled.div`
     display:flex;
+    width:100%;
     height: 50px;
+    align-items: flex-start;
 
 `
 const CheckBlock =styled.div`
     display:flex;
     align-items: center;
+    
 `
 const Check = styled.input`
     width: 20px;
@@ -150,10 +151,14 @@ const Check = styled.input`
     margin:10px;
 `
 const Choice = styled.div`
+margin:10px;
+margin-left: auto;
+
 `
 const CartContainer=styled.div`
     display:flex;
     flex-direction: column;
+    width:100%;
 
 `
 const Receipt =styled.div`
@@ -164,7 +169,7 @@ const Receipt =styled.div`
     border-radius: 7px;
     background-color: white;
     align-items:flex-start;
-    width:300px;
+    width:25vw;
 `
 const Price=styled.div`
     display: flex;

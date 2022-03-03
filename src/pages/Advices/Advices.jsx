@@ -18,10 +18,10 @@ const Advices =() =>{
     }, [])
 
     return(
-        <React.Fragment>
+        <Container>
             <Text>테마별 노하우</Text>
             <Scroll>
-                <Row gutter={16}>
+                <Row gutter={50}>
                 {items && items.map((item,index)=>( //반복문
                         <React.Fragment key={index}>
                             <GridCards
@@ -37,21 +37,25 @@ const Advices =() =>{
                 </Row>
                 <LoadMore onClick={load}>Load</LoadMore>
             </Scroll>
-        </React.Fragment>
+        </Container>
     )
 }
 
 export default Advices
+const Container= styled.div`
+    display:flex;
+    flex-direction: column;
+    width:100%;
+`
 const Scroll =styled.div`
 position: relative;
 display: flex;
+width:100%;
 flex-direction: column;
 align-items: center;
 justify-content: center;
-width : 1256px;
-background-color: #fff;
+background-color: lightgreen;
 border-bottom: 1px solid #ededed;
-margin:0 auto;
 `
 const Text =styled.div`
   position: relative;
@@ -61,7 +65,6 @@ const Text =styled.div`
   font-size: 25px;
   line-height: 26px;
   font-weight: 700;
-  color: #0;
   
 `
 const LoadMore = styled.button`
