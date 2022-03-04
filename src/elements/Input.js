@@ -3,16 +3,20 @@ import styled from 'styled-components';
 
 const Input = (props) => {
   const {
+    id,
+    name,
+    value,
+    placeholder,
+    onChange,
+    autoFocus,
+    multiple,
+    disabled,
     width,
     fontSize,
     margin,
-    placeholder,
-    name,
-    onChange,
     label,
     type,
     style,
-    id,
     center,
   } = props;
 
@@ -31,7 +35,6 @@ Input.defaultProps = {
   fontSize: '18px',
   margin: '',
   label: '',
-  center: false,
 };
 
 const Container = styled.div`
@@ -44,7 +47,7 @@ const LabelContainer = styled.div`
   width: ${(props) => (props.label === '' ? '' : '100px')};
 `;
 const Label = styled.span`
-  font-size: 16px;
+  font-size: 18px;
   color: #555;
 `;
 const InputBox = styled.input`
