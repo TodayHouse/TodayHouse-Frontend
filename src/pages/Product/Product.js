@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -13,10 +13,16 @@ import {
   Recommend,
 } from '../Product/components';
 import $ from 'jquery';
+import axios from 'axios';
+import theme from '../../theme';
+import { useDispatch } from 'react-redux';
+import { dispatchSetForm } from '../../redux/reducer/product';
 
 const Product = () => {
   // 상품 상세정보 불러오는 api 호출할 때 productId 넣어서 보내면 해당 id에 맞는 정보를 서버에서 받아옴
   const productId = useParams().id;
+  const url = theme.apiUrl;
+  const dispatch = useDispatch();
 
   window.addEventListener('scroll', () => {
     const offset = document
@@ -25,6 +31,22 @@ const Product = () => {
     if (offset === 0) $('#scrollToTop').hide();
     else $('#scrollToTop').show();
   });
+
+  useEffect(() => {
+    //해당 상품 정보를 불러와서 리덕스에 저장
+    axios
+      .get(url + `products/${productId}`)
+      .then((response) => {
+        if (response.data.isSuccess) {
+          const { result } = response.data;
+          console.log(result);
+          dispatch(dispatchSetForm(result));
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, []);
 
   return (
     <Container id="container">

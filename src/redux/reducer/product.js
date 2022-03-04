@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 
 const productReducer = createSlice({
   name: 'productReducer',
@@ -9,37 +9,45 @@ const productReducer = createSlice({
 
     selectedOption: [],
     totalPrice: 0,
+    form: {},
   },
   reducers: {
     changeImg: (state, action) => {
-      state.imgSrc = action.payload
+      state.imgSrc = action.payload;
     },
 
     addOption: (state, action) => {
-      state.selectedOption.push(action.payload)
+      state.selectedOption.push(action.payload);
     },
     removeOption: (state, action) => {
       return {
         //initialState에 selectedOption말고도 다른 state들도 있으므로 ...state를 사용하여 다른 state들도 불러와야함
         ...state,
         selectedOption: state.selectedOption.filter(
-          (data) => data.id !== action.payload,
+          (data) => data.id !== action.payload
         ),
-      }
+      };
     },
     changeNum: (state, action) => {
       state.selectedOption.forEach((data) => {
         if (data.id === action.payload.id)
-          data.num = parseInt(action.payload.num)
-      })
+          data.num = parseInt(action.payload.num);
+      });
+    },
+    dispatchSetForm: (state, action) => {
+      return {
+        ...state,
+        form: action.payload,
+      };
     },
   },
-})
+});
 
 export const {
   changeImg,
   addOption,
   removeOption,
   changeNum,
-} = productReducer.actions
-export default productReducer
+  dispatchSetForm,
+} = productReducer.actions;
+export default productReducer;

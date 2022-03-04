@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { SidePhoto, MainPhoto } from '../elements';
 import { Option } from './index';
+import { useSelector } from 'react-redux';
 
 const mockSide = [
   'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fi.pinimg.com%2Foriginals%2Fd0%2F65%2F21%2Fd065217abfbb25923daf231784c1b916.jpg&type=sc960_832',
@@ -10,12 +11,14 @@ const mockSide = [
 ];
 
 const ProductSimpleView = () => {
+  const src = useSelector((state) => state.product.form.image);
   return (
     <Container>
       <SidePhotoView>
-        {mockSide.map((data, idx) => (
+        {/* {mockSide.map((data, idx) => (
           <SidePhoto key={idx} src={data} />
-        ))}
+        ))} */}
+        <SidePhoto src={src} />
       </SidePhotoView>
       <MainPhotoView>
         <MainPhoto />
