@@ -85,12 +85,16 @@ const OptionSelectView = () => {
     <Container>
       <div style={{ overflow: 'auto' }}>
         <SelectedView>
-          <Selected id="selectOption" onChange={onOptionSelected}>
-            <option disabled selected>
+          <Selected
+            id="selectOption"
+            onChange={onOptionSelected}
+            defaultValue="default"
+          >
+            <option value="default" disabled>
               옵션을 선택하세요.
             </option>
             {mockOptions.map((data, idx) => (
-              <option id={'option' + idx} value={data.name}>
+              <option key={idx} id={'option' + idx} value={data.name}>
                 {data.name + '(' + data.price.toLocaleString() + '원)'}
               </option>
             ))}

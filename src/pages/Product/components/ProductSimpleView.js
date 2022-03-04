@@ -14,7 +14,7 @@ const ProductSimpleView = () => {
     <Container>
       <SidePhotoView>
         {mockSide.map((data, idx) => (
-          <SidePhoto id={idx} src={data} />
+          <SidePhoto key={idx} src={data} />
         ))}
       </SidePhotoView>
       <MainPhotoView>
