@@ -35,6 +35,7 @@ const productReducer = createSlice({
       });
     },
     dispatchSetForm: (state, action) => {
+      localStorage.setItem('productInfo', JSON.stringify(action.payload));
       return {
         ...state,
         form: action.payload,

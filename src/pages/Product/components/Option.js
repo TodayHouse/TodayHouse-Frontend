@@ -20,12 +20,15 @@ const Option = () => {
           <DiscountContainer>
             <SpecialPriceContainer>
               <Rate>{discountRate}%</Rate>
-              <OriginalPrice>{price.toLocaleString()}원</OriginalPrice>
+              <OriginalPrice>{price && price.toLocaleString()}원</OriginalPrice>
             </SpecialPriceContainer>
-            <Price>{price * ((100 - discountRate) / 100)}</Price>
+            <Price>
+              {price && (price * ((100 - discountRate) / 100)).toLocaleString()}
+              원
+            </Price>
           </DiscountContainer>
         ) : (
-          <Price>{price.toLocaleString()}원</Price>
+          <Price>{price && price.toLocaleString()}원</Price>
         )}
       </TitlePrice>
       <OptionSelectView />
