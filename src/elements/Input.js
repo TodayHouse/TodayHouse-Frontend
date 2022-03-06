@@ -44,7 +44,7 @@ const Container = styled.div`
   justify-content: ${(props) => (props.center ? 'center' : '')};
 `;
 const LabelContainer = styled.div`
-  width: ${(props) => (props.label === '' ? '' : '100px')};
+  min-width: ${(props) => (props.label === '' ? '' : '120px')};
 `;
 const Label = styled.span`
   font-size: 18px;
