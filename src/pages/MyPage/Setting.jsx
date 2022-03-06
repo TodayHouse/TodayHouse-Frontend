@@ -80,12 +80,11 @@ const Setting = () => {
 
 const AllCover = styled.div`
     display : block;
-    margin-top : 30px;
-    width : 1000px;
     height : 850px;
     padding-top : 30px;
     border : 1px solid #ededed;
     box-shadow: 0 1px 3px 0 rgb(0 0 0 / 20%);
+    background-color: white;
 `
 const TitleText =  styled.div`
     font-weight : 700;
@@ -116,6 +115,7 @@ const TagText = styled.div`
     font-size : 15px;
     width : 80px;
     padding-top :5px;
+    text-align: center ;
 `
 const Alpha = styled.div`
     display : inline;

@@ -53,7 +53,7 @@ background-color : white;
     border-color : #bdbebd;
     border-radius : 15px;
     position :relative;
-    left : 38%;
+    left : 33%;
     height : 400px;
     width :400px;
     padding-top  : 170px;
@@ -69,15 +69,14 @@ const BoldAlert = styled.p`
 
 const AlignCompCenter = styled.div`
     position:absolute;
-    left :43%;
+    left :38%;
 `;
-
 
 const ImageUploadButton = styled.input`
     background-color : white;
     opacity : 0.7;
     margin-top : 10px;
-    display : flex
+    display : flex;
     vertical-align : middle;
 `;
 
