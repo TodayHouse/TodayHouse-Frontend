@@ -42,20 +42,20 @@ const MyNavbar = ({isLogin}) => {
 export default MyNavbar
 
 const NavListFront = styled.ul`
+  width :800px;
   display: flex;
   position : relative;
   padding-left: 0;
   margin-bottom: 0;
   list-style: none;
-  margin-left :38%;
+  margin-left :35%;
   font-weight : 700;
-  font-color : black;
   line-height : 30px;
 `
 
 const NavItem = styled.li`
   display: flex;
-  text-align: -webkit-match-parent;
+
 `
 const NavText = styled.div`
   position: relative;
@@ -70,7 +70,7 @@ const NavText = styled.div`
 `
 const NavBar = styled.nav`
   position: relative;
-  width: 1620px;
+
   display: flex;
   background-color: #fff;
   border-bottom: 1px solid skyblue;

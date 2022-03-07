@@ -32,7 +32,7 @@ const Setting = () => {
             <InfoBox>
                 <TagText id = "nickname">
                     별명
-                  
+                    <hr></hr>
                 </TagText>
                 <InfoInput type = "text"></InfoInput>              
             </InfoBox>
@@ -40,7 +40,7 @@ const Setting = () => {
             <InfoBox>
                 <TagText id = "gender">
                     성별
-                 
+                    <hr></hr>
                 </TagText>
               
                 <RadioInput type = "radio" name = "gender"></RadioInput>  
@@ -52,7 +52,7 @@ const Setting = () => {
             <InfoBox>
                 <TagText id = "birth">
                     생년월일
-         
+                    <hr></hr>
                 </TagText>
                 <InfoInput type = "text" placeholder = "api적용 여부 미정"></InfoInput>              
             </InfoBox>
@@ -67,7 +67,7 @@ const Setting = () => {
             <InfoBox>
                 <TagText id = "introduction">
                     한줄 소개
-                
+                    <hr></hr>
                 </TagText>
                 <InfoInput type = "introduction" placeholder='어서와요 오늘의집'></InfoInput>              
             </InfoBox>
@@ -80,18 +80,17 @@ const Setting = () => {
 
 const AllCover = styled.div`
     display : block;
-    margin-top : 30px;
-    width : 1000px;
     height : 850px;
     padding-top : 30px;
     border : 1px solid #ededed;
     box-shadow: 0 1px 3px 0 rgb(0 0 0 / 20%);
+    background-color: white;
 `
 const TitleText =  styled.div`
     font-weight : 700;
     font-size : 24px;
     position :absolute;
-    width : 150px;
+    width : 800px;
     left : 28.5%;
 `
 
@@ -116,6 +115,7 @@ const TagText = styled.div`
     font-size : 15px;
     width : 80px;
     padding-top :5px;
+    text-align: center ;
 `
 const Alpha = styled.div`
     display : inline;
