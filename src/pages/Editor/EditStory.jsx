@@ -13,7 +13,7 @@ import {Link} from 'react-router-dom';
 //import { useSelector } from "react-redux";
 import { getCookie } from '../../App';
 
-const Edit = () => {
+const EditStory = () => {
   const [cookie, setCookie] = useState("");
   const [titleText, setTitle] = useState("");
   const [contentText, setContent] = useState("");
@@ -59,7 +59,7 @@ const Edit = () => {
     console.log(file.files[0]);
     console.log(formData);
     const param = {
-      category : "KNOWHOW",
+      category : "STORY",
       content : contentText,
       title : titleText,
     }//`Bearer ${accessToken}`
@@ -80,7 +80,7 @@ const Edit = () => {
             console.log(res.data.message);
             return;
         }
-        window.location.href = "/advices";
+        window.location.href = "/story";
        
       });
     }
@@ -91,7 +91,7 @@ const Edit = () => {
 
   return (
     <>
-    <Link to = "/advices">
+    <Link to = "/story">
        <ConfirmButton className = 'EditConfirm' id = 'EditConfirm' onClick = {upload}>글 발행</ConfirmButton>
     </Link>
     <EditorTop href = "/">
@@ -129,11 +129,12 @@ const Edit = () => {
 
    
       <TitleText placeholder="제목을 입력해주세요" type = "text" id ="title" onChange = {handleTitle} value={titleText}>
-      
+    
       </TitleText>
+      <WhiteBack>
       <input type = "text" onChange = {handleContent} placeholder = "test"></input>
       <TextEditor onChange = {handleContent}></TextEditor>
-      
+      </WhiteBack>
       </>
     );
 }
@@ -145,12 +146,13 @@ const TitleText = styled.input`
   border-color : #d3d3d3;
   border-radius : 4px;
   margin-bottom :15px;
-  width : 1500px;
+  width : 800px;
   height : 100px;
   font-size : 40px;
   font-weight : 100;
   position : relative;
-  left : 10%;
+  left : 0%;
+  text-align: center;
 `
 const ConfirmButton = styled.button`
   width : 200px;
@@ -161,16 +163,19 @@ const ConfirmButton = styled.button`
   position : fixed;
   top : 5%;
   right : 0;
-  z-index : 3;
+  z-index: 3;
 `
+
 const BackgroundImage = styled.div`
     border-radius : 12px;
     border: 1px solid #000;
     background-image: url(${backImage});
-    border-color : skyblue;
+    background-color : #aae2f3;
+    border-color : black;
     background-repeat : no-repeat;
     background-position : center center;
 `
+
 const MarginMaker = styled.div`
   margin-top : auto;
   margin-bottom : 100px;
@@ -180,8 +185,15 @@ const MarginMaker = styled.div`
 const EditorTop=styled.a` 
     display: flex;
     position : relative;
-    width :250px;
-    left : 41%;
+    left : 0%;
+    background-color: white;
+    border-radius: 15px;
+    height : 100px;
+    width : 225px;
+    padding-top :10px;
+    padding-left : 10px;
+    margin-top:15px;
+    margin-bottom : 30px;
 `;
 
 const ModalContainer = styled.div`
@@ -190,7 +202,7 @@ const ModalContainer = styled.div`
   margin-left : 0%;
   margin-bottom : 50px;
   position : relative;
-  left : 17%;
+  left : 0%;
   @media only screen and (min-width : 375px){
     left : 0%;
 }
@@ -200,15 +212,13 @@ const ModalContainer = styled.div`
 @media only screen and (min-width : 1024px){
   left: 9%;
 }
-  @media only screen and (min-width : 1256px){
-    left: 17%;
-  }
+
 `
 const LogoImage = styled.img`
     width : 200px;
     height : 80px;
-    margin : 30px;
 `;
+
 const IconImage = styled.img`
     width : 40px;
     height : 50px;
@@ -220,13 +230,13 @@ const IconImage = styled.img`
 const ModalText = styled.div`
 padding : 25px 20px;
 `;
+
 const GrayText = styled.div`
   font-weight : 400;
   font-size : 13px;
   color : #a4acb3;
   padding-top : 30px;
-`
-
+`;
 
 const ModalButton1 = styled.button`
   background-color : white;
@@ -235,19 +245,25 @@ const ModalButton1 = styled.button`
   width : 650px;
   margin-top : 20px;
   margin-bottom : 15px;
-  margin-left : 280px;
   border-radius : 4px;
   border-color : #d3d3d3;
+  margin-left : 160px;
 `;
+
 const ModalButton2 = styled.button`
 background-color : white;
   display : flex;
   height : 80px;
   width : 650px;
   margin-top : 10px;
-  margin-left : 280px;
   margin-bottom : 15px;
   border-radius : 4px;
   border-color : #d3d3d3;
+  margin-left : 160px;
 `;
-export default Edit;
+
+const WhiteBack = styled.div`
+  background-color : white;
+  width : 800px;
+`
+export default EditStory;

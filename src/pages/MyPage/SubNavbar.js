@@ -87,5 +87,4 @@ display: flex;
 background-color: #fff;
 border-bottom: 1px solid #ededed;
 margin:0;
-}
 `

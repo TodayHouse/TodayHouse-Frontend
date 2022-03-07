@@ -11,7 +11,8 @@ import {
   Product,
   AdviceDetail,
   Advices,
-  Edit,
+  EditStory,
+  EditKnowhow,
   Board,
   Search,
   Cart,
@@ -88,7 +89,8 @@ function App() {
                 ></Route>
               </Route>
             </Route>
-            <Route path="/editor" element={<Edit />}></Route>
+            <Route path="/editor/story" element={<EditStory />}></Route>
+            <Route path="/editor/knowhow" element={<EditKnowhow />}></Route>
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />}></Route>
             <Route path="/seller" element={<Seller />}></Route>
