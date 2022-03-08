@@ -37,7 +37,7 @@ const SideBar = ()=>{
 const Container = styled.div`
 display:flex;
 margin-top:50px;
-width: 300px;
+width: 30%;
 flex-direction:column;
 `
 const Line = styled.div`

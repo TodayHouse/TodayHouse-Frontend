@@ -58,6 +58,7 @@ const NavItem = styled.li`
 const NavText = styled.div`
   position: relative;
   display: inline-block;
+  white-space:nowrap ;
   margin: 6px 10px 0;
   padding: 7px 6px;
   font-size: 14px;
