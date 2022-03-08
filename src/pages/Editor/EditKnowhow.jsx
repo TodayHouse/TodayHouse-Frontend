@@ -14,6 +14,7 @@ import {Link} from 'react-router-dom';
 import { getCookie } from '../../App';
 
 const EditKnowhow = () => {
+  const [contentImages, setCImages] = useState([]);
   const [cookie, setCookie] = useState("");
   const [titleText, setTitle] = useState("");
   const [contentText, setContent] = useState("");
@@ -133,7 +134,8 @@ const EditKnowhow = () => {
       </TitleText>
       <WhiteBack>
       <input type = "text" onChange = {handleContent} placeholder = "test"></input>
-      <TextEditor onChange = {handleContent}></TextEditor>
+      <TextEditor SetContent={setContent}>
+      </TextEditor>
       </WhiteBack>
       </>
     );
