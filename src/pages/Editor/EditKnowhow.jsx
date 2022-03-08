@@ -133,100 +133,98 @@ const EditKnowhow = () => {
       
       </TitleText>
       <WhiteBack>
-      <input type = "text" onChange = {handleContent} placeholder = "test"></input>
       <TextEditor SetContent={setContent}>
       </TextEditor>
       </WhiteBack>
       </>
     );
 }
-
 const TitleText = styled.input`
-display : flex;
-margin-top : 15px;
-padding-left :20px;
-border-color : #d3d3d3;
-border-radius : 4px;
-margin-bottom :15px;
-width : 800px;
-height : 100px;
-font-size : 40px;
-font-weight : 100;
-position : relative;
-left : 0%;
-text-align: center;
+  display : flex;
+  margin-top : 15px;
+  padding-left :20px;
+  border-color : #d3d3d3;
+  border-radius : 4px;
+  margin-bottom :15px;
+  width : 800px;
+  height : 100px;
+  font-size : 40px;
+  font-weight : 100;
+  position : relative;
+  left : 0%;
+  text-align: center;
 `
 const ConfirmButton = styled.button`
-width : 200px;
-height : 50px;
-border-color : skyblue;
-border-radius : 4px;
-background-color : white;
-position : fixed;
-top : 5%;
-right : 0;
-z-index: 3;
+  width : 200px;
+  height : 50px;
+  border-color : skyblue;
+  border-radius : 4px;
+  background-color : white;
+  position : fixed;
+  top : 5%;
+  right : 0;
+  z-index: 3;
 `
 
 const BackgroundImage = styled.div`
-  border-radius : 12px;
-  border: 1px solid #000;
-  background-image: url(${backImage});
-  background-color : #aae2f3;
-  border-color : black;
-  background-repeat : no-repeat;
-  background-position : center center;
+    border-radius : 12px;
+    border: 1px solid #000;
+    background-image: url(${backImage});
+    background-color : #aae2f3;
+    border-color : black;
+    background-repeat : no-repeat;
+    background-position : center center;
 `
 
 const MarginMaker = styled.div`
-margin-top : auto;
-margin-bottom : 100px;
-position : relative;
-text-align : center;
+  margin-top : auto;
+  margin-bottom : 100px;
+  position : relative;
+  text-align : center;
 `
 const EditorTop=styled.a` 
-  display: flex;
-  position : relative;
-  left : 0%;
-  background-color: white;
-  border-radius: 15px;
-  height : 100px;
-  width : 225px;
-  padding-top :10px;
-  padding-left : 10px;
-  margin-top:15px;
-  margin-bottom : 30px;
+    display: flex;
+    position : relative;
+    left : 0%;
+    background-color: white;
+    border-radius: 15px;
+    height : 100px;
+    width : 225px;
+    padding-top :10px;
+    padding-left : 10px;
+    margin-top:15px;
+    margin-bottom : 30px;
 `;
 
 const ModalContainer = styled.div`
-width : 1200px;
-padding-left: 0;
-margin-left : 0%;
-margin-bottom : 50px;
-position : relative;
-left : 0%;
-@media only screen and (min-width : 375px){
+  width : 1200px;
+  padding-left: 0;
+  margin-left : 0%;
+  margin-bottom : 50px;
+  position : relative;
   left : 0%;
+  @media only screen and (min-width : 375px){
+    left : 0%;
 }
 @media only screen and (min-width : 768px){
-left : 3%;
+  left : 3%;
 }
 @media only screen and (min-width : 1024px){
-left: 9%;
+  left: 9%;
 }
 
 `
 const LogoImage = styled.img`
-  width : 200px;
-  height : 80px;
+    width : 200px;
+    height : 80px;
 `;
 
 const IconImage = styled.img`
-  width : 40px;
-  height : 50px;
-  margin-top : 13px;
-  margin-left : 15px;
-  margin-right : 0px;
+    width : 40px;
+    height : 50px;
+    margin-top : 13px;
+    margin-left : 15px;
+    margin-right : 0px;
 `;
 
 const ModalText = styled.div`
@@ -234,38 +232,38 @@ padding : 25px 20px;
 `;
 
 const GrayText = styled.div`
-font-weight : 400;
-font-size : 13px;
-color : #a4acb3;
-padding-top : 30px;
+  font-weight : 400;
+  font-size : 13px;
+  color : #a4acb3;
+  padding-top : 30px;
 `;
 
 const ModalButton1 = styled.button`
-background-color : white;
-display : flex;
-height : 80px;
-width : 650px;
-margin-top : 20px;
-margin-bottom : 15px;
-border-radius : 4px;
-border-color : #d3d3d3;
-margin-left : 160px;
+  background-color : white;
+  display : flex;
+  height : 80px;
+  width : 650px;
+  margin-top : 20px;
+  margin-bottom : 15px;
+  border-radius : 4px;
+  border-color : #d3d3d3;
+  margin-left : 160px;
 `;
 
 const ModalButton2 = styled.button`
 background-color : white;
-display : flex;
-height : 80px;
-width : 650px;
-margin-top : 10px;
-margin-bottom : 15px;
-border-radius : 4px;
-border-color : #d3d3d3;
-margin-left : 160px;
+  display : flex;
+  height : 80px;
+  width : 650px;
+  margin-top : 10px;
+  margin-bottom : 15px;
+  border-radius : 4px;
+  border-color : #d3d3d3;
+  margin-left : 160px;
 `;
 
 const WhiteBack = styled.div`
-background-color : white;
-width : 800px;
+  background-color : white;
+  width : 800px;
 `
 export default EditKnowhow;
