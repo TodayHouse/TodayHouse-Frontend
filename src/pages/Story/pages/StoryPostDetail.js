@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import $ from 'jquery';
 import { Sidebar, FixedMenu, Footer } from '../components/index';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+import theme from '../../../theme';
 
 const sample = [
   { category: '공간', data: '아파트' },
@@ -19,28 +22,69 @@ const sample = [
 ];
 
 const StoryPostDetail = () => {
+  const id = useParams().id;
+  const url = theme.apiUrl;
+  const [info, setInfo] = useState({});
+  const {
+    imageUrl,
+    category,
+    title,
+    createdAt,
+    content,
+    writer,
+    liked,
+    updatedAt,
+  } = info;
+
   // 스크롤 시 최상단으로부터의 offset을 계산하여 0이 아닐 때 FixedMenu가 보이도록 구현
   window.addEventListener('scroll', () => {
     const offset = document
       .querySelector('#container')
       .getBoundingClientRect().top;
-    if (offset === 0) $('#fixedMenu').hide();
+    if (offset === 70) $('#fixedMenu').hide();
     else $('#fixedMenu').show();
   });
 
+  useEffect(() => {
+    axios
+      .get(url + `stories/${id}`)
+      .then((response) => {
+        const {
+          imageUrl,
+          category,
+          title,
+          createdAt,
+          content,
+          writer,
+          liked,
+          updatedAt,
+        } = response.data.result;
+
+        setInfo({
+          imageUrl,
+          category,
+          title,
+          createdAt,
+          content,
+          writer,
+          liked,
+          updatedAt,
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, []);
+
   return (
     <Container id="container">
-      <MainImage
-        width="125%"
-        height="500px"
-        src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMDExMjhfMTEx%2FMDAxNjA2NTQ0MjUwMTUx.uIBm1wL-ju7ADAvnTc5dwCM1ZuAUF2M9DD5fnHhc9mYg.sErQnf3Qjk3pEWPEgINwAYu_ricFFBLIyyIqpYaYADsg.JPEG.wind380%2F%25BF%25A4%25BD%25C3%25C6%25BC%25BB%25F3%25B0%25A1%25B3%25BB%25BA%25CE.jpg&type=sc960_832"
-      />
+      <MainImage width="125%" height="500px" src={imageUrl} />
       <Wrap>
         <WhiteSpace />
         <ContentContainer>
           <Post>
             <p style={{ color: '#777777', fontSize: 18 }}>온라인 집들이</p>
-            <Title>계획서만 50장! 내 머릿 속 인테리어, 그대로 실현하기</Title>
+            <Title>{title}</Title>
             <ProfileContainer>
               <Profile>
                 <ProfileImg
@@ -49,9 +93,16 @@ const StoryPostDetail = () => {
                   src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMDExMjhfMTEx%2FMDAxNjA2NTQ0MjUwMTUx.uIBm1wL-ju7ADAvnTc5dwCM1ZuAUF2M9DD5fnHhc9mYg.sErQnf3Qjk3pEWPEgINwAYu_ricFFBLIyyIqpYaYADsg.JPEG.wind380%2F%25BF%25A4%25BD%25C3%25C6%25BC%25BB%25F3%25B0%25A1%25B3%25BB%25BA%25CE.jpg&type=sc960_832"
                 />
                 <Nickname>
-                  <b style={{ fontSize: 16 }}>to-mohome</b>
+                  <b style={{ fontSize: 16 }}>{writer}</b>
                   <span style={{ color: '#777777', fontSize: 16 }}>
-                    2021년 10월 06일
+                    {createdAt
+                      ? createdAt[0] +
+                        '년 ' +
+                        createdAt[1] +
+                        '월 ' +
+                        createdAt[2] +
+                        '일'
+                      : ''}
                   </span>
                 </Nickname>
               </Profile>
@@ -124,17 +175,13 @@ const StoryPostDetail = () => {
                   flexDirection: 'column',
                 }}
               >
-                <p>
-                  안녕하세요. 오늘의 집에 첫 집들이를 소개하게 된 "투모"입니다.
-                  얼마 전 새로 이사 온 현재 집에 무한 애정을 갖고 매일 이리저리
-                  들고 옮기는 재미에 빠져있습니다.
-                </p>
+                <p>{content}</p>
               </div>
-              <Footer />
+              <Footer like={liked} writer={writer} />
             </div>
           </Post>
         </ContentContainer>
-        <Sidebar />
+        <Sidebar like={liked} />
       </Wrap>
       <FixedMenu />
     </Container>
@@ -236,11 +283,11 @@ const SimpleInfo = styled.div`
 `;
 const ContentContainer = styled.div`
   display: flex;
-  width: 50%;
+  width: 80%;
   height: 100%;
   justify-content: center;
 `;
 const WhiteSpace = styled.div`
-  width: 25%;
+  width: 10%;
 `;
 export default StoryPostDetail;

@@ -73,7 +73,7 @@ function App() {
               <Route path="/story" element={<Story />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/product/:id" element={<Product />} />
-              <Route path="/story/post" element={<StoryPostDetail />} />
+              <Route path="/story/post/:id" element={<StoryPostDetail />} />
               <Route path="/order" element={<Order />} />
               <Route path="/social-signup" element={<SocialSignup />} />
               <Route path="/error" element={<Error />} />
