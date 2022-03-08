@@ -131,14 +131,14 @@ const Store = () =>{
 }
 const Container = styled.div`
 display: flex;
-width: 1256px;
+width: 100%;
 height: 100%;
 
 `
 const ContentContainer = styled.div`
 display: flex;
 flex-direction: column;
-width: 956px;
+width: 80%;
 height: 100%;
 
 `
@@ -149,9 +149,8 @@ const TodayDeal =styled.div`
 display: flex;
 margin-top:50px;
 flex-direction: column;
-width:50%
 height: 100%;
-
+margin-right: 20px;
 `
 
 const CategoryBlock=styled.div`
@@ -171,6 +170,7 @@ height: 100%;
 const Keyword=styled.div`
 width:25%;
 position:relative;
+margin-right: 20px ;
 
 `
 
@@ -179,9 +179,9 @@ display:flex;
 `
 const KeywordImage=styled.img`
 height:120px;
-width:200px;
+width:100%;
 object-fit: cover;
-margin:20px;
+margin-right: 20px;
 filter:brightness(50%);
 border-radius:8px;
 `
@@ -198,6 +198,7 @@ transform: translate( -50%, -50% );
 const PopularProducts =styled.div`
 display: flex;
 margin-top:50px;
+margin-right:20px;
 flex-direction: column;
 height: 100%;
 

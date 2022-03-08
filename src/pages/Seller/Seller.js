@@ -17,6 +17,7 @@ const Seller = () => {
     email: '',
     registrationNum: '',
     representative: '',
+    businessAddress: '',
   });
 
   const handleChange = (e) => {
@@ -34,7 +35,8 @@ const Seller = () => {
       form.customerCenter === '' ||
       form.email === '' ||
       form.registrationNum === '' ||
-      form.representative === ''
+      form.representative === '' ||
+      form.businessAddress === ''
     )
       alert('입력되지 않은 정보가 있습니다.');
     else {
@@ -48,6 +50,7 @@ const Seller = () => {
             email: form.email,
             registrationNum: parseInt(form.registrationNum),
             representative: form.representative,
+            businessAddress: form.businessAddress,
           },
           {
             headers: {
@@ -69,10 +72,6 @@ const Seller = () => {
         });
     }
   };
-
-  useEffect(() => {
-    console.log(form);
-  }, [form]);
 
   return (
     <Container>
@@ -134,6 +133,13 @@ const Seller = () => {
           name="registrationNum"
           onChange={handleChange}
           type="number"
+        />
+        <Input
+          label="사업장소재지"
+          width="300px"
+          margin="20px 60px"
+          name="businessAddress"
+          onChange={handleChange}
         />
       </Content>
       <Footer>

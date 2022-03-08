@@ -26,6 +26,17 @@ const Cart = () =>{
         calTotalCost();
         calShipCost();
     }
+    const deleteOption = (id, i)=>{
+        console.log(id);
+        const temp = items;
+        temp.map((item)=>{
+            if(item.id == id){
+                item.options = item.options.filter((el,index)=> index !==i)
+            }
+        })
+        setItems(temp);
+
+    }
     const calTotalCost=()=>{
         var cost =0;
         items.map((item) =>{
@@ -84,6 +95,7 @@ const Cart = () =>{
                                       index={index} 
                                       key={index} 
                                       delete={deleteItem}
+                                      deleteOption={deleteOption}
                                       handleSingleCheck={handleSingleCheck}
                                       checkItems={checkItems}/>
                             ))

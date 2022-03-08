@@ -160,24 +160,31 @@ const SummaryContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 250px;
+  height:400px;
   background-color: #eeeeee;
   border-radius: 4px;
+  overflow:auto ;
+  
+  
 `
 const Simple = styled.div`
   display: flex;
-  width: 95%;
+  width: 100%;
   flex-direction: column;
+  
   
 `
 const SimpleLine = styled.div`
   display: flex;
   font-size: 25px;
+  margin:20px;
+  
   
 
 `
 const SimpleSpan = styled.div`
     width:50%;
+    white-space:nowrap ;
     margin:0px 30px 30px 0px
 
 `

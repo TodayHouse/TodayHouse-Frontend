@@ -1,20 +1,20 @@
-import React,{useState} from "react"
+import React,{useEffect, useState} from "react"
 import styled from "styled-components"
 import logo from "../../img/logo.jpg"
 import { Link } from "react-router-dom"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { navChange } from "../../redux/reducer/navBar"
 import $ from "jquery"
-
+import { Cookies } from "react-cookie"
 const Navbar = () => {
-  const [login,setLogin]=useState(true);
   const buttonLogout = () => {
-    setLogin(false);
+    console.log("아직 구현 x")
   }
   const dispatch = useDispatch()
   const changeNavSelect = (value) => {
     dispatch(navChange(value))
   }
+
   const dropDownOver = (id) => {
     $(`#${id}`).css("display","flex")
 
@@ -23,6 +23,22 @@ const Navbar = () => {
     $(`#${id}`).css("display","none")
 
   }
+  const writingDropDownOver = (id) => {
+    $(`#${id}`).css("display","flex")
+
+  }
+  const writingDropDownOut = (id) => {
+    $(`#${id}`).css("display","none")
+
+  }
+  const cookies = new Cookies()
+  const getCookie=(name)=>{
+    return cookies.get(name)
+
+  }
+  const isLogin = getCookie("login_id") ? true: false;
+  
+  
   
 
   return (
@@ -55,7 +71,7 @@ const Navbar = () => {
           </Form>
         </NavItem>
 
-        {login ? ( //로그인 여부에 따른 조건부 렌더링
+        {isLogin ? ( //로그인 여부에 따른 조건부 렌더링
           <NavItem>
             <Menu onClick={()=>dropDownOver("menuDropDown")} onMouseLeave={()=>dropDownOut("menuDropDown")}>
               <MenuIcon 
@@ -72,11 +88,20 @@ const Navbar = () => {
                 <Item onClick={buttonLogout}>로그아웃</Item>
               </DropDown>
             </Menu>
-            <Link to="/editor">
-              <Writing>
-                글쓰기
-              </Writing>
-            </Link>
+            
+            <Menu onClick={()=>dropDownOver("writingDropDown")} onMouseLeave={()=>dropDownOut("writingDropDown")}>
+              <Writing>글쓰기</Writing>
+            
+              <DropDown id="writingDropDown">
+                <Link to="/editor/knowhow">
+                  <Item>노하우</Item>
+                </Link>
+                <Link to="/editor/story">
+                  <Item>스토리</Item>
+                </Link>
+              </DropDown>
+            </Menu>
+            
           </NavItem>
         ) : (
           <>
@@ -120,6 +145,7 @@ const NavListBack = styled.div`
 `
 const NavItem = styled.div`
   display: flex;
+  white-space:nowrap ;
 `
 const NavText = styled.div`
   display: inline-block;

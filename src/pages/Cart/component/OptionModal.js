@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect,useState } from 'react';
 import ReactModal from 'react-modal';
 import styled from "styled-components";
+import $ from 'jquery'
+import Operation from 'antd/lib/transfer/operation';
 
-const OptionModal =({item,isOpen,onSubmit}) =>{
+const OptionModal =({item,index,isOpen,onSubmit}) =>{
     const handleClickSubmit = () => {
         onSubmit();
     };
@@ -18,18 +20,45 @@ const OptionModal =({item,isOpen,onSubmit}) =>{
           
         },
       };
-      
+      const testOption = 
+      [
+          {
+              name: "블랙",
+              price:154000,
+          },
+          {
+              name:"아이보리",
+              price:154000
+          }
+      ]
+    const num = Array(100)
+    .fill()
+    .map((data,i)=>i+1);
+
+    
     
       return (
         <ReactModal isOpen = {isOpen} onSubmit = {onSubmit} style = {customStyles}>
-            {
-                item.options.map((option,index) =>
+            <Selected>
+                {
+                    testOption.map((option)=>
                     (
-                        <OptionBlock  key={index}>
+                        <option>{option.name+'('+option.price.toLocaleString() + '원)'}</option>
+                    ))
+                }
+            </Selected>
+            {
+                item.options.map((option,i) =>
+                    (
+                        <OptionBlock  key={i}>
                             <OptionName>{option.name}</OptionName>
-                                    
+                            
                             <OptionPriceBlock>
-                                <Input type="number"></Input>
+                                <SelectNum id={`${index}-${i}m`}>
+                                    {num.map((data)=>(
+                                       <option value={data} selected={data === option.number}>{data}</option>
+                                    ))}
+                                </SelectNum>
                                 <Number>{option.number} 개</Number>
                                 <Price>{option.price * option.number}</Price>
                             </OptionPriceBlock>
@@ -78,6 +107,13 @@ const OptionPriceBlock = styled.div`
     display:flex;
     
 `
+const Selected = styled.select`
+    width: 100%;
+    height: 50px;
+    border: none;
+    font-size: 16px;
+
+`
 const Submit=styled.button`
   background-color: ${(props) => props.theme.mainColor};
   color: white;
@@ -109,4 +145,8 @@ const ButtonBlock=styled.div`
     display:flex;
     margin:10px;
     
+`
+const SelectNum=styled.select`
+    width:100px;
+    height:30px;
 `
