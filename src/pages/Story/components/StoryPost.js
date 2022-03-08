@@ -5,10 +5,11 @@ import { useNavigate } from 'react-router-dom';
 //집들이 페이지의 그리드로 뿌려져있는 게시글 하나하나의 미리보기
 const StoryPost = (props) => {
   const navigate = useNavigate();
+  const { src, title, profile, nickname, scrap, view, id } = props;
   return (
     <Container
       onClick={() => {
-        navigate('/story/post');
+        navigate(`/story/post/${id}`);
       }}
     >
       <div
@@ -19,7 +20,7 @@ const StoryPost = (props) => {
           borderRadius: 8,
         }}
       >
-        <Image src={props.src} />
+        <Image src={src} />
         <Bookmark
           onClick={() => {
             alert('스크랩했습니다');
@@ -29,22 +30,19 @@ const StoryPost = (props) => {
           src={require('../../../img/bookmark.png')}
         />
       </div>
-      <Title>{props.title}</Title>
+      <Title>{title}</Title>
       <User>
         <img
           alt="img"
           style={{ borderRadius: 20 }}
           width="20px"
           height="20px"
-          src={props.profile}
+          src={profile}
         />
-        <Nickname>{props.nickname}</Nickname>
+        <Nickname>{nickname}</Nickname>
       </User>
       <Footer>
-        <p>
-          스크랩 {props.scrap.toLocaleString()} · 조회{' '}
-          {props.view.toLocaleString()}
-        </p>
+        <p>스크랩 5,000 · 조회 5,000</p>
       </Footer>
     </Container>
   );

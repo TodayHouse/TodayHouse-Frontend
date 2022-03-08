@@ -1,23 +1,24 @@
-import React from "react"
-import styled from "styled-components"
+import React from 'react';
+import styled from 'styled-components';
 
 //사이드바의 각 버튼
 const SidebarElement = (props) => {
+  const { onClick, alt, src, num } = props;
   return (
     <Element>
-      <Icon onClick={props.onClick}>
-        <img alt={props.alt} width="25px" height="25px" src={props.src} />
+      <Icon onClick={onClick}>
+        <img alt={alt} width="25px" height="25px" src={src} />
       </Icon>
-      <Num>{props.num.toLocaleString()}</Num>
+      <Num>{num && num.toLocaleString()}</Num>
     </Element>
-  )
-}
+  );
+};
 
 const Element = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`
+`;
 const Icon = styled.div`
   display: flex;
   align-items: center;
@@ -31,6 +32,6 @@ const Icon = styled.div`
     background-color: #eeeeee;
     cursor: pointer;
   }
-`
-const Num = styled.span``
-export default SidebarElement
+`;
+const Num = styled.span``;
+export default SidebarElement;

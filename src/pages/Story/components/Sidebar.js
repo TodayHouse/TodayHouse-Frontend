@@ -1,35 +1,36 @@
 import React from 'react';
 import styled from 'styled-components';
-import Element from '../elements/SidebarElement';
+import SidebarElement from '../elements/SidebarElement';
 
 //집들이 게시글 상세 페이지의 좋아요, 스크랩, 댓글, 공유 버튼이 있는 사이드바 컴포넌트
-const Sidebar = () => {
+const Sidebar = (props) => {
+  const { like } = props;
   return (
     <Wrap>
       <SidebarWrap>
         <SidebarContainer>
           <LikeAndScrap>
-            <Element
+            <SidebarElement
               alt="like"
               src="https://img.icons8.com/ios/50/000000/like--v1.png"
-              num={1085}
+              num={like}
               onClick={() => {
                 alert('dd');
               }}
             />
-            <Element
+            <SidebarElement
               alt="bookmark"
               src="https://img.icons8.com/pastel-glyph/64/000000/bookmark-ribbon.png"
               num={3844}
             />
           </LikeAndScrap>
           <CommentAndShare>
-            <Element
+            <SidebarElement
               alt="topic"
               src="https://img.icons8.com/ios/50/000000/topic.png"
               num={226}
             />
-            <Element
+            <SidebarElement
               alt="share"
               src="https://img.icons8.com/external-dreamstale-lineal-dreamstale/32/000000/external-share-interface-dreamstale-lineal-dreamstale.png"
               num={744}

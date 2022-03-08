@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Category, StoryPost } from '../components/index';
 import d from '../../../img/house1.jpg';
 import d2 from '../../../img/house2.jpg';
+import axios from 'axios';
+import theme from '../../../theme';
 
 const Story = () => {
+  const url = theme.apiUrl;
+  const [list, setList] = useState([]);
   const data = [
     {
       src: d,
@@ -48,22 +52,34 @@ const Story = () => {
     },
   ];
 
+  useEffect(() => {
+    axios
+      .get(url + 'stories')
+      .then((response) => {
+        setList(response.data.result);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, []);
+
   return (
     <Container>
       <Category />
       <CardContainer>
         <TotalNum>전체 5,882</TotalNum>
         <CardItem>
-          {data.map((item, idx) => {
+          {list.map((item, idx) => {
             return (
               <StoryPost
                 key={idx}
-                src={item.src}
+                id={item.id}
+                src={item.thumbnailUrl}
                 title={item.title}
-                profile={item.profile}
-                nickname={item.nickname}
-                scrap={item.scrap}
-                view={item.view}
+                // profile={item.profile}
+                nickname={item.writer}
+                // scrap={item.scrap}
+                // view={item.view}
               />
             );
           })}
