@@ -36,6 +36,7 @@ const Element = styled.button`
   background-color: ${(props) => props.theme.mainColor};
   font-size: 15px;
   font-weight: bold;
+  z-index: 1;
   &:hover {
     background-color: ${(props) => props.theme.hoverMainColor};
   }
