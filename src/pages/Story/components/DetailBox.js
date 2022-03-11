@@ -43,6 +43,7 @@ const Container = styled.div`
   background-color: white;
   position: absolute;
   top: 40px;
+  z-index: 2;
 `;
 const Detail = styled.div`
   width: 200px;
