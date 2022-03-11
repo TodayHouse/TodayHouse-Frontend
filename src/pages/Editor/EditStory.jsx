@@ -14,6 +14,7 @@ import {Link} from 'react-router-dom';
 import { getCookie } from '../../App';
 
 const EditStory = () => {
+  const [contentImages, setCImages] = useState([]);
   const [cookie, setCookie] = useState("");
   const [titleText, setTitle] = useState("");
   const [contentText, setContent] = useState("");
@@ -22,13 +23,15 @@ const EditStory = () => {
   const [isOpen2, setOpen2] = useState(false);
   //const cookieState= useSelector((state) => state.login.cookieState);
   const accessToken = getCookie('login_id');
-
+  const formData = new FormData();
   useEffect(() => {
     console.log("쿠키 로딩");
     setCookie(accessToken);
     console.log(accessToken);
   }, []);
-  
+
+
+
   const handleTitle = (e) => {
     setTitle(e.target.value);
     console.log(e.target.value);
@@ -37,6 +40,8 @@ const EditStory = () => {
     setContent(e.target.value);
     console.log(e.target.value);
   };
+
+
 
   const handleClick1 = () => {
     setOpen1(true);
@@ -52,12 +57,13 @@ const EditStory = () => {
   };
   
   const upload = () => {
-    const formData = new FormData();
+   
     const file = document.getElementById("file");
     console.log("쿠키 상태" + cookie);
     formData.append("file", file.files[0]);
+    contentImages.forEach(img => formData.append("file", img));
     console.log(file.files[0]);
-    console.log(formData);
+    
     const param = {
       category : "STORY",
       content : contentText,
@@ -132,13 +138,17 @@ const EditStory = () => {
     
       </TitleText>
       <WhiteBack>
-      <input type = "text" onChange = {handleContent} placeholder = "test"></input>
-      <TextEditor onChange = {handleContent}></TextEditor>
+      <TextEditor SetContent={setContent}>
+      </TextEditor>
       </WhiteBack>
       </>
     );
 }
 //
+const AllCover = styled.input`
+  
+`
+
 const TitleText = styled.input`
   display : flex;
   margin-top : 15px;
