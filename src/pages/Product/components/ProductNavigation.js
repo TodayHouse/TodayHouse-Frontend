@@ -24,7 +24,7 @@ const ProductNavigation = () => {
             key={idx}
             style={{ width: '20%' }}
             to={linkTo[idx]}
-            offset={-70}
+            offset={-150}
           >
             <NavbarElement
               id={idx}
