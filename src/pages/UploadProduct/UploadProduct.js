@@ -34,12 +34,23 @@ const UploadProduct = () => {
   const [images, setImages] = useState([]);
   const [discountPrice, setDiscountPrice] = useState('');
   const [free, setFree] = useState(true); //무료배송 여부
+  const formData = new FormData();
 
   const onChange = (e) => {
-    let list = [...images, e.target.files[0]];
-    setImages(list);
+    // let list = [...images, e.target.files[0]];
+    formData.append('file', e.target.files[0]);
+
+    let fileReader = new FileReader();
+    fileReader.readAsDataURL(e.target.files[0]);
+    fileReader.onload = function (evt) {
+      setImages(evt.target.result);
+    };
+    // setImages(list);
   };
 
+  useEffect(() => {
+    console.log(images);
+  }, [images]);
   const handleChange = (e) => {
     const changed = {
       ...form,
@@ -63,17 +74,23 @@ const UploadProduct = () => {
         .post(
           url + 'products',
           {
+            categoryId: 0,
+            childOption: '',
             deliveryFee,
             discountRate,
-            image,
+            parentOption: '',
+            parentOptions: [],
             price,
             productDetail,
+            selectionOption: '',
+            selectionOptions: [],
             specialPrice,
             title,
           },
+          formData,
           {
             headers: {
-              'Content-Type': 'application/json',
+              'Content-Type': 'multipart/form-data',
               Authorization: `Bearer ${accessToken}`,
             },
             withCredentials: true,
@@ -130,10 +147,10 @@ const UploadProduct = () => {
           style={{ display: 'none' }}
           onChange={onChange}
           multiple
-          accept="img/*"
+          accept="image/*"
         />
         <div>
-          <img width="200px" height="200px" src={images[0]} alt="img" />
+          <img width="200px" height="200px" src={images} alt="img" />
         </div>
         <Input
           label="가격"
