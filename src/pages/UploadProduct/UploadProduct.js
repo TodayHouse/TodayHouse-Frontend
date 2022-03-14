@@ -10,10 +10,10 @@ const UploadProduct = () => {
   const url = theme.apiUrl;
   const accessToken = getCookie('login_id');
   const navigate = useNavigate();
+  const [previewImgs, setPreviewImgs] = useState('');
   const [form, setForm] = useState({
     title: '',
-    image:
-      'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxODExMDZfNzIg%2FMDAxNTQxNDgzNTIwNDAw.zmQOUo_ahq64kf0QGODzvB75SSb2754BnyBP6y8KKBYg.AWxRc3-cTNNekmLgvTX3n4JjKuZe2CSPd6ZJyNAkEe0g.JPEG.kasiiyou%2FDSC09441.JPG&type=sc960_832',
+    image: '',
     price: '',
     specialPrice: false,
     discountRate: 0,
@@ -31,26 +31,24 @@ const UploadProduct = () => {
     productDetail,
   } = form;
 
-  const [images, setImages] = useState([]);
   const [discountPrice, setDiscountPrice] = useState('');
   const [free, setFree] = useState(true); //무료배송 여부
   const formData = new FormData();
 
   const onChange = (e) => {
+    console.log(e.target.files[0]);
     // let list = [...images, e.target.files[0]];
-    formData.append('file', e.target.files[0]);
+    // formData.append('file', e.target.files[0]);
+    setForm({ ...form, image: e.target.files[0] });
 
     let fileReader = new FileReader();
     fileReader.readAsDataURL(e.target.files[0]);
     fileReader.onload = function (evt) {
-      setImages(evt.target.result);
+      setPreviewImgs(evt.target.result);
     };
     // setImages(list);
   };
 
-  useEffect(() => {
-    console.log(images);
-  }, [images]);
   const handleChange = (e) => {
     const changed = {
       ...form,
@@ -70,27 +68,82 @@ const UploadProduct = () => {
     if (title === '' || image === '' || price === '' || productDetail === '')
       alert('입력되지 않은 정보가 있습니다.');
     else {
+      formData.append('file', form.image);
+      formData.append(
+        'request',
+        new Blob(
+          [
+            JSON.stringify({
+              categoryId: 1,
+              childOption: '',
+              deliveryFee,
+              discountRate,
+              parentOption: '',
+              parentOptions: [
+                {
+                  childOptions: [
+                    { content: '', parentOptionId: 1, price: 0, stock: 0 },
+                  ],
+                  content: '',
+                  price: 0,
+                  productId: 1,
+                  stock: 0,
+                },
+              ],
+              price,
+              productDetail,
+              selectionOption: '',
+              selectionOptions: [
+                { content: '', productId: 1, price: 0, stock: 0 },
+              ],
+              specialPrice,
+              title,
+            }),
+          ],
+          { type: 'application/json' }
+        )
+      );
+      for (var pair of formData.keys()) {
+        console.log(pair);
+      }
+      for (var val of formData.values()) {
+        console.log(val);
+      }
+      console.log(formData.has('file'));
+      console.log(formData.has('request'));
       axios
         .post(
           url + 'products',
-          {
-            categoryId: 0,
-            childOption: '',
-            deliveryFee,
-            discountRate,
-            parentOption: '',
-            parentOptions: [],
-            price,
-            productDetail,
-            selectionOption: '',
-            selectionOptions: [],
-            specialPrice,
-            title,
-          },
           formData,
+          // {
+          //   categoryId: 0,
+          //   childOption: '',
+          //   deliveryFee,
+          //   discountRate,
+          //   parentOption: '',
+          //   parentOptions: [
+          //     {
+          //       childOptions: [
+          //         { content: '', parentOptionId: 0, price: 0, stock: 0 },
+          //       ],
+          //       content: '',
+          //       price: 0,
+          //       productId: 0,
+          //       stock: 0,
+          //     },
+          //   ],
+          //   price,
+          //   productDetail,
+          //   selectionOption: '',
+          //   selectionOptions: [
+          //     { content: '', productId: 0, price: 0, stock: 0 },
+          //   ],
+          //   specialPrice,
+          //   title,
+          // },
           {
             headers: {
-              'Content-Type': 'multipart/form-data',
+              // 'Content-Type': 'multipart/form-data',
               Authorization: `Bearer ${accessToken}`,
             },
             withCredentials: true,
@@ -150,7 +203,7 @@ const UploadProduct = () => {
           accept="image/*"
         />
         <div>
-          <img width="200px" height="200px" src={images} alt="img" />
+          <img width="200px" height="200px" src={previewImgs} alt="img" />
         </div>
         <Input
           label="가격"
