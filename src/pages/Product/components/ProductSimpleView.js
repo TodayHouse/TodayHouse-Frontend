@@ -12,14 +12,20 @@ const mockSide = [
 
 const ProductSimpleView = () => {
   const src = useSelector((state) => state.product.form.images);
-  console.log(src && src[0].image);
+  console.log(src);
+  // console.log(src[0].fileName);
   return (
     <Container>
       <SidePhotoView>
         {/* {mockSide.map((data, idx) => (
           <SidePhoto key={idx} src={data} />
         ))} */}
-        <SidePhoto src={src && `data:image/png;base64,${src[0].image}`} />
+        <SidePhoto
+          src={
+            src &&
+            `https://today-house-bucket.s3.ap-northeast-2.amazonaws.com/${src[0].fileName}`
+          }
+        />
       </SidePhotoView>
       <MainPhotoView>
         <MainPhoto />
