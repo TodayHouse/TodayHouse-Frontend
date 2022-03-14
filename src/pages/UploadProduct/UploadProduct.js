@@ -10,10 +10,10 @@ const UploadProduct = () => {
   const url = theme.apiUrl;
   const accessToken = getCookie('login_id');
   const navigate = useNavigate();
-  const [previewImgs, setPreviewImgs] = useState('');
+  const [previewImgs, setPreviewImgs] = useState([]);
   const [form, setForm] = useState({
     title: '',
-    image: '',
+    image: [],
     price: '',
     specialPrice: false,
     discountRate: 0,
@@ -37,16 +37,16 @@ const UploadProduct = () => {
 
   const onChange = (e) => {
     console.log(e.target.files[0]);
-    // let list = [...images, e.target.files[0]];
-    // formData.append('file', e.target.files[0]);
-    setForm({ ...form, image: e.target.files[0] });
+    let list = [...form.image, e.target.files[0]];
+    setForm({ ...form, image: list });
 
+    //이미지 미리보기를 위한 FileReader 사용
     let fileReader = new FileReader();
     fileReader.readAsDataURL(e.target.files[0]);
     fileReader.onload = function (evt) {
-      setPreviewImgs(evt.target.result);
+      let previewList = [...previewImgs, evt.target.result];
+      setPreviewImgs(previewList);
     };
-    // setImages(list);
   };
 
   const handleChange = (e) => {
@@ -65,10 +65,12 @@ const UploadProduct = () => {
   };
 
   const upload = () => {
-    if (title === '' || image === '' || price === '' || productDetail === '')
+    if (title === '' || image === [] || price === '' || productDetail === '')
       alert('입력되지 않은 정보가 있습니다.');
     else {
-      formData.append('file', form.image);
+      form.image.forEach((data) => {
+        formData.append('file', data);
+      });
       formData.append(
         'request',
         new Blob(
@@ -103,52 +105,14 @@ const UploadProduct = () => {
           { type: 'application/json' }
         )
       );
-      for (var pair of formData.keys()) {
-        console.log(pair);
-      }
-      for (var val of formData.values()) {
-        console.log(val);
-      }
-      console.log(formData.has('file'));
-      console.log(formData.has('request'));
+
       axios
-        .post(
-          url + 'products',
-          formData,
-          // {
-          //   categoryId: 0,
-          //   childOption: '',
-          //   deliveryFee,
-          //   discountRate,
-          //   parentOption: '',
-          //   parentOptions: [
-          //     {
-          //       childOptions: [
-          //         { content: '', parentOptionId: 0, price: 0, stock: 0 },
-          //       ],
-          //       content: '',
-          //       price: 0,
-          //       productId: 0,
-          //       stock: 0,
-          //     },
-          //   ],
-          //   price,
-          //   productDetail,
-          //   selectionOption: '',
-          //   selectionOptions: [
-          //     { content: '', productId: 0, price: 0, stock: 0 },
-          //   ],
-          //   specialPrice,
-          //   title,
-          // },
-          {
-            headers: {
-              // 'Content-Type': 'multipart/form-data',
-              Authorization: `Bearer ${accessToken}`,
-            },
-            withCredentials: true,
-          }
-        )
+        .post(url + 'products', formData, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          withCredentials: true,
+        })
         .then((response) => {
           console.log(response);
           if (response.data.isSuccess) {
@@ -203,7 +167,9 @@ const UploadProduct = () => {
           accept="image/*"
         />
         <div>
-          <img width="200px" height="200px" src={previewImgs} alt="img" />
+          {previewImgs.map((data, idx) => (
+            <img key={idx} width="200px" height="200px" src={data} alt="img" />
+          ))}
         </div>
         <Input
           label="가격"
