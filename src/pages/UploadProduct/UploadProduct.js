@@ -36,17 +36,25 @@ const UploadProduct = () => {
   const formData = new FormData();
 
   const onChange = (e) => {
-    console.log(e.target.files[0]);
-    let list = [...form.image, e.target.files[0]];
+    // 여러 개의 FileList 데이터를 배열에 하나씩 추가
+    let list = [...form.image];
+    for (let i = 0; i < e.target.files.length; i++) {
+      list.push(e.target.files[i]);
+    }
     setForm({ ...form, image: list });
 
     //이미지 미리보기를 위한 FileReader 사용
-    let fileReader = new FileReader();
-    fileReader.readAsDataURL(e.target.files[0]);
-    fileReader.onload = function (evt) {
-      let previewList = [...previewImgs, evt.target.result];
-      setPreviewImgs(previewList);
-    };
+    let previewList = [...previewImgs];
+    for (let i = 0; i < e.target.files.length; i++) {
+      let fileReader = new FileReader();
+      fileReader.readAsDataURL(e.target.files[i]);
+      fileReader.onload = function (evt) {
+        previewList.push(evt.target.result);
+      };
+      console.log(previewList);
+    }
+
+    setPreviewImgs(previewList);
   };
 
   const handleChange = (e) => {
