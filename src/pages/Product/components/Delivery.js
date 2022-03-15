@@ -1,28 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
-
-const deliveryMock = [
-  { title: '배송', element: '화물택배상품' },
-  { title: '배송비', element: '무료배송' },
-  { title: '도서산간 추가 배송비', element: '50,000원' },
-  { title: '배송불가 지역', element: '배송불가 지역이 없습니다.' },
-  { title: '비례 배송비', element: '주문 상품 개수에 비례하여 배송비 부과' },
-];
-
-const exchangeMock = [
-  {
-    title: '반품배송비',
-    element: '80,000원 (최초 배송비가 무료인 경우 160,000원 부과)',
-  },
-  {
-    title: '교환배송비',
-    element: '80,000원',
-  },
-  {
-    title: '보내실 곳',
-    element: '(12782) 경기 광주시 고불로279번길 9-6 (태전동) 퀵슬립',
-  },
-];
+import { useSelector } from 'react-redux';
+import axios from 'axios';
+import theme from '../../../theme';
 
 const sellerMock = [
   { title: '상호', element: '준수 컴퍼니' },
@@ -37,30 +17,33 @@ const sellerMock = [
 ];
 
 const Delivery = (props) => {
+  const deliveryFee = useSelector((state) => state.product.form.deliveryFee);
+  const sellerId = useSelector((state) => state.product.form.sellerId);
+  const url = theme.apiUrl;
+
+  useEffect(() => {
+    //판매자 id 관련 도현님 질문
+    console.log(sellerId);
+    axios
+      .get(url + `sellers/1`)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, []);
   return (
     <Container id={props.id}>
       <DeliveryContainer>
         <Header>배송</Header>
         <Content>
-          {deliveryMock.map((data, idx) => (
-            <ElementContainer key={idx}>
-              <Title>{data.title}</Title>
-              <Element>{data.element}</Element>
-            </ElementContainer>
-          ))}
+          <ElementContainer>
+            <Title>배송비</Title>
+            <Element>{deliveryFee === 0 ? '무료배송' : deliveryFee}</Element>
+          </ElementContainer>
         </Content>
       </DeliveryContainer>
-      <ExchangeContainer>
-        <Header>교환/환불</Header>
-        <Content>
-          {exchangeMock.map((data, idx) => (
-            <ElementContainer key={idx}>
-              <Title>{data.title}</Title>
-              <Element>{data.element}</Element>
-            </ElementContainer>
-          ))}
-        </Content>
-      </ExchangeContainer>
       <SellerContainer>
         <Header>판매자 정보</Header>
         <Content>

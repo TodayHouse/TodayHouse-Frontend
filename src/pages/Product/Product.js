@@ -16,7 +16,7 @@ import $ from 'jquery';
 import axios from 'axios';
 import theme from '../../theme';
 import { useDispatch } from 'react-redux';
-import { dispatchSetForm } from '../../redux/reducer/product';
+import { changeImg, dispatchSetForm } from '../../redux/reducer/product';
 
 const Product = () => {
   // 상품 상세정보 불러오는 api 호출할 때 productId 넣어서 보내면 해당 id에 맞는 정보를 서버에서 받아옴
@@ -41,6 +41,13 @@ const Product = () => {
           const { result } = response.data;
           console.log(result);
           dispatch(dispatchSetForm(result));
+
+          // 최초 메인 이미지 설정
+          dispatch(
+            changeImg(
+              `https://today-house-bucket.s3.ap-northeast-2.amazonaws.com/${result.images[0].fileName}`
+            )
+          );
         }
       })
       .catch((e) => {
@@ -86,6 +93,7 @@ const Container = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
+  background-color: white;
 `;
 const Wrap = styled.div`
   width: 100%;
