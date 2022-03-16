@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
@@ -20,19 +20,21 @@ const Delivery = (props) => {
   const deliveryFee = useSelector((state) => state.product.form.deliveryFee);
   const sellerId = useSelector((state) => state.product.form.sellerId);
   const url = theme.apiUrl;
+  const [sellerInfo, setSellerInfo] = useState({});
 
   useEffect(() => {
     //판매자 id 관련 도현님 질문
-    console.log(sellerId);
     axios
-      .get(url + `sellers/1`)
+      .get(url + `sellers/${sellerId}`)
       .then((response) => {
         console.log(response);
+        setSellerInfo(response.data.result);
       })
       .catch((e) => {
         console.log(e);
       });
-  }, []);
+  }, [sellerId]);
+
   return (
     <Container id={props.id}>
       <DeliveryContainer>
@@ -47,12 +49,30 @@ const Delivery = (props) => {
       <SellerContainer>
         <Header>판매자 정보</Header>
         <Content>
-          {sellerMock.map((data, idx) => (
-            <ElementContainer key={idx}>
-              <Title>{data.title}</Title>
-              <Element>{data.element}</Element>
-            </ElementContainer>
-          ))}
+          <ElementContainer>
+            <Title>상호</Title>
+            <Element>{sellerInfo.companyName}</Element>
+          </ElementContainer>
+          <ElementContainer>
+            <Title>대표자</Title>
+            <Element>{sellerInfo.representative}</Element>
+          </ElementContainer>
+          <ElementContainer>
+            <Title>사업장소재지</Title>
+            <Element>{sellerInfo.businessAddress}</Element>
+          </ElementContainer>
+          <ElementContainer>
+            <Title>고객센터 전화번호</Title>
+            <Element>{sellerInfo.customerCenter}</Element>
+          </ElementContainer>
+          <ElementContainer>
+            <Title>E-mail</Title>
+            <Element>{sellerInfo.email}</Element>
+          </ElementContainer>
+          <ElementContainer>
+            <Title>사업자 등록번호</Title>
+            <Element>{sellerInfo.registrationNum}</Element>
+          </ElementContainer>
         </Content>
       </SellerContainer>
     </Container>
