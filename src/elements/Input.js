@@ -2,23 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Input = (props) => {
-  const {
-    id,
-    name,
-    value,
-    placeholder,
-    onChange,
-    autoFocus,
-    multiple,
-    disabled,
-    width,
-    fontSize,
-    margin,
-    label,
-    type,
-    style,
-    center,
-  } = props;
+  const { label, center } = props;
 
   return (
     <Container center={center}>
@@ -38,7 +22,6 @@ Input.defaultProps = {
 };
 
 const Container = styled.div`
-  width: 100%;
   display: flex;
   align-items: center;
   justify-content: ${(props) => (props.center ? 'center' : '')};
