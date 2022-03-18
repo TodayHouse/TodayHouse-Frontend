@@ -6,18 +6,13 @@ import { useSelector } from 'react-redux';
 
 const ProductSimpleView = () => {
   // 상품 등록 시 등록한 이미지 불러와서 뿌려줌
-  const images = useSelector((state) => state.product.form.images);
+  const images = useSelector((state) => state.product.form.imageUrls);
 
   return (
     <Container>
       <SidePhotoView>
         {images &&
-          images.map((data, idx) => (
-            <SidePhoto
-              key={idx}
-              src={`https://today-house-bucket.s3.ap-northeast-2.amazonaws.com/${data.fileName}`}
-            />
-          ))}
+          images.map((data, idx) => <SidePhoto key={idx} src={data} />)}
       </SidePhotoView>
       <MainPhotoView>
         <MainPhoto />
