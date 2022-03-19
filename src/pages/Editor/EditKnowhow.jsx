@@ -30,9 +30,14 @@ const EditKnowhow = () => {
     console.log(accessToken);
   }, []);
   
+  const contentSetter = (e) => {
+    setContent(e.target.value);
+    console.log("콘텐츠 : " + e.target.value);
+  }
+
   const handleTitle = (e) => {
     setTitle(e.target.value);
-    console.log(e.target.value);
+    console.log("타이틀 : " + e.target.value);
   };
   const handleContent = (e) =>{
     setContent(e.target.value);
@@ -56,7 +61,12 @@ const EditKnowhow = () => {
     const formData = new FormData();
     const file = document.getElementById("file");
     console.log("쿠키 상태" + cookie);
-    formData.append("file", file.files[0]);
+    for(var i = 0; i <file.files.length; i++)
+    {
+      formData.append("file", file.files[i]);
+    }
+    
+
     console.log(file.files[0]);
     console.log(formData);
     const param = {
@@ -132,13 +142,23 @@ const EditKnowhow = () => {
       <TitleText placeholder="제목을 입력해주세요" type = "text" id ="title" onChange = {handleTitle} value={titleText}>
       
       </TitleText>
-      <WhiteBack>
-      <TextEditor SetContent={setContent}>
-      </TextEditor>
-      </WhiteBack>
+
+      <Editor type = 'text' onChange = {contentSetter}></Editor>
+     
       </>
     );
 }
+
+const Editor = styled.input`
+  border-radius : 4px;
+  border : 2px solid skyblue;
+  height : 200px;
+  width : 800px; 
+  vertical-align: top;
+  text-align: left;
+  
+`
+
 const TitleText = styled.input`
   display : flex;
   margin-top : 15px;
@@ -262,8 +282,5 @@ background-color : white;
   margin-left : 160px;
 `;
 
-const WhiteBack = styled.div`
-  background-color : white;
-  width : 800px;
-`
+
 export default EditKnowhow;

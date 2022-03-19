@@ -24,6 +24,7 @@ import {
   Setting,
   Seller,
   UploadProduct,
+  Stories
 } from '../src/pages/index';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import 'slick-carousel/slick/slick.css';
@@ -86,6 +87,10 @@ function App() {
                 <Route
                   path="/mypage/setting"
                   element={<Setting></Setting>}
+                ></Route>
+                 <Route
+                  path="/mypage/story"
+                  element={<Stories></Stories>}
                 ></Route>
               </Route>
             </Route>

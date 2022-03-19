@@ -14,12 +14,14 @@ import Search from './SearchPW/Search';
 import Order from './Order/Order';
 import SocialSignup from './SocialSignup/SocialSignup';
 import Error from './SocialSignup/Error';
-import MyPage from './MyPage/MyPage';
 import CardCollections from './MyPage/CardCollections';
+import MyPage from './MyPage/MyPage';
 import Setting from './MyPage/Setting';
+import Stories from './MyPage/MyStories';
 import Cart from './Cart/Cart';
 import Seller from './Seller/Seller';
 import UploadProduct from './UploadProduct/UploadProduct';
+
 export {
   Login,
   Main,
@@ -43,4 +45,5 @@ export {
   Setting,
   Seller,
   UploadProduct,
+  Stories
 };

@@ -5,7 +5,7 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 const API_URL = "http://localhost:8080/";
 const UPLOAD_ENDPOINT = "stories";
 
-export default function TextEditor({ handleChange, SetContent }) {
+export default function TextEditor(props) {
 	function uploadAdapter(loader) {
 	  return {
 		upload: () => {
@@ -56,7 +56,7 @@ export default function TextEditor({ handleChange, SetContent }) {
 			onChange={(event, editor) => {
 			  const data2 = editor.getData();
 			  
-			  SetContent(data2);
+			  props.contentSetter(data2);
 			  console.log(data2);
 
 			}}

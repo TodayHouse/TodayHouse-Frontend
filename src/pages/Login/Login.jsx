@@ -7,6 +7,7 @@ import {useCookies} from "react-cookie";
 import { useSelector, useDispatch } from 'react-redux';
 import { cookieSet } from '../../redux/reducer/login';
 import axios from "axios";
+
 axios.defaults.withCredentails = true;
 const headers = {withCredentails : true};
 
@@ -49,10 +50,14 @@ const Login = () => {
                 return;
             }
             const accessToken = response.data.result.accessToken;
+            console.log(response.data.result);
             axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
             
             if(accessToken){
                 setCookie('login_id', accessToken, { path : "/"});
+                setCookie('original_id', user.uid, {path: "/"});
+                setCookie('index_id', response.data.result.id, {path: "/"});
+                console.log(user.uid);
                 dispatch(cookieSet(accessToken));
                
                 console.log("토큰 : " + accessToken);

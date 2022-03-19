@@ -30,7 +30,10 @@ const EditStory = () => {
     console.log(accessToken);
   }, []);
 
-
+  const contentSetter = (e) => {
+    setContent(e.target.value);
+    console.log(e.target.value);
+  }
 
   const handleTitle = (e) => {
     setTitle(e.target.value);
@@ -60,17 +63,18 @@ const EditStory = () => {
    
     const file = document.getElementById("file");
     console.log("쿠키 상태" + cookie);
-    formData.append("file", file.files[0]);
-    contentImages.forEach(img => formData.append("file", img));
-    console.log(file.files[0]);
-    
+   
+    for(var i = 0; i <file.files.length; i++)
+    {
+      formData.append("file", file.files[i]);
+    }
     const param = {
       category : "STORY",
       content : contentText,
       title : titleText,
     }//`Bearer ${accessToken}`
     formData.append("request", new Blob([JSON.stringify(param)], {type : "application/json"}))
-    //formData를 넣어야하는데 어떻게 줄지
+
     try{
       axios.post("http://localhost:8080/stories", formData, {
         headers : {
@@ -137,16 +141,20 @@ const EditStory = () => {
       <TitleText placeholder="제목을 입력해주세요" type = "text" id ="title" onChange = {handleTitle} value={titleText}>
     
       </TitleText>
-      <WhiteBack>
-      <TextEditor SetContent={setContent}>
-      </TextEditor>
-      </WhiteBack>
+      <Editor type = 'text' onChange = {contentSetter}></Editor>
+
       </>
     );
 }
 //
-const AllCover = styled.input`
-  
+
+const Editor = styled.input`
+  border-radius : 4px;
+  border : 2px solid skyblue;
+  height : 200px;
+  width : 800px; 
+  text-align: left;
+  vertical-align: top;
 `
 
 const TitleText = styled.input`
@@ -272,8 +280,4 @@ background-color : white;
   margin-left : 160px;
 `;
 
-const WhiteBack = styled.div`
-  background-color : white;
-  width : 800px;
-`
 export default EditStory;
