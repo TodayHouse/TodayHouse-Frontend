@@ -10,10 +10,10 @@ const UploadProduct = () => {
   const url = theme.apiUrl;
   const accessToken = getCookie('login_id');
   const navigate = useNavigate();
+  const [previewImgs, setPreviewImgs] = useState([]);
   const [form, setForm] = useState({
     title: '',
-    image:
-      'https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAxODExMDZfNzIg%2FMDAxNTQxNDgzNTIwNDAw.zmQOUo_ahq64kf0QGODzvB75SSb2754BnyBP6y8KKBYg.AWxRc3-cTNNekmLgvTX3n4JjKuZe2CSPd6ZJyNAkEe0g.JPEG.kasiiyou%2FDSC09441.JPG&type=sc960_832',
+    image: [],
     price: '',
     specialPrice: false,
     discountRate: 0,
@@ -31,13 +31,30 @@ const UploadProduct = () => {
     productDetail,
   } = form;
 
-  const [images, setImages] = useState([]);
   const [discountPrice, setDiscountPrice] = useState('');
   const [free, setFree] = useState(true); //무료배송 여부
+  const formData = new FormData();
 
   const onChange = (e) => {
-    let list = [...images, e.target.files[0]];
-    setImages(list);
+    // 여러 개의 FileList 데이터를 배열에 하나씩 추가
+    let list = [...form.image];
+    for (let i = 0; i < e.target.files.length; i++) {
+      list.push(e.target.files[i]);
+    }
+    setForm({ ...form, image: list });
+
+    //이미지 미리보기를 위한 FileReader 사용
+    let previewList = [...previewImgs];
+    for (let i = 0; i < e.target.files.length; i++) {
+      let fileReader = new FileReader();
+      fileReader.readAsDataURL(e.target.files[i]);
+      fileReader.onload = function (evt) {
+        previewList.push(evt.target.result);
+      };
+      console.log(previewList);
+    }
+
+    setPreviewImgs(previewList);
   };
 
   const handleChange = (e) => {
@@ -56,29 +73,54 @@ const UploadProduct = () => {
   };
 
   const upload = () => {
-    if (title === '' || image === '' || price === '' || productDetail === '')
+    if (title === '' || image === [] || price === '' || productDetail === '')
       alert('입력되지 않은 정보가 있습니다.');
     else {
-      axios
-        .post(
-          url + 'products',
-          {
-            deliveryFee,
-            discountRate,
-            image,
-            price,
-            productDetail,
-            specialPrice,
-            title,
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${accessToken}`,
-            },
-            withCredentials: true,
-          }
+      form.image.forEach((data) => {
+        formData.append('file', data);
+      });
+      formData.append(
+        'request',
+        new Blob(
+          [
+            JSON.stringify({
+              categoryId: 1,
+              childOption: '',
+              deliveryFee,
+              discountRate,
+              parentOption: '',
+              parentOptions: [
+                {
+                  childOptions: [
+                    { content: '', parentOptionId: 1, price: 0, stock: 0 },
+                  ],
+                  content: '',
+                  price: 0,
+                  productId: 1,
+                  stock: 0,
+                },
+              ],
+              price,
+              productDetail,
+              selectionOption: '',
+              selectionOptions: [
+                { content: '', productId: 1, price: 0, stock: 0 },
+              ],
+              specialPrice,
+              title,
+            }),
+          ],
+          { type: 'application/json' }
         )
+      );
+
+      axios
+        .post(url + 'products', formData, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          withCredentials: true,
+        })
         .then((response) => {
           console.log(response);
           if (response.data.isSuccess) {
@@ -130,10 +172,12 @@ const UploadProduct = () => {
           style={{ display: 'none' }}
           onChange={onChange}
           multiple
-          accept="img/*"
+          accept="image/*"
         />
         <div>
-          <img width="200px" height="200px" src={images[0]} alt="img" />
+          {previewImgs.map((data, idx) => (
+            <img key={idx} width="200px" height="200px" src={data} alt="img" />
+          ))}
         </div>
         <Input
           label="가격"

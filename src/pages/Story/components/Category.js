@@ -579,6 +579,7 @@ const Category = () => {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  z-index: 2;
 `;
 const CategoryContainer = styled.div`
   display: flex;
@@ -596,6 +597,7 @@ const FlatAreaBox = styled.div`
   box-shadow: 5px 5px 8px #aaaaaa;
   border-radius: 8px;
   background-color: white;
+  z-index: 2;
 `;
 const BudgetBox = styled.div`
   position: absolute;
@@ -608,6 +610,7 @@ const BudgetBox = styled.div`
   box-shadow: 5px 5px 8px #aaaaaa;
   border-radius: 8px;
   background-color: white;
+  z-index: 2;
 `;
 const ColorBox = styled.div`
   position: absolute;
@@ -620,6 +623,7 @@ const ColorBox = styled.div`
   box-shadow: 5px 5px 8px #aaaaaa;
   border-radius: 8px;
   background-color: white;
+  z-index: 2;
 `;
 const WorkerBox = styled.div`
   position: absolute;
@@ -633,6 +637,7 @@ const WorkerBox = styled.div`
   border-radius: 8px;
   cursor: pointer;
   background-color: white;
+  z-index: 2;
 `;
 
 const Detail = styled.div`
