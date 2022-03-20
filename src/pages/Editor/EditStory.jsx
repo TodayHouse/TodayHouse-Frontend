@@ -12,8 +12,11 @@ import axios from "axios";
 import {Link} from 'react-router-dom';
 //import { useSelector } from "react-redux";
 import { getCookie } from '../../App';
+import { useSelector } from "react-redux";
+
 
 const EditStory = () => {
+  const content = useSelector((state) => state.editor.content);
   const [contentImages, setCImages] = useState([]);
   const [cookie, setCookie] = useState("");
   const [titleText, setTitle] = useState("");
@@ -60,7 +63,8 @@ const EditStory = () => {
   };
   
   const upload = () => {
-   
+    console.log("리덕스 콘텐츠 : " + content);
+    const formData = new FormData();
     const file = document.getElementById("file");
     console.log("쿠키 상태" + cookie);
    
@@ -70,7 +74,7 @@ const EditStory = () => {
     }
     const param = {
       category : "STORY",
-      content : contentText,
+      content : content,
       title : titleText,
     }//`Bearer ${accessToken}`
     formData.append("request", new Blob([JSON.stringify(param)], {type : "application/json"}))
@@ -90,6 +94,7 @@ const EditStory = () => {
             console.log(res.data.message);
             return;
         }
+        alert('업로드 완료!')
         window.location.href = "/story";
        
       });
@@ -141,7 +146,7 @@ const EditStory = () => {
       <TitleText placeholder="제목을 입력해주세요" type = "text" id ="title" onChange = {handleTitle} value={titleText}>
     
       </TitleText>
-      <Editor type = 'text' onChange = {contentSetter}></Editor>
+      <TextEditor></TextEditor>
 
       </>
     );

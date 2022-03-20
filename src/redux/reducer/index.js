@@ -5,4 +5,5 @@ import cart from './cart';
 import mpageBar from './mNavBar';
 import story from './story';
 import login from './login';
-export { product, navBar, signup, cart, mpageBar, story, login };
+import editor from './editor';
+export { product, navBar, signup, cart, mpageBar, story, login, editor };

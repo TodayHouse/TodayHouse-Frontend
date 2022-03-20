@@ -12,8 +12,10 @@ import axios from "axios";
 import {Link} from 'react-router-dom';
 //import { useSelector } from "react-redux";
 import { getCookie } from '../../App';
+import { useSelector } from "react-redux";
 
 const EditKnowhow = () => {
+  const content = useSelector((state) => state.editor.content);
   const [contentImages, setCImages] = useState([]);
   const [cookie, setCookie] = useState("");
   const [titleText, setTitle] = useState("");
@@ -23,7 +25,7 @@ const EditKnowhow = () => {
   const [isOpen2, setOpen2] = useState(false);
   //const cookieState= useSelector((state) => state.login.cookieState);
   const accessToken = getCookie('login_id');
-
+   
   useEffect(() => {
     console.log("쿠키 로딩");
     setCookie(accessToken);
@@ -58,6 +60,7 @@ const EditKnowhow = () => {
   };
   
   const upload = () => {
+    console.log("리덕스 콘텐츠 : " + content);
     const formData = new FormData();
     const file = document.getElementById("file");
     console.log("쿠키 상태" + cookie);
@@ -65,13 +68,12 @@ const EditKnowhow = () => {
     {
       formData.append("file", file.files[i]);
     }
-    
 
     console.log(file.files[0]);
     console.log(formData);
     const param = {
       category : "KNOWHOW",
-      content : contentText,
+      content : content,
       title : titleText,
     }//`Bearer ${accessToken}`
     formData.append("request", new Blob([JSON.stringify(param)], {type : "application/json"}))
@@ -91,6 +93,7 @@ const EditKnowhow = () => {
             console.log(res.data.message);
             return;
         }
+        alert('업로드 완료!')
         window.location.href = "/advices";
        
       });
@@ -143,11 +146,13 @@ const EditKnowhow = () => {
       
       </TitleText>
 
-      <Editor type = 'text' onChange = {contentSetter}></Editor>
+      <TextEditor></TextEditor>
      
       </>
     );
 }
+
+
 
 const Editor = styled.input`
   border-radius : 4px;
