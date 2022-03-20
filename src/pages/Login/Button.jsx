@@ -13,10 +13,12 @@ const StyledButton = styled.button`
     box-shadow : 0 8px 32px 0 rgba(0, 0, 0, 0.25);
     text-transform : uppercase;
     letter-spacing : 0.2rem;
-    width : 60%;
+    width : 80%;
     height : 3rem;
     border : none;
     color : #3c354e;
+    border : 2px solid;
+    border-color : #9accf5;
     border-radius : 2rem;
     cursor : pointer;
     font-size : 15px;
