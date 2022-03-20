@@ -112,7 +112,7 @@ const EditStory = () => {
     <EditorTop href = "/">
                     <LogoImage src = "https://img.etnews.com/photonews/2104/1403026_20210419140535_358_0003.jpg"/>               
     </EditorTop>  
-
+    
     <BackgroundImage>
       <ModalContainer>    
       <ModalButton1 onClick = {handleClick1} >
