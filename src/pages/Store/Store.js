@@ -1,10 +1,13 @@
-import React,{useState} from "react";
+import React,{useState,useEffect} from "react";
 import Carousel from "./components/Carousel";
 import Category from"./components/Category";
 import styled from "styled-components";
 import ProductCard from "./components/ProductCard";
 import SideBar from "./components/SideBar";
 import {Row} from 'antd'
+import axios from "axios";
+import { useSelector } from "react-redux";
+
 
 const Store = () =>{
     const [items,setItems] = useState([
@@ -60,15 +63,40 @@ const Store = () =>{
     const load = () =>{
         setProductList([...productList,...items]) //기존 아이템리스트에 이미지 추가(임시)
     }
+    const [category,setCategory]=useState(0);
     
+    const handleCategory=(id,name)=>{
+        console.log(name)
+        setCategory(
+            {
+                id: id,
+                name:name,
+            }
+        )
+
+    }
+    useEffect(()=>{
+        try{
+            axios.get("http://localhost:8080/categories")
+            .then(function(res){
+                handleCategory(res.data.result[0].id,res.data.result[0].name)
+                
+                
+            })
+            }
+        catch(e){
+            console.log(e);
+        }
+
+    },[])
     return(
         <>
         <Container>
-            <SideBar></SideBar>
+            <SideBar handleCategory={handleCategory}></SideBar>
             <ContentContainer>
             <Carousel/>
                 <TodayDeal>
-                    <Title>오늘의 딜</Title>
+                    <Title>{category.name}</Title>
                     <Row gutter={16}>
                         {dealList && dealList.map((item,index)=>( //반복문
                                 <React.Fragment key={index}>
@@ -131,14 +159,14 @@ const Store = () =>{
 }
 const Container = styled.div`
 display: flex;
-width: 1256px;
+width: 100%;
 height: 100%;
 
 `
 const ContentContainer = styled.div`
 display: flex;
 flex-direction: column;
-width: 956px;
+width: 80%;
 height: 100%;
 
 `
@@ -149,9 +177,8 @@ const TodayDeal =styled.div`
 display: flex;
 margin-top:50px;
 flex-direction: column;
-width:50%
 height: 100%;
-
+margin-right: 20px;
 `
 
 const CategoryBlock=styled.div`
@@ -171,6 +198,7 @@ height: 100%;
 const Keyword=styled.div`
 width:25%;
 position:relative;
+margin-right: 20px ;
 
 `
 
@@ -179,9 +207,9 @@ display:flex;
 `
 const KeywordImage=styled.img`
 height:120px;
-width:200px;
+width:100%;
 object-fit: cover;
-margin:20px;
+margin-right: 20px;
 filter:brightness(50%);
 border-radius:8px;
 `
@@ -198,6 +226,7 @@ transform: translate( -50%, -50% );
 const PopularProducts =styled.div`
 display: flex;
 margin-top:50px;
+margin-right:20px;
 flex-direction: column;
 height: 100%;
 

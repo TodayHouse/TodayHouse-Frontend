@@ -1,5 +1,5 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from 'react';
+import styled from 'styled-components';
 
 const AskDetail = () => {
   return (
@@ -13,26 +13,26 @@ const AskDetail = () => {
         <Alphabet>A</Alphabet>답변
       </Answer>
     </Container>
-  )
-}
+  );
+};
 
 const Container = styled.div`
   padding: 20px 0px;
   display: flex;
   flex-direction: column;
-`
-const State = styled.span``
+`;
+const State = styled.span``;
 const Info = styled.span`
   color: #cccccc;
-`
+`;
 const Question = styled.span`
   margin-top: 10px;
   font-size: 18px;
-`
-const Answer = styled(Question)``
+`;
+const Answer = styled(Question)``;
 const Alphabet = styled.span`
   font-weight: bold;
   color: ${(props) => props.theme.mainColor};
   margin-right: 10px;
-`
-export default AskDetail
+`;
+export default AskDetail;

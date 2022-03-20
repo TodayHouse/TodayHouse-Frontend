@@ -26,7 +26,7 @@ const Advices =() =>{
                         <React.Fragment key={index}>
                             <GridCards
                             image ={item}
-                            id = {index} // 임시로 순서대로 id부여
+                            id = {index+1} // 임시로 순서대로 id부여
                             >
                             </GridCards>
 

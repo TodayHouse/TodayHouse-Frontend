@@ -1,8 +1,10 @@
-import React from 'react'
+import React ,{useState,useEffect}from 'react'
 import styled from 'styled-components'
 import house2 from "./img/house2.jpg"
 import $ from 'jquery'
 import { FixedMenu, Footer } from '../../pages/Story/components'
+import axios from 'axios'
+import {getCookie} from '../../App';
 const AdviceDetail = () => {
   window.addEventListener('scroll', () => {
     const offset = document.querySelector('#container').getBoundingClientRect()
@@ -10,18 +12,36 @@ const AdviceDetail = () => {
     if (offset === 0) $('#fixedMenu').hide()
     else $('#fixedMenu').show()
   })
-
-
+  const [content,setContent]=useState({
+    imageUrl:[house2,],
+    writer:"작성자",
+    title:"title",
+    content:"",
+    updatedAt:[0,0,0,0,0,0,0]
+  });
+  useEffect(()=>{
+    try{
+      axios.get("http://localhost:8080/stories/1",{param:{id:1}})
+    .then(function(res){
+      console.log(res.data.result);
+      setContent(res.data.result)
+    })
+    }
+    catch(e){
+      console.log(e);
+    }
+  },[])
+    
     return (
         <Container id="container">
-            <TitleImage src="https://image.ohou.se/i/bucketplace-v2-development/uploads/projects/cover_images/164294266039116415.jpg?gif=1&w=2560"
+            <TitleImage src={content.imageUrl[0]}
                         width="100%" 
                         height="500px"
             />
             <Content>
                 <Post>
                   <Category> 노하우  세부</Category>
-                  <Title>재택 근무 능률📈 고민 끝에 고른 홈오피스 가구 6</Title>
+                  <Title>{content.title}</Title>
 
                   <WriterInfo>
                       <WriterImage 
@@ -29,8 +49,8 @@ const AdviceDetail = () => {
                           width="60px"
                           height="60px"/>
                       <WriterName>
-                          작성자
-                          <Date>2022/00/00</Date>
+                          {content.writer}
+                          <Date>{content.updatedAt[0]}/{content.updatedAt[1]}/{content.updatedAt[2]}</Date>
                       </WriterName>
                       <span style={{width : 800}}></span>
                       <Follow>+ 팔로우</Follow>
@@ -64,10 +84,9 @@ const AdviceDetail = () => {
                     flexDirection: 'column',
                   }}
                   >
-                  <p>
-                    이번에 홈 오피스 셀프 인테리어를 진행하면서 테이블과 책상, 의자와 수납 가구, 그리고 포인트 줄 수 있는 소품까지 정말 많이 검색해서 찾아 다니며 내돈내산으로 모은 제품들이에요.
-                    모두 잘 사용하고 있는 제품이니 홈오피스 인테리어를 준비중이시라면 참고해주세요! 감사합니다 :)
-                  </p>
+                  
+                   {content.content}
+                  
                   </div>
                   <Footer/>
                 </Post>
@@ -160,24 +179,31 @@ const SummaryContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 250px;
+  height:400px;
   background-color: #eeeeee;
   border-radius: 4px;
+  overflow:auto ;
+  
+  
 `
 const Simple = styled.div`
   display: flex;
-  width: 95%;
+  width: 100%;
   flex-direction: column;
+  
   
 `
 const SimpleLine = styled.div`
   display: flex;
   font-size: 25px;
+  margin:20px;
+  
   
 
 `
 const SimpleSpan = styled.div`
     width:50%;
+    white-space:nowrap ;
     margin:0px 30px 30px 0px
 
 `

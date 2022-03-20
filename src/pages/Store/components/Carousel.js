@@ -36,7 +36,8 @@ const Carousel =() =>{
       )
 }
 const Container=styled.div`
-width:956px;
+width:100%;
+
 `
 
 export default Carousel

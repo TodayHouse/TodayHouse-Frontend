@@ -21,7 +21,7 @@ const cartReducer = createSlice({
                         },
                         {
                             name:"아이보리/우형",
-                            number:1,
+                            number:2,
                             price:154000,
 
                         }
@@ -40,7 +40,7 @@ const cartReducer = createSlice({
                     [
                         {
                             name:"아이보리/좌형",
-                            number:1,
+                            number:2,
                             price:154000,
 
                         },
@@ -67,6 +67,10 @@ const cartReducer = createSlice({
             console.log(state.items)
             state.items = state.items.filter((item,index)=>index !== action.payload);
         },
+        addOption:(state,action)=>{
+            
+
+        }
     }
 })
 

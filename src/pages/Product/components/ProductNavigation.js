@@ -20,7 +20,12 @@ const ProductNavigation = () => {
       <Nav>
         {element.map((data, idx) => (
           //해당 id를 가진 컴포넌트로 이동 후 -70만큼 padding(navbar에 가려짐)
-          <Link style={{ width: '20%' }} to={linkTo[idx]} offset={-70}>
+          <Link
+            key={idx}
+            style={{ width: '20%' }}
+            to={linkTo[idx]}
+            offset={-150}
+          >
             <NavbarElement
               id={idx}
               text={data + '  ' + num[idx]}

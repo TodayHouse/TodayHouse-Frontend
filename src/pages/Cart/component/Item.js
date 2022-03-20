@@ -1,7 +1,7 @@
-import React,{useState} from "react"
+import React,{useEffect, useState} from "react"
 import styled from "styled-components"
 import OptionModal from "./OptionModal"
-
+import $ from 'jquery'
 const Item = (props) =>{
     const [isOpen, setOpen] = useState(false);
     const handleSubmit = () => {
@@ -10,6 +10,9 @@ const Item = (props) =>{
     const handleClick = () => {
         setOpen(true);
     };
+    const num = Array(100)
+    .fill()
+    .map((data,i)=>i+1);
     
     return(
         <>
@@ -37,10 +40,14 @@ const Item = (props) =>{
                             props.item.options.map((option,index) =>
                             (
                                 <OptionBlock  key={index}>
-                                    <OptionName>{option.name}</OptionName>
+                                    <OptionName>{option.name}<OptionDelete onClick={()=>props.deleteOption(props.index,index)} >X</OptionDelete></OptionName>
                                     
                                     <OptionPriceBlock>
-                                        <Input type="number"></Input>
+                                        <SelectNum>
+                                            {num.map((data)=>(
+                                                <option value={data} selected={data === option.number}>{data}</option>
+                                            ))}
+                                        </SelectNum>
                                         <Number>{option.number} 개</Number>
                                         <Price>{option.price * option.number}</Price>
                                     </OptionPriceBlock>
@@ -55,7 +62,7 @@ const Item = (props) =>{
                     
                 </Content>
                 {props.item.shipCost ? <ShipCost>배송비 :{props.item.shipCost}</ShipCost> :<ShipCost>무료배송</ShipCost>}
-                <OptionModal isOpen = {isOpen} item={props.item} onSubmit={handleSubmit}></OptionModal>            
+                <OptionModal isOpen = {isOpen} item={props.item} index={props.index} onSubmit={handleSubmit}></OptionModal>            
             </Container>
         </>
     )
@@ -128,6 +135,8 @@ const OptionBlock=styled.div`
 const OptionName=styled.div`
     font-size: medium;
     margin:10px;
+    width:100%;
+    display:flex ;
     
 `
 const Input=styled.input`
@@ -181,8 +190,28 @@ background-color: white;
   font-weight: bolder;
   margin-left: auto;
 `
+const OptionDelete=styled.button`
+background-color: white;
+  color: black;
+  &:hover {
+    background-color: black;
+    color:white;
+  }
+  height:20px;
+  width:20px;
+  border-radius: 4px;
+  border: 1;
+  font-size: 10px;
+  font-weight: bolder;
+  margin-left: auto;
+  
+`
 const OptionNav = styled.div`
     display:flex;
     
+`
+const SelectNum=styled.select`
+    width:100px;
+    height:30px;
 `
 export default Item

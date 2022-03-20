@@ -4,17 +4,19 @@ import Button from './Button';
 import Icon from './Icon';
 import React, {useState} from 'react';
 import {useCookies} from "react-cookie";
-
+import { useSelector, useDispatch } from 'react-redux';
+import { cookieSet } from '../../redux/reducer/login';
 import axios from "axios";
+
 axios.defaults.withCredentails = true;
 const headers = {withCredentails : true};
 
 const Login = () => {
-   const [cookies, setCookie, removeCookie] = useCookies(['cookie-name'])
-
-   
+   const [cookie, setCookie, removeCookie] = useCookies(['cookie-name'])
     const [user, setUser] = useState({uid : "", password : ""});
     const [error, setError] = useState("");
+    
+    const dispatch = useDispatch();
 
     const submitHandler = e => {
         e.preventDefault();
@@ -48,11 +50,20 @@ const Login = () => {
                 return;
             }
             const accessToken = response.data.result.accessToken;
+            console.log(response.data.result);
             axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
-            console.log(accessToken);
+            
             if(accessToken){
                 setCookie('login_id', accessToken, { path : "/"});
+                setCookie('original_id', user.uid, {path: "/"});
+                setCookie('index_id', response.data.result.id, {path: "/"});
+                console.log(user.uid);
+                dispatch(cookieSet(accessToken));
+               
+                console.log("토큰 : " + accessToken);
                 alert("login success");
+                let mainUrl = "/";
+                window.location.replace(mainUrl);
             }
             else{
                 alert("login failed");
@@ -65,19 +76,11 @@ const Login = () => {
         })
     };
     //임시 저장 아이디 및 패스워드
-    const testUser = {
-        headers,
-        id : "sortinghyeok",
-        password : "sorting123"
-    };
 
-    const ToMain = () => {
-        window.location.href = "/";
-    }
     return (
         <form onSubmit = {submitHandler}>
-        <MainContainer id = "mainContainer">
-            <LogoImage src = "https://img.etnews.com/photonews/2104/1403026_20210419140535_358_0003.jpg" onClick={ToMain}/>
+        <MainContainer>
+            <LogoImage src = "https://img.etnews.com/photonews/2104/1403026_20210419140535_358_0003.jpg" />
            <InputContainer>
                 <Input type = "text" placeholder = "아이디" id = "uid"
                 onChange = {e => setUser({...user, uid : e.target.value})}
@@ -100,13 +103,12 @@ const Login = () => {
                 <StyledIcon src = {require("./img/KakaoIcon.png")}/>
             </IconsContainer>
             
-            <ForgotPassword>비밀번호를 잊으셨나요?</ForgotPassword>
+            <ForgotPassword><a href = "/search">비밀번호를 잊으셨나요?</a></ForgotPassword>
         </MainContainer>
         </form>
         
     );
 }
-
 const Input =  styled.input`
 background : rgba(255, 255, 255, 0.7);
     box-shadow : 0 8px 32px 0 rgba(0, 0, 0, 0.2);

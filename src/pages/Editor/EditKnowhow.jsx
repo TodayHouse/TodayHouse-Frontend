@@ -1,6 +1,6 @@
 import TextEditor from "./TextEditor";
 import ImageBox from "./ImageBox";
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import ModalBox1 from "./ModalBox1";
 import ModalBox2 from "./ModalBox2";
 import ReactModal from 'react-modal';
@@ -8,11 +8,42 @@ import { ReactDOM } from 'react-dom';
 import styled from 'styled-components';
 import icon1 from "./img/view.png";
 import backImage from "./img/o_back.jpeg";
+import axios from "axios";
+import {Link} from 'react-router-dom';
+//import { useSelector } from "react-redux";
+import { getCookie } from '../../App';
 
-const Edit = () => {
-  const [Images, setImage] = useState([icon1])
+const EditKnowhow = () => {
+  const [contentImages, setCImages] = useState([]);
+  const [cookie, setCookie] = useState("");
+  const [titleText, setTitle] = useState("");
+  const [contentText, setContent] = useState("");
+  const [Images, setImage] = useState([icon1]);
   const [isOpen1, setOpen1] = useState(false);
   const [isOpen2, setOpen2] = useState(false);
+  //const cookieState= useSelector((state) => state.login.cookieState);
+  const accessToken = getCookie('login_id');
+
+  useEffect(() => {
+    console.log("쿠키 로딩");
+    setCookie(accessToken);
+    console.log(accessToken);
+  }, []);
+  
+  const contentSetter = (e) => {
+    setContent(e.target.value);
+    console.log("콘텐츠 : " + e.target.value);
+  }
+
+  const handleTitle = (e) => {
+    setTitle(e.target.value);
+    console.log("타이틀 : " + e.target.value);
+  };
+  const handleContent = (e) =>{
+    setContent(e.target.value);
+    console.log(e.target.value);
+  };
+
   const handleClick1 = () => {
     setOpen1(true);
   };
@@ -25,13 +56,59 @@ const Edit = () => {
   const handleSubmit2 = () => {
     setOpen2(false);
   };
+  
+  const upload = () => {
+    const formData = new FormData();
+    const file = document.getElementById("file");
+    console.log("쿠키 상태" + cookie);
+    for(var i = 0; i <file.files.length; i++)
+    {
+      formData.append("file", file.files[i]);
+    }
+    
+
+    console.log(file.files[0]);
+    console.log(formData);
+    const param = {
+      category : "KNOWHOW",
+      content : contentText,
+      title : titleText,
+    }//`Bearer ${accessToken}`
+    formData.append("request", new Blob([JSON.stringify(param)], {type : "application/json"}))
+    //formData를 넣어야하는데 어떻게 줄지
+    try{
+      axios.post("http://localhost:8080/stories", formData, {
+        headers : {
+          'Content-Type' : 'multipart/form-data', 
+           'Authorization': `Bearer ${accessToken}`,
+           }, 
+           withCredentials:true,
+          })
+      .then(function(res){
+        const isSuccess = res.data.isSuccess;
+        if(isSuccess !== true)
+        {
+            console.log(res.data.message);
+            return;
+        }
+        window.location.href = "/advices";
+       
+      });
+    }
+    catch(e){
+      console.log(e);
+    }
+  };
+
   return (
     <>
-       <ConfirmButton>글 발행</ConfirmButton>
+    <Link to = "/advices">
+       <ConfirmButton className = 'EditConfirm' id = 'EditConfirm' onClick = {upload}>글 발행</ConfirmButton>
+    </Link>
     <EditorTop href = "/">
                     <LogoImage src = "https://img.etnews.com/photonews/2104/1403026_20210419140535_358_0003.jpg"/>               
     </EditorTop>  
-    
+
     <BackgroundImage>
       <ModalContainer>    
       <ModalButton1 onClick = {handleClick1} >
@@ -62,16 +139,26 @@ const Edit = () => {
       </BackgroundImage>
 
    
-      <TitleText placeholder="제목을 입력해주세요"></TitleText>
-      <WhiteBack>
-      <TextEditor></TextEditor>
-      </WhiteBack>
-   
-  
+      <TitleText placeholder="제목을 입력해주세요" type = "text" id ="title" onChange = {handleTitle} value={titleText}>
+      
+      </TitleText>
+
+      <Editor type = 'text' onChange = {contentSetter}></Editor>
+     
       </>
     );
 }
-//
+
+const Editor = styled.input`
+  border-radius : 4px;
+  border : 2px solid skyblue;
+  height : 200px;
+  width : 800px; 
+  vertical-align: top;
+  text-align: left;
+  
+`
+
 const TitleText = styled.input`
   display : flex;
   margin-top : 15px;
@@ -195,8 +282,5 @@ background-color : white;
   margin-left : 160px;
 `;
 
-const WhiteBack = styled.div`
-  background-color : white;
-  width : 800px;
-`
-export default Edit;
+
+export default EditKnowhow;
