@@ -11,6 +11,9 @@ const UploadProduct = () => {
   const url = theme.apiUrl;
   const accessToken = getCookie('login_id');
   const navigate = useNavigate();
+
+  const [categories, setCategories] = useState([]);
+  const [selectedCategoryIdx, setSelectedCategoryIdx] = useState([]);
   const [previewImgs, setPreviewImgs] = useState([]);
   const [form, setForm] = useState({
     categoryId: 0,
@@ -69,10 +72,9 @@ const UploadProduct = () => {
       fileReader.readAsDataURL(e.target.files[i]);
       fileReader.onload = (evt) => {
         previewList.push(evt.target.result);
+        setPreviewImgs(previewList);
       };
-      console.log(previewList);
     }
-    setPreviewImgs(previewList);
     setForm({ ...form, image: list });
     console.log(list);
   };
@@ -166,6 +168,22 @@ const UploadProduct = () => {
     setSelectionList(list);
   };
 
+  const onCategorySelected = (e) => {
+    const { selectedIndex } = e.target;
+    //let arr = [...selectedCategoryIdx, selectedIndex];
+    console.log(selectedCategoryIdx);
+    setSelectedCategoryIdx((list) => list.push(selectedIndex));
+
+    console.log(selectedCategoryIdx);
+  };
+
+  const showCategory = (idx) => {
+    console.log(selectedCategoryIdx[idx]);
+    return categories[selectedCategoryIdx[idx]].subCategory?.map(
+      (data, idx) => <option key={idx}>{data.name}</option>
+    );
+  };
+
   useEffect(() => {
     console.log(previewImgs);
   }, [previewImgs]);
@@ -192,10 +210,34 @@ const UploadProduct = () => {
     if (free) setForm({ ...form, deliveryFee: 0 });
   }, [free]);
 
+  useEffect(() => {
+    axios
+      .get(url + 'categories')
+      .then((response) => {
+        console.log(response);
+        setCategories(response.data.result);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, []);
+
   return (
     <Container>
       <Header>상품 등록</Header>
       <Content>
+        <CategoryContainer>
+          <Category onChange={onCategorySelected}>
+            {categories?.map((data, idx) => (
+              <option key={idx}>{data.name}</option>
+            ))}
+          </Category>
+          <Category>
+            {() => {
+              showCategory(0);
+            }}
+          </Category>
+        </CategoryContainer>
         <div style={{ width: '100%' }}>
           <Input
             width="80%"
@@ -376,6 +418,8 @@ const Content = styled.div`
   flex-direction: column;
   align-items: flex-start;
 `;
+const CategoryContainer = styled.div``;
+const Category = styled.select``;
 const UploadImageContainer = styled.div`
   display: flex;
   justify-content: center;
