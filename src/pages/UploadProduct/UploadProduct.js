@@ -5,13 +5,18 @@ import styled from 'styled-components';
 import { getCookie } from '../../App';
 import { Input, Button } from '../../elements';
 import theme from '../../theme';
+import { Options } from './components';
 
 const UploadProduct = () => {
   const url = theme.apiUrl;
   const accessToken = getCookie('login_id');
   const navigate = useNavigate();
+
+  const [categories, setCategories] = useState([]);
+  const [selectedCategoryIdx, setSelectedCategoryIdx] = useState([]);
   const [previewImgs, setPreviewImgs] = useState([]);
   const [form, setForm] = useState({
+    categoryId: 0,
     title: '',
     image: [],
     price: '',
@@ -19,9 +24,15 @@ const UploadProduct = () => {
     discountRate: 0,
     deliveryFee: 0,
     productDetail: '',
+    parentOption: '',
+    parentOptions: [],
+    childOption: '',
+    selectionOption: '',
+    selectionOptions: [],
   });
 
   const {
+    categoryId,
     title,
     image,
     price,
@@ -29,32 +40,43 @@ const UploadProduct = () => {
     discountRate,
     deliveryFee,
     productDetail,
+    parentOption,
+    parentOptions,
+    childOption,
+    selectionOption,
+    selectionOptions,
   } = form;
 
   const [discountPrice, setDiscountPrice] = useState('');
   const [free, setFree] = useState(true); //무료배송 여부
   const formData = new FormData();
 
-  const onChange = (e) => {
-    // 여러 개의 FileList 데이터를 배열에 하나씩 추가
-    let list = [...form.image];
-    for (let i = 0; i < e.target.files.length; i++) {
-      list.push(e.target.files[i]);
-    }
-    setForm({ ...form, image: list });
+  // 옵션 입력창 보임 여부
+  const [showParentOption, setShowParentOption] = useState(false);
+  const [showChildOption, setShowChildOption] = useState(false);
+  const [showSelectionOption, setShowSelectionOption] = useState(false);
 
-    //이미지 미리보기를 위한 FileReader 사용
+  // 서버로 보내기 위한 옵션 리스트
+  const [parentList, setParentList] = useState([]);
+  const [selectionList, setSelectionList] = useState([]);
+
+  const onChange = (e) => {
+    let list = [...form.image];
     let previewList = [...previewImgs];
     for (let i = 0; i < e.target.files.length; i++) {
+      // 여러 개의 FileList 데이터를 배열에 하나씩 추가
+      list.push(e.target.files[i]);
+
+      //이미지 미리보기를 위한 FileReader 사용
       let fileReader = new FileReader();
       fileReader.readAsDataURL(e.target.files[i]);
-      fileReader.onload = function (evt) {
+      fileReader.onload = (evt) => {
         previewList.push(evt.target.result);
+        setPreviewImgs(previewList);
       };
-      console.log(previewList);
     }
-
-    setPreviewImgs(previewList);
+    setForm({ ...form, image: list });
+    console.log(list);
   };
 
   const handleChange = (e) => {
@@ -85,27 +107,15 @@ const UploadProduct = () => {
           [
             JSON.stringify({
               categoryId: 1,
-              childOption: '',
+              childOption,
               deliveryFee,
               discountRate,
-              parentOption: '',
-              parentOptions: [
-                {
-                  childOptions: [
-                    { content: '', parentOptionId: 1, price: 0, stock: 0 },
-                  ],
-                  content: '',
-                  price: 0,
-                  productId: 1,
-                  stock: 0,
-                },
-              ],
+              parentOption,
+              parentOptions,
               price,
               productDetail,
-              selectionOption: '',
-              selectionOptions: [
-                { content: '', productId: 1, price: 0, stock: 0 },
-              ],
+              selectionOption,
+              selectionOptions,
               specialPrice,
               title,
             }),
@@ -139,6 +149,53 @@ const UploadProduct = () => {
       navigate('/');
   };
 
+  const parent = {
+    childOptions: [],
+    content: '',
+    price: 0,
+    stock: 0,
+  };
+  const addParentOption = () => {
+    if (!showParentOption) setShowParentOption(true);
+    let list = [...parentList, parent];
+    setParentList(list);
+  };
+
+  const selection = { content: '', price: 0, stock: 0 };
+  const addSelectionOption = () => {
+    if (!showSelectionOption) setShowSelectionOption(true);
+    let list = [...selectionList, selection];
+    setSelectionList(list);
+  };
+
+  const onCategorySelected = (e) => {
+    const { selectedIndex } = e.target;
+    //let arr = [...selectedCategoryIdx, selectedIndex];
+    console.log(selectedCategoryIdx);
+    setSelectedCategoryIdx((list) => list.push(selectedIndex));
+
+    console.log(selectedCategoryIdx);
+  };
+
+  const showCategory = (idx) => {
+    console.log(selectedCategoryIdx[idx]);
+    return categories[selectedCategoryIdx[idx]].subCategory?.map(
+      (data, idx) => <option key={idx}>{data.name}</option>
+    );
+  };
+
+  useEffect(() => {
+    console.log(previewImgs);
+  }, [previewImgs]);
+
+  useEffect(() => {
+    setForm({ ...form, parentOptions: parentList });
+  }, [parentList]);
+
+  useEffect(() => {
+    setForm({ ...form, selectionOptions: selectionList });
+  }, [selectionList]);
+
   useEffect(() => {
     console.log(form);
   }, [form]);
@@ -153,19 +210,47 @@ const UploadProduct = () => {
     if (free) setForm({ ...form, deliveryFee: 0 });
   }, [free]);
 
+  useEffect(() => {
+    axios
+      .get(url + 'categories')
+      .then((response) => {
+        console.log(response);
+        setCategories(response.data.result);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, []);
+
   return (
     <Container>
       <Header>상품 등록</Header>
       <Content>
-        <Input
-          width="80%"
-          margin="20px 0px"
-          placeholder="제목을 입력하세요"
-          onChange={handleChange}
-          name="title"
-          autoFocus
-        />
-        <UploadImage for="uploadImage">사진 업로드</UploadImage>
+        <CategoryContainer>
+          <Category onChange={onCategorySelected}>
+            {categories?.map((data, idx) => (
+              <option key={idx}>{data.name}</option>
+            ))}
+          </Category>
+          <Category>
+            {() => {
+              showCategory(0);
+            }}
+          </Category>
+        </CategoryContainer>
+        <div style={{ width: '100%' }}>
+          <Input
+            width="80%"
+            margin="20px 0px"
+            placeholder="제목을 입력하세요"
+            onChange={handleChange}
+            name="title"
+            autoFocus
+          />
+        </div>
+        <UploadImageContainer>
+          <UploadImage for="uploadImage">사진 업로드</UploadImage>
+        </UploadImageContainer>
         <input
           type="file"
           id="uploadImage"
@@ -174,13 +259,77 @@ const UploadProduct = () => {
           multiple
           accept="image/*"
         />
-        <div>
+        <PreviewImgsContainer>
           {previewImgs.map((data, idx) => (
-            <img key={idx} width="200px" height="200px" src={data} alt="img" />
+            <PreviewImage key={idx} src={data} alt="img" />
           ))}
+        </PreviewImgsContainer>
+        <div>
+          <Button onClick={addParentOption}>옵션 추가</Button>
+          {showParentOption ? (
+            <Button margin="0px 20px" onClick={addSelectionOption}>
+              선택 옵션 추가
+            </Button>
+          ) : (
+            ''
+          )}
         </div>
+        <div style={{ display: 'flex', margin: '30px 0px' }}>
+          {showParentOption === true ? (
+            <Input
+              label="1차 옵션 종류"
+              margin="0px 20px 0px 0px"
+              name="parentOption"
+              onChange={handleChange}
+            />
+          ) : (
+            ''
+          )}
+          {showChildOption === true ? (
+            <Input
+              label="2차 옵션 종류"
+              name="childOption"
+              onChange={handleChange}
+            />
+          ) : (
+            ''
+          )}
+        </div>
+        {showSelectionOption === true ? (
+          <Input
+            label="선택 옵션 종류"
+            name="selectionOption"
+            onChange={handleChange}
+            margin="10px 0px"
+          />
+        ) : (
+          ''
+        )}
+        <OptionContainer>
+          {parentList.map((data, idx) => (
+            <Options
+              key={idx}
+              id={idx}
+              type="parent"
+              setShowChildOption={setShowChildOption}
+              showChildOption={showChildOption}
+              parentList={parentList}
+              setParentList={setParentList}
+            />
+          ))}
+          {selectionList.map((data, idx) => (
+            <Options
+              key={idx}
+              id={idx}
+              type="selection"
+              selectionList={selectionList}
+              setSelectionList={setSelectionList}
+            />
+          ))}
+        </OptionContainer>
         <Input
           label="가격"
+          min="0"
           name="price"
           type="number"
           placeholder="(원)"
@@ -200,6 +349,7 @@ const UploadProduct = () => {
           </SpecialPrice>
           <Input
             label="할인율"
+            min="0"
             name="discountRate"
             type="number"
             placeholder="(%)"
@@ -214,6 +364,7 @@ const UploadProduct = () => {
         </Discount>
         <Input
           type="number"
+          min="0"
           label="배송비"
           margin="20px 0px"
           placeholder="(원)"
@@ -267,7 +418,15 @@ const Content = styled.div`
   flex-direction: column;
   align-items: flex-start;
 `;
+const CategoryContainer = styled.div``;
+const Category = styled.select``;
+const UploadImageContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+`;
 const UploadImage = styled.label`
+  font-weight: bold;
   color: white;
   font-size: 18px;
   border-radius: 4px;
@@ -277,6 +436,26 @@ const UploadImage = styled.label`
     cursor: pointer;
     background-color: ${(props) => props.theme.hoverMainColor};
   }
+`;
+const PreviewImgsContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin: 50px 0px;
+  width: 100%;
+  overflow: scroll;
+`;
+const PreviewImage = styled.img`
+  width: 300px;
+  height: 300px;
+  margin: 0px 20px;
+  border: 2px solid ${(props) => props.theme.mainColor};
+  border-radius: 8px;
+`;
+const OptionContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 `;
 const Discount = styled.div`
   display: flex;
