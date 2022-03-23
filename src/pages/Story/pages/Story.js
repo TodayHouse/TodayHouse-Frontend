@@ -61,6 +61,7 @@ const Story = () => {
     axios
       .get(url + 'stories')
       .then((response) => {
+        console.log(response.data.result);
         setList(response.data.result);
       })
       .catch((e) => {
@@ -74,7 +75,7 @@ const Story = () => {
       <CardContainer>
         <TotalNum>전체 {data.length.toLocaleString()}</TotalNum>
         <CardItem>
-          {data.map((item, idx) => {
+          {list.content?.map((item, idx) => {
             return (
               <StoryPost
                 key={idx}

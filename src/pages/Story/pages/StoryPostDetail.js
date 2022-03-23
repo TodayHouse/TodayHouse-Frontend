@@ -49,27 +49,8 @@ const StoryPostDetail = () => {
     axios
       .get(url + `stories/${id}`)
       .then((response) => {
-        const {
-          imageUrl,
-          category,
-          title,
-          createdAt,
-          content,
-          writer,
-          liked,
-          updatedAt,
-        } = response.data.result;
-
-        setInfo({
-          imageUrl,
-          category,
-          title,
-          createdAt,
-          content,
-          writer,
-          liked,
-          updatedAt,
-        });
+        console.log(response.data.result.imageUrls[0]);
+        setInfo(response.data.result);
       })
       .catch((e) => {
         console.log(e);
