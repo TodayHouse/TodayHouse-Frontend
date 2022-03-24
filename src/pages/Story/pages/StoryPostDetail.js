@@ -5,6 +5,7 @@ import { Sidebar, FixedMenu, Footer } from '../components/index';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import theme from '../../../theme';
+import { Carousel } from '../../../components';
 
 const sample = [
   { category: '공간', data: '아파트' },
@@ -26,7 +27,7 @@ const StoryPostDetail = () => {
   const url = theme.apiUrl;
   const [info, setInfo] = useState({});
   const {
-    imageUrl,
+    imageUrls,
     category,
     title,
     createdAt,
@@ -49,7 +50,7 @@ const StoryPostDetail = () => {
     axios
       .get(url + `stories/${id}`)
       .then((response) => {
-        console.log(response.data.result.imageUrls[0]);
+        console.log(response.data.result);
         setInfo(response.data.result);
       })
       .catch((e) => {
@@ -59,7 +60,7 @@ const StoryPostDetail = () => {
 
   return (
     <Container id="container">
-      <MainImage width="125%" height="500px" src={imageUrl} />
+      <MainImage width="125%" height="500px" src={imageUrls} />
       <Wrap>
         <WhiteSpace />
         <ContentContainer>
@@ -156,7 +157,8 @@ const StoryPostDetail = () => {
                   flexDirection: 'column',
                 }}
               >
-                <p>{content}</p>
+                <Carousel images={imageUrls} />
+                <Contents>{content}</Contents>
               </div>
               <Footer like={liked} writer={writer} />
             </div>
@@ -267,6 +269,10 @@ const ContentContainer = styled.div`
   width: 80%;
   height: 100%;
   justify-content: center;
+`;
+const Contents = styled.p`
+  margin-top: 80px;
+  font-size: 18px;
 `;
 const WhiteSpace = styled.div`
   width: 10%;
