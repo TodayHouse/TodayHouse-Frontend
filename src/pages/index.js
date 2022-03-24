@@ -17,7 +17,7 @@ import Error from './SocialSignup/Error';
 import CardCollections from './MyPage/CardCollections';
 import MyPage from './MyPage/MyPage';
 import Setting from './MyPage/Setting';
-import Stories from './MyPage/MyStories';
+import MyStories from './MyPage/MyStories';
 import Cart from './Cart/Cart';
 import Seller from './Seller/Seller';
 import UploadProduct from './UploadProduct/UploadProduct';
@@ -45,5 +45,5 @@ export {
   Setting,
   Seller,
   UploadProduct,
-  Stories
+  MyStories,
 };
