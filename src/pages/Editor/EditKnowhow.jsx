@@ -13,10 +13,10 @@ import {Link} from 'react-router-dom';
 //import { useSelector } from "react-redux";
 import { getCookie } from '../../App';
 import { useSelector } from "react-redux";
+import Cover from "./Cover";
 
 const EditKnowhow = () => {
   const content = useSelector((state) => state.editor.content);
-  const [contentImages, setCImages] = useState([]);
   const [cookie, setCookie] = useState("");
   const [titleText, setTitle] = useState("");
   const [contentText, setContent] = useState("");
@@ -137,6 +137,8 @@ const EditKnowhow = () => {
       </ModalContainer>
      
       <MarginMaker>
+     
+      <Cover></Cover>
       <ImageBox></ImageBox>
       </MarginMaker>
       </BackgroundImage>
