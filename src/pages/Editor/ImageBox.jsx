@@ -5,6 +5,7 @@ import styled from "styled-components";
 import GuideBar_1 from "./GuideBar1";
 import { getCookie } from '../../App';
 const ImageBox = () => {
+    const coverfile = document.getElementById("file");
     const [showImages, setShowImages] = useState([]);
     const [productImages, setProducts] = useState([]);
 
@@ -27,7 +28,7 @@ const ImageBox = () => {
       {
         const imageLists = event.target.files;
         let imageUrlLists = [...showImages];
-    
+
         for (let i = 0; i < imageLists.length; i++) {
           const currentImageUrl = URL.createObjectURL(imageLists[i]);
           imageUrlLists.push(currentImageUrl);
@@ -58,7 +59,7 @@ const ImageBox = () => {
      <hr></hr>
      <div className= 'addPicture'>
       <label htmlFor="input-file" className='inputFlie' onChange={handleAddImages}>
-        <input type="file" id="file" multiple className='addButton'/>
+        <input type="file" id="files" multiple className='addButton'/>
         <Plus fill="#646F7C" />
       </label>
 
