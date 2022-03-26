@@ -54,7 +54,7 @@ const ImageBox = () => {
      return ( 
     <>
          <CoverBox >
-     하단 파일 선택을 눌러, 캐러셀 이미지를 업로드해주세요. <br></br>
+     하단 파일 선택을 눌러, <br></br>캐러셀에 등록하실 이미지들을 업로드해주세요. <br></br>
      <hr></hr>
      <div className= 'addPicture'>
       <label htmlFor="input-file" className='inputFlie' onChange={handleAddImages}>
