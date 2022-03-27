@@ -13,10 +13,10 @@ import {Link} from 'react-router-dom';
 //import { useSelector } from "react-redux";
 import { getCookie } from '../../App';
 import { useSelector } from "react-redux";
+import Cover from "./Cover";
 
 const EditKnowhow = () => {
   const content = useSelector((state) => state.editor.content);
-  const [contentImages, setCImages] = useState([]);
   const [cookie, setCookie] = useState("");
   const [titleText, setTitle] = useState("");
   const [contentText, setContent] = useState("");
@@ -63,10 +63,17 @@ const EditKnowhow = () => {
     console.log("리덕스 콘텐츠 : " + content);
     const formData = new FormData();
     const file = document.getElementById("file");
+    const files = document.getElementById("files");
     console.log("쿠키 상태" + cookie);
     for(var i = 0; i <file.files.length; i++)
     {
       formData.append("file", file.files[i]);
+      console.log(file.files[i]);
+    }
+    for(var i = 0; i <files.files.length; i++)
+    {
+      formData.append("file", files.files[i]);
+      console.log(files.files[i]);
     }
 
     console.log(file.files[0]);
@@ -137,6 +144,7 @@ const EditKnowhow = () => {
       </ModalContainer>
      
       <MarginMaker>
+      <Cover></Cover>
       <ImageBox></ImageBox>
       </MarginMaker>
       </BackgroundImage>

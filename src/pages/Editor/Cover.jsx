@@ -3,9 +3,8 @@ import React, { useState } from 'react';
 import { useLinkClickHandler } from 'react-router-dom';
 import styled from "styled-components";
 import GuideBar_1 from "./GuideBar1";
-import { getCookie } from '../../App';
-const ImageBox = () => {
-    const coverfile = document.getElementById("file");
+import { setCookie } from '../../App';
+const Cover = () => {
     const [showImages, setShowImages] = useState([]);
     const [productImages, setProducts] = useState([]);
 
@@ -23,28 +22,20 @@ const ImageBox = () => {
 
     // 이미지 상대경로 저장
     const handleAddImages = (event) => {
-      console.log(getCookie('CoverUploaded'));
-      if(getCookie('CoverUploaded') == 'yes')
-      {
-        const imageLists = event.target.files;
-        let imageUrlLists = [...showImages];
-
-        for (let i = 0; i < imageLists.length; i++) {
-          const currentImageUrl = URL.createObjectURL(imageLists[i]);
-          imageUrlLists.push(currentImageUrl);
-          console.log(currentImageUrl);
-        }
-    
-        if (imageUrlLists.length > 10) {
-          imageUrlLists = imageUrlLists.slice(0, 10);
-        }
-    
-        setShowImages(imageUrlLists);
+      const imageLists = event.target.files;
+      let imageUrlLists = [...showImages];
+  
+      for (let i = 0; i < imageLists.length; i++) {
+        const currentImageUrl = URL.createObjectURL(imageLists[i]);
+        imageUrlLists.push(currentImageUrl);
+        console.log(currentImageUrl);
       }
-      else{
-        alert('먼저 커버 이미지를 업로드하셔야 합니다.')
+  
+      if (imageUrlLists.length > 10) {
+        imageUrlLists = imageUrlLists.slice(0, 10);
       }
-      
+      setCookie('CoverUploaded', 'yes', {path : "/"})
+      setShowImages(imageUrlLists);
     };
   
     // X버튼 클릭 시 이미지 삭제
@@ -55,11 +46,12 @@ const ImageBox = () => {
      return ( 
     <>
          <CoverBox >
-     하단 파일 선택을 눌러, <br></br>캐러셀에 등록하실 이미지들을 업로드해주세요. <br></br>
+     하단 파일 선택을 눌러, 커버 이미지를 업로드해주세요. <br></br>
+     *권장 사이즈 : 1920 x 1920, 최소 1400 x 1400(1:1 비율)
      <hr></hr>
      <div className= 'addPicture'>
       <label htmlFor="input-file" className='inputFlie' onChange={handleAddImages}>
-        <input type="file" id="files" multiple className='addButton'/>
+        <input type="file" id="file" className='addButton'/>
         <Plus fill="#646F7C" />
       </label>
 
@@ -81,7 +73,7 @@ const ImageBox = () => {
             <ImageUploadButton type="file" id ="file" accept="image/*" onChange = {processImage}/>        
         </AlignCompCenter>
 */
-export default ImageBox
+export default Cover
 
 const IconContainer = styled.div`
 height : 430px;
@@ -116,12 +108,11 @@ const CoverBox = styled.div`
     border-radius : 15px;
     position :relative;
     left : 33%;
-    height :100px;
+    height : 400px;
     width :400px;
     padding-top  : 15px;
     font-weight : bold; 
     font-size : 13px;
-    margin-top : 20px;
 `;
 
 const ImgBox = styled.img`
