@@ -66,12 +66,21 @@ const EditStory = () => {
     console.log("리덕스 콘텐츠 : " + content);
     const formData = new FormData();
     const file = document.getElementById("file");
+    const files = document.getElementById("files");
     console.log("쿠키 상태" + cookie);
-   
     for(var i = 0; i <file.files.length; i++)
     {
       formData.append("file", file.files[i]);
+      console.log(file.files[i]);
     }
+    for(var i = 0; i <files.files.length; i++)
+    {
+      formData.append("file", files.files[i]);
+      console.log(files.files[i]);
+    }
+
+    console.log(file.files[0]);
+    console.log(formData);
     const param = {
       category : "STORY",
       content : content,
