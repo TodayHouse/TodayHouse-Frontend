@@ -144,7 +144,6 @@ const EditKnowhow = () => {
       </ModalContainer>
      
       <MarginMaker>
-     
       <Cover></Cover>
       <ImageBox></ImageBox>
       </MarginMaker>

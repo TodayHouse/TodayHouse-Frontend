@@ -42,7 +42,7 @@ const StoryPost = (props) => {
         <Nickname>{nickname}</Nickname>
       </User>
       <Footer>
-        <p>스크랩 5,000 · 조회 5,000</p>
+        <span>스크랩 5,000 · 조회 5,000</span>
       </Footer>
     </Container>
   );
@@ -53,9 +53,9 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  height: 450px;
   cursor: pointer;
   position: relative;
+  margin-bottom: 30px;
 `;
 const Image = styled.img`
   width: 100%;
@@ -95,6 +95,6 @@ const Footer = styled.div`
   display: flex;
   font-size: 15px;
   color: #777777;
-  margin: 8px 0px;
+  margin-top: 8px;
 `;
 export default StoryPost;

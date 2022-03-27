@@ -45,5 +45,5 @@ export {
   Setting,
   Seller,
   UploadProduct,
-  MyStories
+  MyStories,
 };

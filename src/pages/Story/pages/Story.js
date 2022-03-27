@@ -1,93 +1,79 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Category, StoryPost } from '../components/index';
-import d from '../../../img/house1.jpg';
-import d2 from '../../../img/house2.jpg';
 import axios from 'axios';
 import theme from '../../../theme';
+import { useInView } from 'react-intersection-observer';
 
 const Story = () => {
   const url = theme.apiUrl;
   const [list, setList] = useState([]);
-  const data = [
-    {
-      id: 1,
-      thumbnailUrl: d,
-      title: '계획서만 50장! 내 머릿 속 인테리어, 그대로 실현하기',
-      profile: d2,
-      writer: '쪼아윰',
-      scrap: 3838,
-      view: 23288,
-    },
-    {
-      id: 2,
-      thumbnailUrl: d,
-      title: '20년이 넘은 복도식 아파트, 반셀프로 단정하게 고치기',
-      profile: d2,
-      writer: '쪼아윰2',
-      scrap: 3288,
-      view: 233288,
-    },
-    {
-      id: 3,
-      thumbnailUrl: d,
-      title: '최소한의 시공으로 취향을 가득 담은 신혼집',
-      profile: d2,
-      writer: '쪼아윰3',
-      scrap: 38118,
-      view: 2113288,
-    },
-    {
-      id: 4,
-      thumbnailUrl: d,
-      title: '거실은 줄이고 주방은 늘린, 손님맞이 맞춤형 신혼집',
-      profile: d2,
-      writer: '쪼아윰4',
-      scrap: 388,
-      view: 234288,
-    },
-    {
-      id: 5,
-      thumbnailUrl: d,
-      title: '매일이 호캉스! 호텔 같이 깔끔한 30평대 리모델링',
-      profile: d2,
-      writer: '쪼아윰5',
-      scrap: 3848,
-      view: 236288,
-    },
-  ];
+  const [ref, inView] = useInView(); // ref로 관찰 중인 요소가 감지되면 inView = true
+  const [page, setPage] = useState(0);
+  const [loading, setLoading] = useState(false); // 추가 데이터를 불러온 후에 page를 증가시키기 위해 사용
+  const [isLast, setIsLast] = useState(false);
+
+  const getItems = useCallback(async () => {
+    if (!isLast) {
+      setLoading(true); // 추가 데이터를 불러오는 작업이 완료되기 전까지 loading 상태
+      await axios
+        .get(url + `stories?page=${page}&size=3`)
+        .then((response) => {
+          if (response.data.result.last) setIsLast(true); // 마지막 페이지(last)인지 여부 설정
+          let arr = [...list];
+          response.data.result.content.forEach((data) => {
+            arr.push(data);
+          });
+          setList(arr); // list 최신화
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+      setLoading(false); // 추가 데이터를 불러온 후에 loading = false로 변경
+    }
+  }, [page]);
 
   useEffect(() => {
-    axios
-      .get(url + 'stories')
-      .then((response) => {
-        setList(response.data.result);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }, []);
+    if (inView && !loading) setPage(page + 1); // 마지막 요소가 감지되고 로딩 중이 아니라면 페이지 증가
+  }, [inView, loading]);
+
+  useEffect(() => {
+    getItems();
+  }, [getItems]);
 
   return (
     <Container>
       <Category />
       <CardContainer>
-        <TotalNum>전체 {data.length.toLocaleString()}</TotalNum>
+        <TotalNum>전체 5</TotalNum>
         <CardItem>
-          {data.map((item, idx) => {
-            return (
-              <StoryPost
-                key={idx}
-                id={item.id}
-                src={item.thumbnailUrl}
-                title={item.title}
-                // profile={item.profile}
-                nickname={item.writer}
-                // scrap={item.scrap}
-                // view={item.view}
-              />
-            );
-          })}
+          {list?.map((item, idx) =>
+            list.length - 1 === idx ? ( //마지막 요소면 ref
+              <div key={idx} ref={ref}>
+                <StoryPost
+                  id={item.id}
+                  src={item.thumbnailUrl}
+                  title={item.title}
+                  // profile={item.profile}
+                  nickname={item.writer}
+                  // scrap={item.scrap}
+                  // view={item.view}
+                />
+              </div>
+            ) : (
+              <div key={idx}>
+                <StoryPost
+                  id={item.id}
+                  src={item.thumbnailUrl}
+                  title={item.title}
+                  // profile={item.profile}
+                  nickname={item.writer}
+                  // scrap={item.scrap}
+                  // view={item.view}
+                />
+              </div>
+            )
+          )}
         </CardItem>
       </CardContainer>
     </Container>
