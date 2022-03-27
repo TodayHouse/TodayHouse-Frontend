@@ -6,6 +6,7 @@ import { getCookie } from '../../App';
 import { Input, Button } from '../../elements';
 import theme from '../../theme';
 import { Options } from './components';
+import roundX from '../../img/roundX.png';
 
 const UploadProduct = () => {
   const url = theme.apiUrl;
@@ -60,6 +61,8 @@ const UploadProduct = () => {
   const [parentList, setParentList] = useState([]);
   const [selectionList, setSelectionList] = useState([]);
 
+  const [childCnt, setChildCnt] = useState(0);
+
   const onChange = (e) => {
     let list = [...form.image]; // form에 담는 용도의 file 배열
     let previewList = [...previewImgs]; // 미리보기 용도의 url 배열
@@ -74,6 +77,15 @@ const UploadProduct = () => {
     }
     setPreviewImgs(previewList);
     setForm({ ...form, image: list });
+  };
+
+  const removeImg = (idx) => {
+    console.log(idx);
+    let list = [...form.image]; // form에 담는 용도의 file 배열
+    let previewList = [...previewImgs]; // 미리보기 용도의 url 배열
+
+    setPreviewImgs(previewList.filter((data, i) => i !== idx));
+    setForm({ ...form, image: list.filter((data, i) => i !== idx) });
   };
 
   const handleChange = (e) => {
@@ -187,11 +199,31 @@ const UploadProduct = () => {
 
   useEffect(() => {
     setForm({ ...form, parentOptions: parentList });
+
+    // parent option이 0개면 1차 옵션 input 삭제
+    if (parentList.length === 0) setShowParentOption(false);
+
+    // child option의 개수 계산
+    let cnt = 0;
+    parentList?.forEach((par, idx) => {
+      par.childOptions?.forEach((chi, idx) => {
+        cnt++;
+      });
+    });
+    setChildCnt(cnt);
   }, [parentList]);
 
   useEffect(() => {
     setForm({ ...form, selectionOptions: selectionList });
+
+    // selection option이 0개면 선택 옵션 input 삭제
+    if (selectionList.length === 0) setShowSelectionOption(false);
   }, [selectionList]);
+
+  useEffect(() => {
+    // child option이 0개면 2차 옵션 input 삭제
+    if (childCnt === 0) setShowChildOption(false);
+  }, [childCnt]);
 
   useEffect(() => {
     console.log(form);
@@ -258,7 +290,16 @@ const UploadProduct = () => {
         />
         <PreviewImgsContainer>
           {previewImgs?.map((data, idx) => (
-            <PreviewImage key={idx} src={data} alt="img" />
+            <div style={{ position: 'relative', margin: '0px 20px' }} key={idx}>
+              <RemoveBtn
+                src={roundX}
+                alt="removeBtn"
+                onClick={() => {
+                  removeImg(idx);
+                }}
+              />
+              <PreviewImage src={data} alt="img" />
+            </div>
           ))}
         </PreviewImgsContainer>
         <div>
@@ -444,9 +485,19 @@ const PreviewImgsContainer = styled.div`
 const PreviewImage = styled.img`
   width: 300px;
   height: 300px;
-  margin: 0px 20px;
   border: 2px solid ${(props) => props.theme.mainColor};
   border-radius: 8px;
+`;
+const RemoveBtn = styled.img`
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.5;
+  }
 `;
 const OptionContainer = styled.div`
   width: 100%;

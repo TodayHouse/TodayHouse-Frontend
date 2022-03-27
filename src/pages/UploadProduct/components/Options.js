@@ -30,6 +30,22 @@ const Options = (props) => {
     setParentList(parent);
   };
 
+  const removeChildOption = (idx) => {
+    // 2차 옵션 삭제
+    let parent = [...parentList];
+    let child = parent[id].childOptions;
+    parent[id].childOptions = child.filter((data, i) => i !== idx);
+
+    setParentList(parent);
+  };
+
+  const removeOption = () => {
+    // 1차 옵션 or 선택 옵션 삭제
+    if (type === 'parent')
+      setParentList(parentList.filter((data, idx) => id !== idx));
+    else setSelectionList(selectionList.filter((data, idx) => id !== idx));
+  };
+
   //1차 옵션 input 관리
   const handleInput = (e) => {
     if (type === 'parent') {
@@ -104,7 +120,7 @@ const Options = (props) => {
         ) : (
           ''
         )}
-        <Button width="140px" margin="0px 10px">
+        <Button width="140px" margin="0px 10px" onClick={removeOption}>
           삭제
         </Button>
       </Div>
@@ -146,7 +162,13 @@ const Options = (props) => {
               />
             </Div>
             <Div>
-              <Button width="140px" margin="0px 10px">
+              <Button
+                width="140px"
+                margin="0px 10px"
+                onClick={() => {
+                  removeChildOption(idx);
+                }}
+              >
                 삭제
               </Button>
             </Div>
@@ -161,6 +183,7 @@ const Container = styled.fieldset`
   align-items: center;
   justify-content: space-between;
   border: 1px solid #cccccc;
+  border-radius: 4px;
   margin: 20px 0px;
   padding: 20px;
 `;
