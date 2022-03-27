@@ -61,22 +61,19 @@ const UploadProduct = () => {
   const [selectionList, setSelectionList] = useState([]);
 
   const onChange = (e) => {
-    let list = [...form.image];
-    let previewList = [...previewImgs];
+    let list = [...form.image]; // form에 담는 용도의 file 배열
+    let previewList = [...previewImgs]; // 미리보기 용도의 url 배열
+
     for (let i = 0; i < e.target.files.length; i++) {
       // 여러 개의 FileList 데이터를 배열에 하나씩 추가
       list.push(e.target.files[i]);
 
-      //이미지 미리보기를 위한 FileReader 사용
-      let fileReader = new FileReader();
-      fileReader.readAsDataURL(e.target.files[i]);
-      fileReader.onload = (evt) => {
-        previewList.push(evt.target.result);
-        setPreviewImgs(previewList);
-      };
+      //이미지 미리보기를 위한 createObjectURL 사용
+      const preview = URL.createObjectURL(e.target.files[i]);
+      previewList.push(preview);
     }
+    setPreviewImgs(previewList);
     setForm({ ...form, image: list });
-    console.log(list);
   };
 
   const handleChange = (e) => {
@@ -260,7 +257,7 @@ const UploadProduct = () => {
           accept="image/*"
         />
         <PreviewImgsContainer>
-          {previewImgs.map((data, idx) => (
+          {previewImgs?.map((data, idx) => (
             <PreviewImage key={idx} src={data} alt="img" />
           ))}
         </PreviewImgsContainer>
