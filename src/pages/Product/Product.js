@@ -43,11 +43,7 @@ const Product = () => {
           dispatch(dispatchSetForm(result));
 
           // 최초 메인 이미지 설정
-          dispatch(
-            changeImg(
-              `https://today-house-bucket.s3.ap-northeast-2.amazonaws.com/${result.images[0].fileName}`
-            )
-          );
+          dispatch(changeImg(result.imageUrls[0]));
         }
       })
       .catch((e) => {

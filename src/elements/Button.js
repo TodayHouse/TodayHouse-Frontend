@@ -11,6 +11,7 @@ const Button = (props) => {
 };
 
 const Btn = styled.button`
+  min-width: 120px;
   width: ${(props) => props.width};
   background-color: ${(props) => props.theme.mainColor};
   box-sizing: border-box;
