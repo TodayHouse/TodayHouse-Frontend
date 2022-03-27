@@ -4,8 +4,8 @@ import leftArrow from '../img/leftArrow.png';
 import rightArrow from '../img/rightArrow.png';
 
 const Carousel = (props) => {
-  const { images } = props;
-  const totalSlide = images.length - 1;
+  const { images, userInfo } = props;
+  const totalSlide = images?.length - 1;
   const carouselRef = useRef();
   const [curSlide, setCurSlide] = useState(0);
 
@@ -21,24 +21,17 @@ const Carousel = (props) => {
 
   //현재 slide가 변경될 때
   useEffect(() => {
-    //첫 사진이면 왼쪽 버튼 안 보이게
-    // if (curSlide === 0) $('#leftBtn').hide()
-    // else if (curSlide === totalSlide) $('#rightBtn').hide()
-    // else {
-    //   $('#leftBtn').show()
-    //   $('#rightBtn').show()
-    // }
-    //slide 변경될 때 애니메이션
     carouselRef.current.style.transition = 'all 0.5s ease-in-out';
     carouselRef.current.style.transform = `translateX(${-500 * curSlide}px)`;
   }, [curSlide]);
+
   return (
-    <CarouselContainer>
-      <UserStylingShot ref={carouselRef}>
-        {images.map((data, idx) => (
+    <Wrap>
+      <Container ref={carouselRef}>
+        {images?.map((data, idx) => (
           <ImageContainer key={idx}>
             <Image src={data} />
-            <UserInfo>
+            <UserInfo userInfo={userInfo}>
               <Profile>
                 <ProfileImg src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2F20150723_158%2Fdbsdlakqjqtk_1437657113111Pg1B1_JPEG%2Fblog_daum_net_20150723_221113.jpg&type=a340" />
                 <Nickname>태평강냥</Nickname>
@@ -49,7 +42,7 @@ const Carousel = (props) => {
             </UserInfo>
           </ImageContainer>
         ))}
-      </UserStylingShot>
+      </Container>
       <CarouselLeftMoveBtn
         id="leftBtn"
         onClick={carouselLeft}
@@ -65,17 +58,17 @@ const Carousel = (props) => {
       >
         <CarouselMoveImg src={rightArrow} />
       </CarouselRightMoveBtn>
-    </CarouselContainer>
+    </Wrap>
   );
 };
 
-const CarouselContainer = styled.div`
+const Wrap = styled.div`
   margin-top: 20px;
   width: 700px;
   overflow: hidden;
   position: relative;
 `;
-const UserStylingShot = styled.div`
+const Container = styled.div`
   display: flex;
   width: 100%;
   margin-left: 100px;
@@ -118,6 +111,7 @@ const Image = styled.img`
   border-radius: 8px;
 `;
 const UserInfo = styled.div`
+  visibility: ${(props) => (props.userInfo ? 'visible' : 'hidden')};
   position: absolute;
   bottom: 0px;
   display: flex;
