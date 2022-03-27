@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import {Col} from 'antd'
 import {Link} from "react-router-dom"
 function ProductCard(props) {
+    console.log(props.id)
     return (
         <Col lg={6} md={8} xs={24}>
             <div style ={{position: 'relative'}}>
@@ -65,7 +66,7 @@ const Text =styled.div`
   font-size: 18px;
   line-height: 26px;
   font-weight: 700;
-  color: #0;
+  color: #ffffff;
   cursor: pointer;
 `
 const Delivery=styled.div`

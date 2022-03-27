@@ -13,7 +13,7 @@ const SideBar = (props)=>{
         try{
             axios.get("http://localhost:8080/categories")
             .then(function(res){
-                console.log(list)
+                console.log(res)
                 props.handleCategory(list[0].id,list[0].name)
                 setList(res.data.result)
                 
@@ -25,26 +25,26 @@ const SideBar = (props)=>{
 
     },[])
     const onOff =(item ,all)=>{
-        
-        if(item.subCategory){
-            item.subCategory.forEach(el => {
-                if($(`#${el.id}`).css("display") ==="flex" && !all){
+        if(!all)props.handleCategory(item.id,item.name)
+        if(item.subCategories){
+            
+            item.subCategories.forEach(el => {
+                if(all){
                     $(`#${el.id}`).css("display","none")
-                    props.handleCategory(item.id,item.name)
+                }
+                else if($(`#${el.id}`).css("display") ==="flex" && !all){
+                    $(`#${el.id}`).css("display","none")
+                    
                     onOff(el,true);
                 }
-                else if(all){
-                    $(`#${el.id}`).css("display","none")
-                }
+                
                 else{
                     $(`#${el.id}`).css("display","flex")
-                    props.handleCategory(item.id,item.name)
+                    
 
                 }
                 
             });
-        }else{
-            props.handleCategory(item.id,item.name)
         }
 
 
@@ -66,7 +66,7 @@ const SideBar = (props)=>{
                                     id={item.id}>
                                     {item.name}
                                 </Detail1>
-                                {Items(item.subCategory,fontSize*0.7,margin+20,"none")}
+                                {Items(item.subCategories,fontSize*0.7,margin+20,"none")}
                             </>
                         )
                     })}

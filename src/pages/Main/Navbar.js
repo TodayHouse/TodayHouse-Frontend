@@ -99,6 +99,9 @@ const Navbar = () => {
                 <Link to="/editor/story">
                   <Item>스토리</Item>
                 </Link>
+                <Link to="/upload-product">
+                  <Item>상품</Item>
+                </Link>
               </DropDown>
             </Menu>
             

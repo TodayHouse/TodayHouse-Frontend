@@ -1,4 +1,4 @@
-import React ,{useState,useEffect}from 'react'
+import React ,{useState,useEffect,Component}from 'react'
 import styled from 'styled-components'
 import house2 from "./img/house2.jpg"
 import $ from 'jquery'
@@ -6,38 +6,52 @@ import { FixedMenu, Footer } from '../../pages/Story/components'
 import axios from 'axios'
 import {getCookie} from '../../App';
 const AdviceDetail = () => {
-  window.addEventListener('scroll', () => {
-    const offset = document.querySelector('#container').getBoundingClientRect()
-      .top
-    if (offset === 0) $('#fixedMenu').hide()
-    else $('#fixedMenu').show()
-  })
+  
+  const fixedMenu = ()=>{
+    const offset = document
+    .querySelector('#container2').getBoundingClientRect().top
+    console.log(offset);
+    if (offset === 70) $('#fixedMenu').hide();
+    else $('#fixedMenu').show();
+
+  }
+  
   const [content,setContent]=useState({
-    imageUrl:[house2,],
+    imageUrls:[],
     writer:"작성자",
     title:"title",
     content:"",
     updatedAt:[0,0,0,0,0,0,0]
   });
+  const [images,setImages]=useState()
+  
   useEffect(()=>{
     try{
       axios.get("http://localhost:8080/stories/1",{param:{id:1}})
-    .then(function(res){
-      console.log(res.data.result);
-      setContent(res.data.result)
-    })
+        .then(function(res){
+          console.log(res)
+          setContent(res.data.result)
+          
+      })
+      
     }
+
     catch(e){
       console.log(e);
+    }
+
+    return () =>{
+     
     }
   },[])
     
     return (
-        <Container id="container">
-            <TitleImage src={content.imageUrl[0]}
+        <Container id="container2">
+            <TitleImage src={content.imageUrls[0]? `http://localhost:8080/stories/images/${content.imageUrls[0]}` : house2}
                         width="100%" 
                         height="500px"
-            />
+            >
+            </TitleImage>
             <Content>
                 <Post>
                   <Category> 노하우  세부</Category>
@@ -50,7 +64,7 @@ const AdviceDetail = () => {
                           height="60px"/>
                       <WriterName>
                           {content.writer}
-                          <Date>{content.updatedAt[0]}/{content.updatedAt[1]}/{content.updatedAt[2]}</Date>
+                          <Date></Date>
                       </WriterName>
                       <span style={{width : 800}}></span>
                       <Follow>+ 팔로우</Follow>
@@ -84,8 +98,8 @@ const AdviceDetail = () => {
                     flexDirection: 'column',
                   }}
                   >
-                  
-                   {content.content}
+                  {content.content}
+                   
                   
                   </div>
                   <Footer/>

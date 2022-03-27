@@ -58,30 +58,100 @@ const Store = () =>{
         },
 
     ])
-    const [dealList]=useState(items); //오늘의 딜 리스트
-    const [productList,setProductList]=useState(items); //인기상품 리스트
-    const load = () =>{
-        setProductList([...productList,...items]) //기존 아이템리스트에 이미지 추가(임시)
+    const [dealList,setDealList]=useState(); //오늘의 딜 리스트
+    const [productList,setProductList]=useState(); //인기상품 리스트
+    const load = (id) =>{
+        console.log(id)
+        var temp = []
+        try{
+        axios.get("http://localhost:8080/products",
+        {
+            params:
+            {
+                
+                categoryId : parseInt(id),
+                
+            }
+        }
+        ).then(function(res){
+            console.log(res.data.result.content)
+            res.data.result.content.map((item)=>{
+                temp=[...temp,
+                    {
+                        id:item.id,
+                        url:item.imageUrls[0],
+                        title: item.title,
+                        discount:item.discountRate,
+                        price:item.price,
+                        star:5,
+                        review:30,
+                        delivery:item.deliveryFee,
+                        leftTime:6,
+                        company:item.brand,
+                    }]
+            })
+            
+            setProductList(productList.concat(temp));
+            console.log(productList)
+        })
+        
+        
+        }
+        catch(e){}
     }
     const [category,setCategory]=useState(0);
     
     const handleCategory=(id,name)=>{
-        console.log(name)
+        console.log(id)
+        var temp = []
+        try{
         setCategory(
             {
-                id: id,
-                name:name,
+                    id: id,
+                    name:name,
             }
         )
+        axios.get("http://localhost:8080/products",
+        {
+            params:
+            {
+                
+                categoryId : parseInt(id),
+                
+            }
+        }
+        ).then(function(res){
+            console.log(res.data.result.content)
+            res.data.result.content.map((item)=>{
+                temp=[...temp,
+                    {
+                        id:item.id,
+                        url:item.imageUrls[0],
+                        title: item.title,
+                        discount:item.discountRate,
+                        price:item.price,
+                        star:5,
+                        review:30,
+                        delivery:item.deliveryFee,
+                        leftTime:6,
+                        company:item.brand,
+                    }]
+            })
+            setProductList(temp)
+            setDealList(temp)
+        })
+        
+        
+        }
+        catch(e){}
 
     }
     useEffect(()=>{
         try{
             axios.get("http://localhost:8080/categories")
             .then(function(res){
+                console.log(res.data.result)
                 handleCategory(res.data.result[0].id,res.data.result[0].name)
-                
-                
             })
             }
         catch(e){
@@ -98,11 +168,11 @@ const Store = () =>{
                 <TodayDeal>
                     <Title>{category.name}</Title>
                     <Row gutter={16}>
-                        {dealList && dealList.map((item,index)=>( //반복문
-                                <React.Fragment key={index}>
+                        {dealList && dealList.map((item)=>( //반복문
+                                <React.Fragment key={item.id}>
                                     <ProductCard
                                     item ={item}
-                                    id = {index} // 임시로 순서대로 id부여
+                                    id = {item.id}
                                     >
                                     </ProductCard>
 
@@ -135,20 +205,19 @@ const Store = () =>{
                 <PopularProducts>
                     <Title>인기 상품</Title>
                     <Scroll>
-                        <Row gutter={16}>
+                        <Row gutter={16} style={{width:"100%"}}>
                             {productList && productList.map((item,index)=>( //반복문
                                     <React.Fragment key={index}>
                                         <ProductCard
                                         item ={item}
-                                        id = {index} // 임시로 순서대로 id부여
-                                        >
+                                        id = {item.id}                                         >
                                         </ProductCard>
 
                                     </React.Fragment>
                                 ))}
                                 
                         </Row>
-                        <LoadMore onClick={load}>Load</LoadMore>
+                        <LoadMore onClick={()=>load(category.id)}>Load</LoadMore>
                     </Scroll>
                 </PopularProducts>
 
