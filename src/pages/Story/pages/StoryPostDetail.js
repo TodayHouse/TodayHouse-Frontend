@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Sidebar, FixedMenu, Footer } from '../components/index';
 import { useParams } from 'react-router-dom';
@@ -22,7 +22,6 @@ const sample = [
 ];
 
 const StoryPostDetail = () => {
-  const ref = useRef();
   const id = useParams().id;
   const url = theme.apiUrl;
   const [info, setInfo] = useState({});
@@ -37,16 +36,20 @@ const StoryPostDetail = () => {
     updatedAt,
   } = info;
 
-  //스크롤 시 최상단으로부터의 offset을 계산하여 0이 아닐 때 FixedMenu가 보이도록 구현
+  //스크롤 시 최상단으로부터의 offset을 계산하여 최상단이 아닐 때 FixedMenu가 보이도록 구현
   const onScroll = (e) => {
-    if (e.target.scrollingElement.scrollTop === 0) {
+    const offset = document
+      .getElementById('container')
+      ?.getBoundingClientRect().top;
+    if (offset === 70)
       document.getElementById('fixedMenu').style.visibility = 'hidden';
-    } else document.getElementById('fixedMenu').style.visibility = 'visible';
+    else document.getElementById('fixedMenu').style.visibility = 'visible';
   };
 
   window.addEventListener('scroll', onScroll);
 
   useEffect(() => {
+    document.getElementById('fixedMenu').style.visibility = 'hidden';
     axios
       .get(url + `stories/${id}`)
       .then((response) => {
@@ -59,7 +62,7 @@ const StoryPostDetail = () => {
   }, []);
 
   return (
-    <Container id="container" ref={ref} onScroll={onScroll}>
+    <Container id="container">
       <MainImage width="125%" height="500px" src={imageUrls} />
       <Wrap>
         <WhiteSpace />
