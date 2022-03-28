@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import $ from 'jquery';
 import { Sidebar, FixedMenu, Footer } from '../components/index';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -37,16 +36,20 @@ const StoryPostDetail = () => {
     updatedAt,
   } = info;
 
-  // 스크롤 시 최상단으로부터의 offset을 계산하여 0이 아닐 때 FixedMenu가 보이도록 구현
-  window.addEventListener('scroll', () => {
+  //스크롤 시 최상단으로부터의 offset을 계산하여 최상단이 아닐 때 FixedMenu가 보이도록 구현
+  const onScroll = (e) => {
     const offset = document
-      .querySelector('#container')
-      .getBoundingClientRect().top;
-    if (offset === 70) $('#fixedMenu').hide();
-    else $('#fixedMenu').show();
-  });
+      .getElementById('container')
+      ?.getBoundingClientRect().top;
+    if (offset === 70)
+      document.getElementById('fixedMenu').style.visibility = 'hidden';
+    else document.getElementById('fixedMenu').style.visibility = 'visible';
+  };
+
+  window.addEventListener('scroll', onScroll);
 
   useEffect(() => {
+    document.getElementById('fixedMenu').style.visibility = 'hidden';
     axios
       .get(url + `stories/${id}`)
       .then((response) => {
@@ -131,9 +134,10 @@ const StoryPostDetail = () => {
                   </SimpleInfo>
                 </Simple>
                 <Detail>
-                  {sample.map((e) => {
+                  {sample.map((e, idx) => {
                     return (
                       <div
+                        key={idx}
                         style={{
                           display: 'flex',
                           justifyContent: 'space-between',
