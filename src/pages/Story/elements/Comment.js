@@ -1,5 +1,5 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from 'react';
+import styled from 'styled-components';
 //댓글 컴포넌트
 const Comment = (props) => {
   return (
@@ -20,39 +20,40 @@ const Comment = (props) => {
         </Footer>
       </Detail>
     </Container>
-  )
-}
+  );
+};
 
 const Container = styled.article`
   display: flex;
-  padding: 3px 0px;
-`
+  align-items: center;
+  padding: 10px 0px;
+`;
 const ProfileImg = styled.img`
   border-radius: 15px;
   &:hover {
     cursor: pointer;
   }
-`
-const Detail = styled.p`
+`;
+const Detail = styled.div`
   padding: 0px 10px;
-`
+`;
 const NicknameContainer = styled.div`
   display: flex;
-`
+`;
 const Nickname = styled.span`
   font-weight: bold;
-`
+`;
 const CommentContent = styled.span`
   margin-left: 10px;
-`
+`;
 const Footer = styled.div`
   display: flex;
-`
+`;
 const FooterContent = styled.span`
   margin-right: 10px;
   color: #777777;
   &:hover {
     cursor: pointer;
   }
-`
-export default Comment
+`;
+export default Comment;
