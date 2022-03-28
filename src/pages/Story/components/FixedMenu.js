@@ -1,20 +1,20 @@
-import React from "react"
-import styled from "styled-components"
+import React from 'react';
+import styled from 'styled-components';
 
 //집들이 게시글 상세 페이지의 상품 모아보기, 위로 가기, 목차 버튼이 있는 컴포넌트
 const FixedMenu = () => {
   return (
     <Container id="fixedMenu">
-      <div style={{ display: "flex", alignItems: "flex-end" }}>
+      <div style={{ display: 'flex', alignItems: 'flex-end' }}>
         <BlueButton>상품 모아보기</BlueButton>
       </div>
       <div
         style={{
-          display: "flex",
-          height: "100%",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          alignItems: "center",
+          display: 'flex',
+          height: '100%',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          alignItems: 'center',
         }}
       >
         <WhiteButton id="index">
@@ -26,7 +26,7 @@ const FixedMenu = () => {
         <WhiteButton
           id="scrollToTop"
           onClick={() => {
-            window.scrollTo(0, 0)
+            window.scrollTo(0, 0);
           }}
         >
           <img
@@ -38,8 +38,8 @@ const FixedMenu = () => {
         </WhiteButton>
       </div>
     </Container>
-  )
-}
+  );
+};
 
 const Container = styled.div`
   display: flex;
@@ -50,7 +50,7 @@ const Container = styled.div`
   right: 30px;
   bottom: 50px;
   padding: 12px;
-`
+`;
 const BlueButton = styled.button`
   border: none;
   border-radius: 50px;
@@ -62,7 +62,7 @@ const BlueButton = styled.button`
   &:hover {
     background-color: ${(props) => props.theme.hoverMainColor};
   }
-`
+`;
 const WhiteButton = styled.button`
   border: 1px solid #eeeeee;
   border-radius: 30px;
@@ -72,5 +72,5 @@ const WhiteButton = styled.button`
   &:hover {
     background-color: #eeeeee;
   }
-`
-export default FixedMenu
+`;
+export default FixedMenu;
