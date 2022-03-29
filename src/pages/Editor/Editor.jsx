@@ -14,37 +14,52 @@ import {Link} from 'react-router-dom';
 import { getCookie } from '../../App';
 import { useSelector } from "react-redux";
 import Cover from "./Cover";
+import { Cookies, useCookies } from "react-cookie"
 
-const EditKnowhow = () => {
+const Editor = () => {
+  const [cookies, setCookie, removeCookie] = useCookies(["editorType"]);
+
   const content = useSelector((state) => state.editor.content);
-  const [cookie, setCookie] = useState("");
+  const [contentImages, setCImages] = useState([]);
   const [titleText, setTitle] = useState("");
   const [contentText, setContent] = useState("");
   const [Images, setImage] = useState([icon1]);
   const [isOpen1, setOpen1] = useState(false);
   const [isOpen2, setOpen2] = useState(false);
+  const [editorType, setEditor] = useState("");
+  const [backLoca, setLoca] = useState("");
   //const cookieState= useSelector((state) => state.login.cookieState);
   const accessToken = getCookie('login_id');
-   
+
+  const formData = new FormData();
   useEffect(() => {
+    var eType = getCookie('editorType')
+    console.log("가져온 쿠키 : " + eType);
+    setEditor(eType);
+    console.log("불러온 에디터 타입 쿠키 : " + editorType);
     console.log("쿠키 로딩");
-    setCookie(accessToken);
+    setCookie("login_id", accessToken, {path : "/"});
     console.log(accessToken);
-  }, []);
-  
+    
+    setLoca(editorType == "STORY" ? "/story" : "/advices");
+    console.log(backLoca);
+  }, [editorType, backLoca]);
+
   const contentSetter = (e) => {
     setContent(e.target.value);
-    console.log("콘텐츠 : " + e.target.value);
+    console.log(e.target.value);
   }
 
   const handleTitle = (e) => {
     setTitle(e.target.value);
-    console.log("타이틀 : " + e.target.value);
+    console.log(e.target.value);
   };
   const handleContent = (e) =>{
     setContent(e.target.value);
     console.log(e.target.value);
   };
+
+
 
   const handleClick1 = () => {
     setOpen1(true);
@@ -64,7 +79,7 @@ const EditKnowhow = () => {
     const formData = new FormData();
     const file = document.getElementById("file");
     const files = document.getElementById("files");
-    console.log("쿠키 상태" + cookie);
+    
     for(var i = 0; i <file.files.length; i++)
     {
       formData.append("file", file.files[i]);
@@ -79,12 +94,12 @@ const EditKnowhow = () => {
     console.log(file.files[0]);
     console.log(formData);
     const param = {
-      category : "KNOWHOW",
+      category : editorType,
       content : content,
       title : titleText,
     }//`Bearer ${accessToken}`
     formData.append("request", new Blob([JSON.stringify(param)], {type : "application/json"}))
-    //formData를 넣어야하는데 어떻게 줄지
+
     try{
       axios.post("http://localhost:8080/stories", formData, {
         headers : {
@@ -101,7 +116,7 @@ const EditKnowhow = () => {
             return;
         }
         alert('업로드 완료!')
-        window.location.href = "/advices";
+        window.location.href = backLoca;
        
       });
     }
@@ -112,13 +127,13 @@ const EditKnowhow = () => {
 
   return (
     <>
-    <Link to = "/advices">
+    <Link to = {backLoca}>
        <ConfirmButton className = 'EditConfirm' id = 'EditConfirm' onClick = {upload}>글 발행</ConfirmButton>
     </Link>
     <EditorTop href = "/">
                     <LogoImage src = "https://img.etnews.com/photonews/2104/1403026_20210419140535_358_0003.jpg"/>               
     </EditorTop>  
-
+    
     <BackgroundImage>
       <ModalContainer>    
       <ModalButton1 onClick = {handleClick1} >
@@ -151,26 +166,16 @@ const EditKnowhow = () => {
 
    
       <TitleText placeholder="제목을 입력해주세요" type = "text" id ="title" onChange = {handleTitle} value={titleText}>
-      
+    
       </TitleText>
-
       <TextEditor></TextEditor>
-     
+
       </>
     );
 }
+//
 
 
-
-const Editor = styled.input`
-  border-radius : 4px;
-  border : 2px solid skyblue;
-  height : 200px;
-  width : 800px; 
-  vertical-align: top;
-  text-align: left;
-  
-`
 
 const TitleText = styled.input`
   display : flex;
@@ -295,5 +300,4 @@ background-color : white;
   margin-left : 160px;
 `;
 
-
-export default EditKnowhow;
+export default Editor;

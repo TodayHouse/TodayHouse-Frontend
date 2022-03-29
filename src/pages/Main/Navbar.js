@@ -5,8 +5,17 @@ import { Link } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { navChange } from "../../redux/reducer/navBar"
 import $ from "jquery"
-import { Cookies } from "react-cookie"
+import { Cookies, useCookies } from "react-cookie"
+
+
 const Navbar = () => {
+  const [cookie, setCookie, removeCookie] = useCookies(["editorType"]);
+ 
+  const updateCookie = (props) => {
+    removeCookie("editorType");
+    setCookie("editorType", props, {path : "/"});
+    console.log(props);
+  }
   const buttonLogout = () => {
     console.log("아직 구현 x")
   }
@@ -37,7 +46,6 @@ const Navbar = () => {
 
   }
   const isLogin = getCookie("login_id") ? true: false;
-  
   
   
 
@@ -93,11 +101,11 @@ const Navbar = () => {
               <Writing>글쓰기</Writing>
             
               <DropDown id="writingDropDown">
-                <Link to="/editor/knowhow">
-                  <Item>노하우</Item>
+              <Link to="/editor">
+                  <Item onClick={() => updateCookie("KNOWHOW")}>노하우</Item>
                 </Link>
-                <Link to="/editor/story">
-                  <Item>스토리</Item>
+                <Link to="/editor">
+                  <Item onClick={() => updateCookie("STORY")}>스토리</Item>
                 </Link>
                 <Link to="/upload-product">
                   <Item>상품</Item>

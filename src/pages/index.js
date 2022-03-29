@@ -7,8 +7,7 @@ import StoryPostDetail from './Story/pages/StoryPostDetail';
 import Product from './Product/Product';
 import Advices from './Advices/Advices';
 import AdviceDetail from './Advices/AdviceDetail';
-import EditStory from './Editor/EditStory';
-import EditKnowhow from './Editor/EditKnowhow';
+import Editor from './Editor/Editor';
 import Board from './Event/Board';
 import Search from './SearchPW/Search';
 import Order from './Order/Order';
@@ -32,8 +31,7 @@ export {
   Product,
   AdviceDetail,
   Advices,
-  EditStory,
-  EditKnowhow,
+  Editor,
   Board,
   Search,
   Cart,
