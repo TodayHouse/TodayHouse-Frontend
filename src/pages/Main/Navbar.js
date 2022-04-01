@@ -17,9 +17,11 @@ const Navbar = () => {
     console.log(props);
   }
   const buttonLogout = () => {
-    removeCookie("login_id");
-    setCookie(false);
-    window.location.reload();
+    if(window.confirm("로그아웃 하시겠어요?")){
+      removeCookie("login_id");
+      setCookie(false);
+      window.location.reload();
+    }
   }
   const dispatch = useDispatch()
   const changeNavSelect = (value) => {
