@@ -17,7 +17,9 @@ const Navbar = () => {
     console.log(props);
   }
   const buttonLogout = () => {
-    console.log("아직 구현 x")
+    removeCookie("login_id");
+    setCookie(false);
+    window.location.reload();
   }
   const dispatch = useDispatch()
   const changeNavSelect = (value) => {
@@ -45,9 +47,11 @@ const Navbar = () => {
     return cookies.get(name)
 
   }
-  const isLogin = getCookie("login_id") ? true: false;
+  const [isLogin, setLogin] = useState(false);
   
-  
+  useEffect(() => {
+    setLogin(getCookie("login_id") ? true: false);
+  }, [isLogin]);
 
   return (
     <NavBar id="navBar" >
