@@ -36,8 +36,9 @@ const UploadProduct = () => {
   });
 
   const [previewImgs, setPreviewImgs] = useState([]);
+  const [lastCategoryName, setLastCategoryName] = useState('');
   const [form, setForm] = useState({
-    categoryId: 0,
+    categoryName: '',
     title: '',
     image: [],
     price: '',
@@ -53,7 +54,7 @@ const UploadProduct = () => {
   });
 
   const {
-    categoryId,
+    categoryName,
     title,
     image,
     price,
@@ -124,11 +125,15 @@ const UploadProduct = () => {
   };
 
   const upload = () => {
-    if (title === '' || image === [] || price === '' || productDetail === '')
+    if (
+      title === '' ||
+      image === [] ||
+      price === '' ||
+      productDetail === '' ||
+      categoryName === ''
+    )
       alert('입력되지 않은 정보가 있습니다.');
     else {
-      // 반복문으로 categoryValues 돌면서 '' or undefined가 아니면 카테고리값 최신화하는 코드 작성 필요 !
-
       form.image.forEach((data) => {
         formData.append('file', data);
       });
@@ -137,7 +142,7 @@ const UploadProduct = () => {
         new Blob(
           [
             JSON.stringify({
-              categoryId: 5,
+              categoryName: lastCategoryName,
               childOption,
               deliveryFee,
               discountRate,
@@ -261,11 +266,20 @@ const UploadProduct = () => {
   useEffect(() => {
     console.log('value');
     console.log(categoryValues);
+
+    // 현재까지 선택된 마지막 카테고리 값을 저장
+    if (first !== null) setLastCategoryName(categoryValues.first);
+
+    if (second !== null) setLastCategoryName(categoryValues.second);
+
+    if (third !== null) setLastCategoryName(categoryValues.third);
+
+    if (fourth !== null) setLastCategoryName(categoryValues.fourth);
   }, [categoryValues]);
 
   useEffect(() => {
-    console.log(previewImgs);
-  }, [previewImgs]);
+    setForm({ ...form, categoryName: lastCategoryName });
+  }, [lastCategoryName]);
 
   useEffect(() => {
     setForm({ ...form, parentOptions: parentList });
@@ -318,7 +332,6 @@ const UploadProduct = () => {
     axios
       .get(url + 'categories')
       .then((response) => {
-        console.log(response.data.result);
         setCategories(response.data.result);
       })
       .catch((e) => {
@@ -349,7 +362,9 @@ const UploadProduct = () => {
                 ))}
             </Category>
           </div>
-          {categories && categories[first] && categories[first].subCategory ? (
+          {categories &&
+          categories[first] &&
+          categories[first].subCategories ? (
             <div>
               &gt;
               <Category
@@ -360,7 +375,7 @@ const UploadProduct = () => {
                 value={
                   second === null
                     ? 'default'
-                    : categories[first].subCategory[second]?.name
+                    : categories[first].subCategories[second]?.name
                 }
               >
                 <option disabled value="default">
@@ -368,8 +383,8 @@ const UploadProduct = () => {
                 </option>
                 {categories &&
                   categories[first] &&
-                  categories[first].subCategory &&
-                  categories[first].subCategory.map((data, idx) => (
+                  categories[first].subCategories &&
+                  categories[first].subCategories.map((data, idx) => (
                     <option key={idx} value={data.name}>
                       {data.name}
                     </option>
@@ -379,9 +394,9 @@ const UploadProduct = () => {
           ) : null}
           {categories &&
           categories[first] &&
-          categories[first].subCategory &&
-          categories[first].subCategory[second] &&
-          categories[first].subCategory[second].subCategory ? (
+          categories[first].subCategories &&
+          categories[first].subCategories[second] &&
+          categories[first].subCategories[second].subCategories ? (
             <div>
               &gt;
               <Category
@@ -392,8 +407,9 @@ const UploadProduct = () => {
                 value={
                   third === null
                     ? 'default'
-                    : categories[first].subCategory[second].subCategory[third]
-                        ?.name
+                    : categories[first].subCategories[second].subCategories[
+                        third
+                      ]?.name
                 }
               >
                 <option disabled value="default">
@@ -401,10 +417,10 @@ const UploadProduct = () => {
                 </option>
                 {categories &&
                   categories[first] &&
-                  categories[first].subCategory &&
-                  categories[first].subCategory[second] &&
-                  categories[first].subCategory[second].subCategory &&
-                  categories[first].subCategory[second].subCategory.map(
+                  categories[first].subCategories &&
+                  categories[first].subCategories[second] &&
+                  categories[first].subCategories[second].subCategories &&
+                  categories[first].subCategories[second].subCategories.map(
                     (data, idx) => (
                       <option key={idx} value={data.name}>
                         {data.name}
@@ -416,12 +432,12 @@ const UploadProduct = () => {
           ) : null}
           {categories &&
           categories[first] &&
-          categories[first].subCategory &&
-          categories[first].subCategory[second] &&
-          categories[first].subCategory[second].subCategory &&
-          categories[first].subCategory[second].subCategory[third] &&
-          categories[first].subCategory[second].subCategory[third]
-            .subCategory ? (
+          categories[first].subCategories &&
+          categories[first].subCategories[second] &&
+          categories[first].subCategories[second].subCategories &&
+          categories[first].subCategories[second].subCategories[third] &&
+          categories[first].subCategories[second].subCategories[third]
+            .subCategories ? (
             <div>
               &gt;
               <Category
@@ -432,8 +448,9 @@ const UploadProduct = () => {
                 value={
                   fourth === null
                     ? 'default'
-                    : categories[first].subCategory[second].subCategory[third]
-                        .subCategory[fourth]?.name
+                    : categories[first].subCategories[second].subCategories[
+                        third
+                      ].subCategories[fourth]?.name
                 }
               >
                 <option disabled value="default">
@@ -441,15 +458,17 @@ const UploadProduct = () => {
                 </option>
                 {categories &&
                   categories[first] &&
-                  categories[first].subCategory &&
-                  categories[first].subCategory[second] &&
-                  categories[first].subCategory[second].subCategory &&
-                  categories[first].subCategory[second].subCategory[third] &&
-                  categories[first].subCategory[second].subCategory[third]
-                    .subCategory &&
-                  categories[first].subCategory[second].subCategory[
+                  categories[first].subCategories &&
+                  categories[first].subCategories[second] &&
+                  categories[first].subCategories[second].subCategories &&
+                  categories[first].subCategories[second].subCategories[
                     third
-                  ].subCategory.map((data, idx) => (
+                  ] &&
+                  categories[first].subCategories[second].subCategories[third]
+                    .subCategories &&
+                  categories[first].subCategories[second].subCategories[
+                    third
+                  ].subCategories.map((data, idx) => (
                     <option key={idx} value={data.name}>
                       {data.name}
                     </option>
