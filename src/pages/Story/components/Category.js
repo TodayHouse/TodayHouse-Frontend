@@ -579,7 +579,6 @@ const Category = () => {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  z-index: 2;
 `;
 const CategoryContainer = styled.div`
   display: flex;
