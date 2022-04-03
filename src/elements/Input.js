@@ -40,5 +40,8 @@ const InputBox = styled.input`
   border: 1px solid #cccccc;
   border-radius: 4px;
   margin: ${(props) => props.margin};
+  &:focus {
+    outline: none;
+  }
 `;
 export default Input;
