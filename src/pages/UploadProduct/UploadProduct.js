@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { getCookie } from '../../App';
@@ -9,15 +9,36 @@ import { Options } from './components';
 import roundX from '../../img/roundX.png';
 
 const UploadProduct = () => {
+  const category1 = useRef();
+  const category2 = useRef();
+  const category3 = useRef();
+  const category4 = useRef();
+
   const url = theme.apiUrl;
   const accessToken = getCookie('login_id');
   const navigate = useNavigate();
 
   const [categories, setCategories] = useState([]);
-  const [selectedCategoryIdx, setSelectedCategoryIdx] = useState([]);
+  const [selectedCategoryIdx, setSelectedCategoryIdx] = useState({
+    // 카테고리 depth 별 index
+    first: null,
+    second: null,
+    third: null,
+    fourth: null,
+  });
+  const { first, second, third, fourth } = selectedCategoryIdx;
+  const [categoryValues, setCategoryValues] = useState({
+    // 카테고리 depth 별 value
+    first: '',
+    second: '',
+    third: '',
+    fourth: '',
+  });
+
   const [previewImgs, setPreviewImgs] = useState([]);
+  const [lastCategoryName, setLastCategoryName] = useState('');
   const [form, setForm] = useState({
-    categoryId: 0,
+    categoryName: '',
     title: '',
     image: [],
     price: '',
@@ -33,7 +54,7 @@ const UploadProduct = () => {
   });
 
   const {
-    categoryId,
+    categoryName,
     title,
     image,
     price,
@@ -104,7 +125,13 @@ const UploadProduct = () => {
   };
 
   const upload = () => {
-    if (title === '' || image === [] || price === '' || productDetail === '')
+    if (
+      title === '' ||
+      image === [] ||
+      price === '' ||
+      productDetail === '' ||
+      categoryName === ''
+    )
       alert('입력되지 않은 정보가 있습니다.');
     else {
       form.image.forEach((data) => {
@@ -115,7 +142,7 @@ const UploadProduct = () => {
         new Blob(
           [
             JSON.stringify({
-              categoryId: 1,
+              categoryName: lastCategoryName,
               childOption,
               deliveryFee,
               discountRate,
@@ -177,25 +204,82 @@ const UploadProduct = () => {
     setSelectionList(list);
   };
 
-  const onCategorySelected = (e) => {
-    const { selectedIndex } = e.target;
-    //let arr = [...selectedCategoryIdx, selectedIndex];
-    console.log(selectedCategoryIdx);
-    setSelectedCategoryIdx((list) => list.push(selectedIndex));
-
-    console.log(selectedCategoryIdx);
-  };
-
-  const showCategory = (idx) => {
-    console.log(selectedCategoryIdx[idx]);
-    return categories[selectedCategoryIdx[idx]].subCategory?.map(
-      (data, idx) => <option key={idx}>{data.name}</option>
-    );
+  const handleCategoryIdx = (e) => {
+    // 선택된 카테고리의 index 저장
+    const { selectedIndex, name } = e.target;
+    const changed = { ...selectedCategoryIdx, [name]: selectedIndex - 1 }; // 선택하세요 라는 최상단 옵션이 있으므로 index-1을 해줌
+    setSelectedCategoryIdx(changed);
   };
 
   useEffect(() => {
-    console.log(previewImgs);
-  }, [previewImgs]);
+    // first 카테고리 value 및 index 변경
+    setCategoryValues({
+      first: category1.current?.value,
+      second: '',
+      third: '',
+      fourth: '',
+    });
+
+    const changed = {
+      ...selectedCategoryIdx,
+      second: null,
+      third: null,
+      fourth: null,
+    };
+    setSelectedCategoryIdx(changed);
+  }, [first]);
+
+  useEffect(() => {
+    // second 카테고리 value 및 index 변경
+    setCategoryValues({
+      ...categoryValues,
+      second: category2.current?.value,
+      third: '',
+      fourth: '',
+    });
+
+    const changed = { ...selectedCategoryIdx, third: null, fourth: null };
+    setSelectedCategoryIdx(changed);
+  }, [second]);
+
+  useEffect(() => {
+    // third 카테고리 value 및 index 변경
+    setCategoryValues({
+      ...categoryValues,
+      third: category3.current?.value,
+      fourth: '',
+    });
+
+    const changed = { ...selectedCategoryIdx, fourth: null };
+    setSelectedCategoryIdx(changed);
+  }, [third]);
+
+  useEffect(() => {
+    // fourth 카테고리 value 및 index 변경
+    setCategoryValues({ ...categoryValues, fourth: category4.current?.value });
+  }, [fourth]);
+
+  useEffect(() => {
+    console.log(selectedCategoryIdx);
+  }, [selectedCategoryIdx]);
+
+  useEffect(() => {
+    console.log('value');
+    console.log(categoryValues);
+
+    // 현재까지 선택된 마지막 카테고리 값을 저장
+    if (first !== null) setLastCategoryName(categoryValues.first);
+
+    if (second !== null) setLastCategoryName(categoryValues.second);
+
+    if (third !== null) setLastCategoryName(categoryValues.third);
+
+    if (fourth !== null) setLastCategoryName(categoryValues.fourth);
+  }, [categoryValues]);
+
+  useEffect(() => {
+    setForm({ ...form, categoryName: lastCategoryName });
+  }, [lastCategoryName]);
 
   useEffect(() => {
     setForm({ ...form, parentOptions: parentList });
@@ -240,10 +324,14 @@ const UploadProduct = () => {
   }, [free]);
 
   useEffect(() => {
+    if (categories.length > 0) console.log(categories);
+  }, [categories]);
+
+  useEffect(() => {
+    // 최초 렌더링 시 등록된 카테고리 정보 불러옴
     axios
       .get(url + 'categories')
       .then((response) => {
-        console.log(response);
         setCategories(response.data.result);
       })
       .catch((e) => {
@@ -256,16 +344,138 @@ const UploadProduct = () => {
       <Header>상품 등록</Header>
       <Content>
         <CategoryContainer>
-          <Category onChange={onCategorySelected}>
-            {categories?.map((data, idx) => (
-              <option key={idx}>{data.name}</option>
-            ))}
-          </Category>
-          <Category>
-            {() => {
-              showCategory(0);
-            }}
-          </Category>
+          <div>
+            <Category
+              ref={category1}
+              name="first"
+              onChange={handleCategoryIdx}
+              defaultValue="default"
+            >
+              <option disabled value="default">
+                메인 카테고리
+              </option>
+              {categories &&
+                categories?.map((data, idx) => (
+                  <option key={idx} value={data.name}>
+                    {data.name}
+                  </option>
+                ))}
+            </Category>
+          </div>
+          {categories &&
+          categories[first] &&
+          categories[first].subCategories ? (
+            <div>
+              &gt;
+              <Category
+                ref={category2}
+                name="second"
+                onChange={handleCategoryIdx}
+                defaultValue="default"
+                value={
+                  second === null
+                    ? 'default'
+                    : categories[first].subCategories[second]?.name
+                }
+              >
+                <option disabled value="default">
+                  세부 카테고리
+                </option>
+                {categories &&
+                  categories[first] &&
+                  categories[first].subCategories &&
+                  categories[first].subCategories.map((data, idx) => (
+                    <option key={idx} value={data.name}>
+                      {data.name}
+                    </option>
+                  ))}
+              </Category>
+            </div>
+          ) : null}
+          {categories &&
+          categories[first] &&
+          categories[first].subCategories &&
+          categories[first].subCategories[second] &&
+          categories[first].subCategories[second].subCategories ? (
+            <div>
+              &gt;
+              <Category
+                ref={category3}
+                name="third"
+                onChange={handleCategoryIdx}
+                defaultValue="default"
+                value={
+                  third === null
+                    ? 'default'
+                    : categories[first].subCategories[second].subCategories[
+                        third
+                      ]?.name
+                }
+              >
+                <option disabled value="default">
+                  세부 카테고리
+                </option>
+                {categories &&
+                  categories[first] &&
+                  categories[first].subCategories &&
+                  categories[first].subCategories[second] &&
+                  categories[first].subCategories[second].subCategories &&
+                  categories[first].subCategories[second].subCategories.map(
+                    (data, idx) => (
+                      <option key={idx} value={data.name}>
+                        {data.name}
+                      </option>
+                    )
+                  )}
+              </Category>
+            </div>
+          ) : null}
+          {categories &&
+          categories[first] &&
+          categories[first].subCategories &&
+          categories[first].subCategories[second] &&
+          categories[first].subCategories[second].subCategories &&
+          categories[first].subCategories[second].subCategories[third] &&
+          categories[first].subCategories[second].subCategories[third]
+            .subCategories ? (
+            <div>
+              &gt;
+              <Category
+                ref={category4}
+                name="fourth"
+                onChange={handleCategoryIdx}
+                defaultValue="default"
+                value={
+                  fourth === null
+                    ? 'default'
+                    : categories[first].subCategories[second].subCategories[
+                        third
+                      ].subCategories[fourth]?.name
+                }
+              >
+                <option disabled value="default">
+                  세부 카테고리
+                </option>
+                {categories &&
+                  categories[first] &&
+                  categories[first].subCategories &&
+                  categories[first].subCategories[second] &&
+                  categories[first].subCategories[second].subCategories &&
+                  categories[first].subCategories[second].subCategories[
+                    third
+                  ] &&
+                  categories[first].subCategories[second].subCategories[third]
+                    .subCategories &&
+                  categories[first].subCategories[second].subCategories[
+                    third
+                  ].subCategories.map((data, idx) => (
+                    <option key={idx} value={data.name}>
+                      {data.name}
+                    </option>
+                  ))}
+              </Category>
+            </div>
+          ) : null}
         </CategoryContainer>
         <div style={{ width: '100%' }}>
           <Input
@@ -278,7 +488,7 @@ const UploadProduct = () => {
           />
         </div>
         <UploadImageContainer>
-          <UploadImage for="uploadImage">사진 업로드</UploadImage>
+          <UploadImage htmlFor="uploadImage">사진 업로드</UploadImage>
         </UploadImageContainer>
         <input
           type="file"
@@ -456,8 +666,19 @@ const Content = styled.div`
   flex-direction: column;
   align-items: flex-start;
 `;
-const CategoryContainer = styled.div``;
-const Category = styled.select``;
+const CategoryContainer = styled.div`
+  display: flex;
+  padding: 20px 0px;
+`;
+const Category = styled.select`
+  margin: 0px 16px;
+  padding: 8px;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  &:focus {
+    outline: none;
+  }
+`;
 const UploadImageContainer = styled.div`
   display: flex;
   justify-content: center;
