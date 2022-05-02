@@ -57,11 +57,11 @@ const Product = () => {
     return (
         <Container id="container">
             <CategoryContainer>
-                {categoryPath.map((data, idx) =>
+                {categoryPath?.map((data, idx) =>
                     idx === 0 ? (
-                        <Category>{data}</Category>
+                        <Category key={idx}>{data}</Category>
                     ) : (
-                        <div>
+                        <div key={idx}>
                             <span style={{ margin: "0px 8px" }}> &gt;</span>
                             <Category>{data}</Category>
                         </div>
