@@ -12,7 +12,6 @@ import {
     Delivery,
     Recommend,
 } from "../Product/components";
-import $ from "jquery";
 import axios from "axios";
 import theme from "../../theme";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,13 +26,18 @@ const Product = () => {
         (state) => state.product.form.categoryPath
     );
 
-    window.addEventListener("scroll", () => {
+    const onScroll = () => {
         const offset = document
-            .querySelector("#container")
-            .getBoundingClientRect().top;
-        if (offset === 0) $("#scrollToTop").hide();
-        else $("#scrollToTop").show();
-    });
+            .getElementById("container")
+            ?.getBoundingClientRect().top;
+        if (offset === 0)
+            document.getElementById("scrollToTop").style.display = "none";
+        else document.getElementById("scrollToTop").style.display = "block";
+    };
+
+    window.onload = function () {
+        window.addEventListener("scroll", onScroll);
+    };
 
     useEffect(() => {
         //해당 상품 정보를 불러와서 리덕스에 저장
