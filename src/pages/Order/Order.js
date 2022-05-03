@@ -45,7 +45,7 @@ const Wrap = styled.div`
     justify-content: center;
 `;
 const Container = styled.div`
-    width: 1150px;
+    width: 100%;
     display: flex;
 `;
 const HeaderTitle = styled.span`
