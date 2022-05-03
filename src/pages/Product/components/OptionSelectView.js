@@ -59,7 +59,6 @@ const OptionSelectView = () => {
     const onParentOptionSelected = () => {
         const obj = document.getElementById("selectParentOption");
         const id = obj.selectedIndex;
-        console.log(id);
         setParentOption(obj.value); //1차 옵션
         setOptionList2(optionList1[id - 1].childOptions); //2차 옵션 목록들
     };
@@ -67,14 +66,30 @@ const OptionSelectView = () => {
     const onChildOptionSelected = (e) => {
         const obj = document.getElementById("selectChildOption");
         const id = obj.selectedIndex;
-        dispatch(
-            addOption({
-                name: `${optionTitle1}선택: ${parentOption} / ${optionTitle2}선택: ${e.target.value}`,
-                price: optionList1[id - 1].price,
-                id: parentOption + e.target.value + id,
-                num: 1,
-            })
-        );
+        const name = `${optionTitle1}선택: ${parentOption} / ${optionTitle2}선택: ${e.target.value}`;
+        let isDuplicated = false; // 중복된 선택옵션 체크
+
+        //selectedOption에 추가하기 전에 기존의 option 배열을 돌면서 중복된 옵션인지 체크
+        selectedOption.forEach((data) => {
+            if (data.name === name) {
+                alert("이미 선택한 옵션입니다.");
+                document.getElementById("selectParentOption").value = "default";
+                document.getElementById("selectChildOption").value = "default";
+                setOptionList2([]);
+                isDuplicated = true;
+                return;
+            }
+        });
+
+        if (!isDuplicated)
+            dispatch(
+                addOption({
+                    name,
+                    price: optionList1[id - 1].price,
+                    id: parentOption + e.target.value + id,
+                    num: 1,
+                })
+            );
     };
 
     useEffect(() => {
