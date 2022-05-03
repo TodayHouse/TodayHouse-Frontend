@@ -3,12 +3,14 @@ import styled from "styled-components";
 import { SelectedOption } from ".";
 import { useDispatch, useSelector } from "react-redux";
 import { addOption } from "../../../redux/reducer/product";
+import { useNavigate } from "react-router-dom";
 
 const OptionSelectView = (props) => {
     const { parentId, childId } = props; //상단 선택창과 sticky 선택창을 구분하기 위해 id를 각각 설정
     const [totalPrice, setTotalPrice] = useState(0);
     const selectedOption = useSelector((state) => state.product.selectedOption);
     const productInfo = useSelector((state) => state.product.form); //상품 전체 정보
+    const sellerInfo = useSelector((state) => state.product.sellerInfo);
 
     const [parentOption, setParentOption] = useState("");
     const optionList1 = productInfo.parentOptions;
@@ -17,6 +19,7 @@ const OptionSelectView = (props) => {
     const optionTitle2 = productInfo.option2;
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const onParentOptionSelected = () => {
         const obj = document.getElementById(parentId);
@@ -48,6 +51,10 @@ const OptionSelectView = (props) => {
         if (!isDuplicated)
             dispatch(
                 addOption({
+                    company: sellerInfo.companyName,
+                    deliveryFee: productInfo.deliveryFee,
+                    image: productInfo.imageUrls[0],
+                    title: productInfo.title,
                     name,
                     price: optionList1[id - 1].price,
                     id: parentOption + e.target.value + id,
@@ -139,7 +146,14 @@ const OptionSelectView = (props) => {
                 </InnerContainer>
                 <InnerContainer>
                     <MyBucketBtn>장바구니</MyBucketBtn>
-                    <PurchaseBtn>바로구매</PurchaseBtn>
+                    <PurchaseBtn
+                        onClick={() => {
+                            if (!selectedOption.length)
+                                alert("옵션 선택 후에 버튼을 클릭해 주세요.");
+                            else navigate("/order");
+                        }}>
+                        바로구매
+                    </PurchaseBtn>
                 </InnerContainer>
             </PurchaseContainer>
         </Container>
