@@ -10,10 +10,9 @@ import {
     PaymentContainer,
 } from "./components";
 import { Title } from "./elements";
-import { useSelector } from "react-redux";
 
 const Order = () => {
-    const productInfo = useSelector((state) => state.product.selectedOption);
+    const productInfo = JSON.parse(localStorage.getItem("selectedOption2"));
     return (
         <Wrap>
             <Container>

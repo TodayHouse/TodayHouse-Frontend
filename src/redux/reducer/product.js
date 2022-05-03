@@ -7,9 +7,9 @@ const productReducer = createSlice({
         imgSrc: "",
 
         selectedOption:
-            JSON.parse(localStorage.getItem("selectedOption")) === null
+            JSON.parse(localStorage.getItem("selectedOption1")) === null
                 ? []
-                : JSON.parse(localStorage.getItem("selectedOption")),
+                : JSON.parse(localStorage.getItem("selectedOption1")),
         totalPrice: 0,
         form: {},
         sellerInfo: {},
@@ -22,8 +22,13 @@ const productReducer = createSlice({
         addOption: (state, action) => {
             state.selectedOption.push(action.payload);
             // order 페이지에서 리덕스 정보를 사용하기 위해 local storage에 저장
+            // selectOption1은 상품 상세페이지, 2는 주문 페이지에서 사용
             localStorage.setItem(
-                "selectedOption",
+                "selectedOption1",
+                JSON.stringify(state.selectedOption)
+            );
+            localStorage.setItem(
+                "selectedOption2",
                 JSON.stringify(state.selectedOption)
             );
         },
@@ -32,7 +37,8 @@ const productReducer = createSlice({
                 (data) => data.id !== action.payload
             );
             // order 페이지에서 리덕스 정보를 사용하기 위해 local storage에 저장
-            localStorage.setItem("selectedOption", JSON.stringify(options));
+            localStorage.setItem("selectedOption1", JSON.stringify(options));
+            localStorage.setItem("selectedOption2", JSON.stringify(options));
             return {
                 //initialState에 selectedOption말고도 다른 state들도 있으므로 ...state를 사용하여 다른 state들도 불러와야함
                 ...state,

@@ -150,7 +150,10 @@ const OptionSelectView = (props) => {
                         onClick={() => {
                             if (!selectedOption.length)
                                 alert("옵션 선택 후에 버튼을 클릭해 주세요.");
-                            else navigate("/order");
+                            else {
+                                localStorage.removeItem("selectedOption1");
+                                navigate("/order");
+                            }
                         }}>
                         바로구매
                     </PurchaseBtn>
