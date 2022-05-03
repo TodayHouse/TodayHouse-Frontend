@@ -4,46 +4,8 @@ import { SelectedOption } from ".";
 import { useDispatch, useSelector } from "react-redux";
 import { addOption } from "../../../redux/reducer/product";
 
-// const mockOptions = [
-//     {
-//         name: "베네치아 4인용 12T 포셀린 세라믹 식탁테이블 1400(직각)",
-//         price: 118000,
-//     },
-//     {
-//         name: "베네치아 4인용 12T 포셀린 세라믹 식탁테이블 1400(타원)",
-//         price: 128000,
-//     },
-//     {
-//         name: "베네치아 4인용 12T 포셀린 세라믹 식탁테이블 1600(직각)",
-//         price: 138000,
-//     },
-//     {
-//         name: "베네치아 4인용 12T 포셀린 세라믹 식탁테이블 1600(타원)",
-//         price: 148000,
-//     },
-//     {
-//         name: "베네치아 4인용 12T 포셀린 세라믹 식탁테이블 1800(직각)",
-//         price: 158000,
-//     },
-//     {
-//         name: "베네치아 4인용 12T 포셀린 세라믹 식탁테이블 1800(타원)",
-//         price: 168000,
-//     },
-//     {
-//         name: "베네치아 4인용 12T 포셀린 세라믹 식탁테이블 2000(직각)",
-//         price: 178000,
-//     },
-//     {
-//         name: "베네치아 4인용 12T 포셀린 세라믹 식탁테이블 2000(타원)",
-//         price: 188000,
-//     },
-//     {
-//         name: "베네치아 4인용 12T 포셀린 세라믹 식탁테이블 2200(직각)",
-//         price: 198000,
-//     },
-// ];
-
-const OptionSelectView = () => {
+const OptionSelectView = (props) => {
+    const { parentId, childId } = props; //상단 선택창과 sticky 선택창을 구분하기 위해 id를 각각 설정
     const [totalPrice, setTotalPrice] = useState(0);
     const selectedOption = useSelector((state) => state.product.selectedOption);
     const productInfo = useSelector((state) => state.product.form); //상품 전체 정보
@@ -57,14 +19,16 @@ const OptionSelectView = () => {
     const dispatch = useDispatch();
 
     const onParentOptionSelected = () => {
-        const obj = document.getElementById("selectParentOption");
+        const obj = document.getElementById(parentId);
         const id = obj.selectedIndex;
+        console.log("hi");
+        console.log(id);
         setParentOption(obj.value); //1차 옵션
         setOptionList2(optionList1[id - 1].childOptions); //2차 옵션 목록들
     };
 
     const onChildOptionSelected = (e) => {
-        const obj = document.getElementById("selectChildOption");
+        const obj = document.getElementById(childId);
         const id = obj.selectedIndex;
         const name = `${optionTitle1}선택: ${parentOption} / ${optionTitle2}선택: ${e.target.value}`;
         let isDuplicated = false; // 중복된 선택옵션 체크
@@ -73,8 +37,8 @@ const OptionSelectView = () => {
         selectedOption.forEach((data) => {
             if (data.name === name) {
                 alert("이미 선택한 옵션입니다.");
-                document.getElementById("selectParentOption").value = "default";
-                document.getElementById("selectChildOption").value = "default";
+                document.getElementById(parentId).value = "default";
+                document.getElementById(childId).value = "default";
                 setOptionList2([]);
                 isDuplicated = true;
                 return;
@@ -101,8 +65,10 @@ const OptionSelectView = () => {
         setTotalPrice(total);
 
         //상품 추가할 때마다 옵션 초기화
-        document.getElementById("selectParentOption").value = "default";
-        document.getElementById("selectChildOption").value = "default";
+        console.log(parentId);
+        console.log(childId);
+        document.getElementById(parentId).value = "default";
+        document.getElementById(childId).value = "default";
         setOptionList2([]);
         console.log(selectedOption);
     }, [selectedOption]);
@@ -112,7 +78,7 @@ const OptionSelectView = () => {
             <div style={{ overflow: "auto" }}>
                 <SelectedView>
                     <Selected
-                        id="selectParentOption"
+                        id={parentId}
                         onChange={onParentOptionSelected}
                         defaultValue="default">
                         <option value="default" disabled>
@@ -133,7 +99,7 @@ const OptionSelectView = () => {
                 </SelectedView>
                 <SelectedView>
                     <Selected
-                        id="selectChildOption"
+                        id={childId}
                         onChange={onChildOptionSelected}
                         defaultValue="default">
                         <option value="default" disabled>
