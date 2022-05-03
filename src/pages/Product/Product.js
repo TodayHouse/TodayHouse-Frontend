@@ -26,16 +26,17 @@ const Product = () => {
         (state) => state.product.form.categoryPath
     );
 
-    const onScroll = () => {
-        const offset = document
-            .getElementById("container")
-            ?.getBoundingClientRect().top;
-        if (offset === 0)
-            document.getElementById("scrollToTop").style.display = "none";
-        else document.getElementById("scrollToTop").style.display = "block";
-    };
-
     window.onload = function () {
+        const obj = document.getElementById("scrollToTop");
+
+        const onScroll = () => {
+            const offset = document
+                .getElementById("container")
+                ?.getBoundingClientRect().top;
+            if (offset === 0) obj.style.display = "none";
+            else obj.style.display = "block";
+        };
+
         window.addEventListener("scroll", onScroll);
     };
 
