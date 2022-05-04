@@ -56,7 +56,7 @@ const OptionSelectView = (props) => {
                     image: productInfo.imageUrls[0],
                     title: productInfo.title,
                     name,
-                    price: optionList1[id - 1].price,
+                    price: optionList2[id - 1].price,
                     id: parentOption + e.target.value + id,
                     num: 1,
                 })
@@ -72,8 +72,6 @@ const OptionSelectView = (props) => {
         setTotalPrice(total);
 
         //상품 추가할 때마다 옵션 초기화
-        console.log(parentId);
-        console.log(childId);
         document.getElementById(parentId).value = "default";
         document.getElementById(childId).value = "default";
         setOptionList2([]);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import {
     OrderPersonContainer,
@@ -13,6 +13,22 @@ import { Title } from "./elements";
 
 const Order = () => {
     const productInfo = JSON.parse(localStorage.getItem("selectedOption2"));
+    const [totalPrice, setTotalPrice] = useState(0);
+    const [deliveryFee, setDeliveryFee] = useState(0);
+
+    useEffect(() => {
+        console.log(productInfo);
+        let total = 0;
+        let delivery = 0;
+        productInfo.forEach((data) => {
+            total += data.price * data.num;
+            delivery += data.deliveryFee;
+        });
+        console.log(total);
+        setTotalPrice(total);
+        setDeliveryFee(delivery);
+    }, []);
+
     return (
         <Wrap>
             <Container>
@@ -31,7 +47,10 @@ const Order = () => {
                     <PaymentContainer />
                 </ContentContainer>
                 <StickyContainer>
-                    <OrderStickyContainer />
+                    <OrderStickyContainer
+                        totalPrice={totalPrice}
+                        deliveryFee={deliveryFee}
+                    />
                 </StickyContainer>
             </Container>
         </Wrap>

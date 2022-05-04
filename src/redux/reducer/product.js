@@ -50,6 +50,14 @@ const productReducer = createSlice({
                 if (data.id === action.payload.id)
                     data.num = parseInt(action.payload.num);
             });
+            localStorage.setItem(
+                "selectedOption1",
+                JSON.stringify(state.selectedOption)
+            );
+            localStorage.setItem(
+                "selectedOption2",
+                JSON.stringify(state.selectedOption)
+            );
         },
         dispatchSetForm: (state, action) => {
             localStorage.setItem("productInfo", JSON.stringify(action.payload));

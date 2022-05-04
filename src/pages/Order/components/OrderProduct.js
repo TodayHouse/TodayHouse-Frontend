@@ -28,7 +28,9 @@ const OrderProduct = (props) => {
                         <Name>{data.title}</Name>
                         <Option>{data.name}</Option>
                         <PriceContainer>
-                            <Price>{data.price.toLocaleString()}원</Price>
+                            <Price>
+                                {(data.price * data.num).toLocaleString()}원
+                            </Price>
                             <Amount>{data.num.toLocaleString()}개</Amount>
                         </PriceContainer>
                     </ContentContainer>
