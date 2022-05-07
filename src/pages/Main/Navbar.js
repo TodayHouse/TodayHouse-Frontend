@@ -107,11 +107,11 @@ const Navbar = () => {
               <Writing>글쓰기</Writing>
             
               <DropDown id="writingDropDown">
-              <Link to="/editor">
-                  <Item onClick={() => updateCookie("KNOWHOW")}>노하우</Item>
+              <Link to="/editor" state={{ etype: "KNOWHOW" }}>
+                  <Item>노하우</Item>
                 </Link>
-                <Link to="/editor">
-                  <Item onClick={() => updateCookie("STORY")}>스토리</Item>
+                <Link to="/editor" state={{ etype: "STORY" }}>
+                  <Item>스토리</Item>
                 </Link>
                 <Link to="/upload-product">
                   <Item>상품</Item>
@@ -223,7 +223,6 @@ const Menu=styled.div`
 display:flex;
 flex-direction: column;
 margin-left: 10px;
-
 `
 const Item=styled.div`
   padding:10px;
@@ -245,8 +244,6 @@ width:200px;
 background-color: white;
 padding:10px;
 top:60px;
-
-
 `
 const Writing=styled.button`
   background-color: ${(props) => props.theme.mainColor};

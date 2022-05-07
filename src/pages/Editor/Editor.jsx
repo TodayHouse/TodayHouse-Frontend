@@ -15,8 +15,10 @@ import { getCookie } from '../../App';
 import { useSelector } from "react-redux";
 import Cover from "./Cover";
 import { Cookies, useCookies } from "react-cookie"
-
+import { useLocation } from "react-router-dom";
 const Editor = () => {
+  const location = useLocation();
+  const from = location.state;
   const [cookies, setCookie, removeCookie] = useCookies(["editorType"]);
 
   const content = useSelector((state) => state.editor.content);
@@ -33,11 +35,12 @@ const Editor = () => {
 
   const formData = new FormData();
   useEffect(() => {
-    var eType = getCookie('editorType')
-    console.log("가져온 쿠키 : " + eType);
-    setEditor(eType);
+    console.log(from.etype)
+    let etype = from.etype;
+    console.log("가져온 데이터 : " + etype);
+    setEditor(etype);
     console.log("불러온 에디터 타입 쿠키 : " + editorType);
-    console.log("쿠키 로딩");
+
     setCookie("login_id", accessToken, {path : "/"});
     console.log(accessToken);
     
@@ -148,10 +151,10 @@ const Editor = () => {
       <ModalButton2 onClick = {handleClick2} >
       <IconImage src = "https://w7.pngwing.com/pngs/842/66/png-transparent-checklist-art-computer-icons-scalable-graphics-files-free-schedule-miscellaneous-angle-text-thumbnail.png" alt = "viewIcon" />
           <ModalText>
-            기본 정보 입력
+            카테고리 입력
           </ModalText>
           <GrayText>
-            어디에 이용되는 지 알 수 없어, 일단 스켈레톤만 만든 부분입니다.
+            해당 부분에 입력한 부분이 검색시의 카테고리가 됩니다.
           </GrayText>
       </ModalButton2>
       <ModalBox1 isOpen = {isOpen1} onSubmit = {handleSubmit1}/>
@@ -250,7 +253,6 @@ const ModalContainer = styled.div`
 @media only screen and (min-width : 1024px){
   left: 9%;
 }
-
 `
 const LogoImage = styled.img`
     width : 200px;
@@ -280,24 +282,24 @@ const ModalButton1 = styled.button`
   background-color : white;
   display : flex;
   height : 80px;
-  width : 650px;
+  width : 550px;
   margin-top : 20px;
   margin-bottom : 15px;
   border-radius : 4px;
   border-color : #d3d3d3;
-  margin-left : 160px;
+  margin-left : 18%;
 `;
 
 const ModalButton2 = styled.button`
 background-color : white;
   display : flex;
   height : 80px;
-  width : 650px;
+  width : 550px;
   margin-top : 10px;
   margin-bottom : 15px;
   border-radius : 4px;
   border-color : #d3d3d3;
-  margin-left : 160px;
+  margin-left : 18%;
 `;
 
 export default Editor;

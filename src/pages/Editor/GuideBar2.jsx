@@ -2,41 +2,63 @@ import React, {useState} from 'react';
 import styled from "styled-components";
 const GuideBar_2 = () => {
   const [basicInfo, setInfo] = useState({category : '', link_url : ''})
+  const [curPyeong, setPyeong] = useState(0);
   //카테고리 정보, 링크 정보 입력
+  const PyeongSetter = (val) => {
+    if(curPyeong != val)
+    {
+      setPyeong(val)
+      document.getElementById('1')
+    }
+  }
   return (
     <GuideDetail_2>
       <p></p>
-      <li>
-        간단한 자기소개 후, 인테리어 노하우를 담은 정보성 콘텐츠를 작성해주세요. (사진 최소 15장 이상)
-        </li>
-        <p/>
-        <li>
-        자기소개는 평수, 공간, 가족형태를 기본으로 합니다. (ex. "5평 원룸에 사는 독립 6개월차 자취생이에요")
-        </li>
-        <p/>
-        <li>
-        사진 속 제품정보를 본문에 최대한 적어주세요. (제품분류/브랜드/제품명 순서)
-        </li>
-        <p/>
-        <li>
-        사진 첨부 시 용량은 장당 최대 20MB까지 업로드할 수 있고, jpg, png, webp, heif, heic, gif 포맷을 지원합니다. (*GIF의 경우 권장 용량 1MB, 용량 제한 10MB)
-        </li>
-        <p/>
-        <li>
-        DIY 콘텐츠인 경우 준비물과 총비용, 소요시간, 난이도(상/중/하)를 작성해주세요.
+          <p/>
+          <li>
+          해당 글의 카테고리를 입력해주세요.
           </li>
           <p/>
           <li>
-          정보를 많이 입력할수록 검색 결과에 많이 노출되어 조회수가 올라갑니다.
+          입력해주신 카테고리는 페이지 검색에 이용됩니다.
           </li>
           <p/>
-          <li>
-          브랜드 혹은 제품 홍보 목적의 콘텐츠는 오픈이 불가합니다.
-          </li>
-          <p/>
-          <li>
-          작성해주신 노하우는 오늘의집 에디터 검수를 통해 오픈 여부가 결정되며, 결과는 10일 내에 댓글로 안내드립니다. (커버사진과 제목은 에디터에 의해 변경될 수 있습니다.)
-          </li>
+          
+          <HouseType>주거 형태</HouseType>
+          
+          <SelectType id = "houseType">
+            <option value = "one_room">
+              원룸
+            </option>
+            <option value = "apartment">
+              아파트
+            </option>
+            <option value = "officetel">
+              오피스텔
+            </option>
+          </SelectType>
+    <br></br>
+
+          <HouseType style = {{marginRight : '15px'}}>방 개수</HouseType>
+          <SelectType id = "houseType">
+          <option value = "1">
+              방 1개
+            </option>
+            <option value = "2">
+              방 2개
+            </option>
+            <option value = "3">
+              방 3개
+            </option>
+          </SelectType>
+
+          <br></br>
+          
+          <HouseType style = {{marginRight : '35px'}}>평수</HouseType>
+          <Radio type = 'radio' value = "1" name = "pyeong" onChange={() => setPyeong(0)}></Radio>
+          단층
+          <Radio type = 'radio' value = "2" name = 'pyeong' onChange={() => setPyeong(1)}></Radio>
+          2층 단독
           <p></p>
     </GuideDetail_2>
 
@@ -46,10 +68,29 @@ const GuideBar_2 = () => {
 export default GuideBar_2
 
 const GuideDetail_2 = styled.ul`
-  border: 2px solid;
-  border-color : #bdbebd;
+   border: 2px solid;
+  border-color : skyblue;
   display: block;
-  margin-top : 120px;
+  width : auto;
+  margin-top : 0px;
   margin-bottom : 50px;
+  margin-left : 20px;
+  margin-right : 10px;
+  
+`
+const HouseType = styled.span`
+  font-size: 15px;
+  font-weight: bold;
+`
+const SelectType = styled.select`
+  font-size  : 15px;
+  margin-left: 15px;
+  margin-top: 20px;
+  width : 100px;
 `
 
+const Radio = styled.input`
+   font-size  : 15px;
+    margin-left: 15px;
+    margin-top: 20px;
+`
