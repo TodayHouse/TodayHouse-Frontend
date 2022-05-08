@@ -4,6 +4,11 @@ import { Input, PhoneNumInput, Title } from "../elements";
 import { Modal } from "../../../components";
 import DaumPostCode from "react-daum-postcode";
 import $ from "jquery";
+import { useDispatch } from "react-redux";
+import {
+    dispatchSetDestForm,
+    dispatchSetMemo,
+} from "../../../redux/reducer/order";
 
 const request = [
     "배송 시 요청 사항을 선택해주세요",
@@ -15,9 +20,17 @@ const request = [
 ];
 
 const DestinationContainer = () => {
+    const dispatch = useDispatch();
     const [modalOpen, setModalOpen] = useState(false);
-    const [zonecode, setZoneCode] = useState("");
-    const [address, setAdress] = useState("");
+    const [destForm, setDestForm] = useState({
+        receiver: "",
+        phoneNumPrefix: "010",
+        phoneNumSuffix: "",
+        address1: "",
+        address2: "",
+        zipCode: "",
+    });
+    const [memo, setMemo] = useState("");
 
     const openModal = () => {
         setModalOpen(true);
@@ -29,18 +42,51 @@ const DestinationContainer = () => {
     const onCompletePost = (data) => {
         //주소 찾기 완료했을 때
         closeModal();
-        setZoneCode(data.zonecode);
-        setAdress(data.address + ` (${data.bname}) ` + data.buildingName);
+        setDestForm({
+            ...destForm,
+            address1: data.address + ` (${data.bname}) ` + data.buildingName,
+            zipCode: data.zonecode,
+        });
     };
 
-    const onSelectRequest = (e) => {
-        //배송 요청사항 직접 입력을 눌렀을 때 입력창을 띄움
-        if (e.target.value === "5") $("#requestMsg").show();
-        else {
-            $("#requestMsg").hide();
-            $("#requestMsg").val("");
-        }
+    // const onSelectRequest = (e) => {
+    //     //배송 요청사항 직접 입력을 눌렀을 때 입력창을 띄움
+    //     if (e.target.value === "5") $("#requestMsg").show();
+    //     else {
+    //         $("#requestMsg").hide();
+    //         $("#requestMsg").val("");
+    //     }
+    // };
+
+    const handleChange = (e) => {
+        const changed = {
+            ...destForm,
+            [e.target.name]: e.target.value,
+        };
+        setDestForm(changed);
     };
+
+    const handleMemo = (e) => {
+        setMemo(e.target.value);
+    };
+
+    useEffect(() => {
+        console.log(destForm);
+        const form = {
+            receiver: destForm.receiver,
+            receiverPhoneNumber:
+                destForm.phoneNumPrefix + destForm.phoneNumSuffix,
+            address1: destForm.address1,
+            address2: destForm.address2,
+            zipCode: destForm.zipCode,
+        };
+        dispatch(dispatchSetDestForm(form));
+    }, [destForm]);
+
+    useEffect(() => {
+        console.log(memo);
+        dispatch(dispatchSetMemo(memo));
+    }, [memo]);
 
     useEffect(() => {
         $("#requestMsg").hide();
@@ -53,8 +99,18 @@ const DestinationContainer = () => {
                 <FillText>위와 동일하게 채우기</FillText>
             </Title>
             <ContentContainer>
-                <Input label="받는 사람" />
-                <PhoneNumInput label="연락처" button={false} />
+                <Input
+                    onChange={handleChange}
+                    name="receiver"
+                    label="받는 사람"
+                />
+                <PhoneNumInput
+                    label="연락처"
+                    namePrefix="phoneNumPrefix"
+                    nameSuffix="phoneNumSuffix"
+                    onChange={handleChange}
+                    button={false}
+                />
                 <AddressContainer>
                     <LabelContainer>
                         <Label>주소</Label>
@@ -65,13 +121,17 @@ const DestinationContainer = () => {
                                 주소찾기
                             </AddressFindBtn>
                             <Zonecode>
-                                <ZonecodeText>{zonecode}</ZonecodeText>
+                                <ZonecodeText>{destForm.zipCode}</ZonecodeText>
                             </Zonecode>
                         </div>
                         <Address>
-                            <AddressText>{address}</AddressText>
+                            <AddressText>{destForm.address1}</AddressText>
                         </Address>
-                        <DetailAddress placeholder="상세주소 입력" />
+                        <DetailAddress
+                            name="address2"
+                            onChange={handleChange}
+                            placeholder="상세주소 입력"
+                        />
                         <DefaultPlace>
                             <Checkbox type="checkbox" />
                             <DefaultPlaceText>
@@ -80,15 +140,15 @@ const DestinationContainer = () => {
                         </DefaultPlace>
                     </AddressFindContainer>
                 </AddressContainer>
-                <Request onChange={onSelectRequest}>
+                {/* <Request onChange={onSelectRequest}>
                     {request.map((data, idx) => (
                         <option key={idx} value={idx}>
                             {data}
                         </option>
                     ))}
-                </Request>
+                </Request> */}
                 <RequestMsg
-                    id="requestMsg"
+                    onChange={handleMemo}
                     placeholder="배송 요청 사항을 입력해주세요."
                 />
             </ContentContainer>

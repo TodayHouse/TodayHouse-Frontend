@@ -1,11 +1,23 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Button } from "../../../elements";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import theme from "../../../theme";
+import { getCookie } from "../../../App";
 
 const OrderStickyContainer = (props) => {
     const { totalPrice, deliveryFee } = props;
+    const url = theme.apiUrl;
+    const accessToken = getCookie("login_id");
+
     const [toggle1Open, setToggle1Open] = useState(false);
     const [toggle2Open, setToggle2Open] = useState(false);
+
+    const productInfo = JSON.parse(localStorage.getItem("selectedOption2"));
+    const orderForm = useSelector((state) => state.order.orderForm);
+    const destForm = useSelector((state) => state.order.destForm);
+    const memo = useSelector((state) => state.order.memo);
 
     useEffect(() => {
         if (toggle1Open)
@@ -18,6 +30,41 @@ const OrderStickyContainer = (props) => {
             document.getElementById("agreeToggle2").style.display = "flex";
         else document.getElementById("agreeToggle2").style.display = "none";
     }, [toggle2Open]);
+
+    const submitOrder = () => {
+        console.log(orderForm);
+        console.log(destForm);
+        console.log(memo);
+        console.log(productInfo);
+        const deliverySaveRequest = { ...orderForm, ...destForm };
+
+        let list = [];
+        productInfo.forEach((data) => {
+            list.push({
+                childOptionId: data.childOptionId,
+                deliverySaveRequest,
+                memo,
+                parentOptionId: data.parentOptionId,
+                productId: data.productId,
+                productQuantity: data.num,
+            });
+        });
+        console.log(list);
+        console.log(accessToken);
+        axios
+            .post(url + "orders", list, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+                withCredentials: true,
+            })
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((e) => {
+                console.log(e);
+            });
+    };
 
     return (
         <Container>
@@ -117,7 +164,9 @@ const OrderStickyContainer = (props) => {
                     </ConfirmContainer>
                 </AgreeDetailContainer>
             </AgreeContainer>
-            <Button margin="20px 0px">582,900원 결제하기</Button>
+            <Button onClick={submitOrder} margin="20px 0px">
+                582,900원 결제하기
+            </Button>
         </Container>
     );
 };

@@ -13,15 +13,16 @@ const Delivery = (props) => {
     const [sellerInfo, setSellerInfo] = useState({});
 
     useEffect(() => {
-        axios
-            .get(url + `sellers/${sellerId}`)
-            .then((response) => {
-                console.log(response);
-                setSellerInfo(response.data.result);
-            })
-            .catch((e) => {
-                console.log(e);
-            });
+        if (sellerId !== undefined)
+            axios
+                .get(url + `sellers/${sellerId}`)
+                .then((response) => {
+                    console.log(response);
+                    setSellerInfo(response.data.result);
+                })
+                .catch((e) => {
+                    console.log(e);
+                });
     }, [sellerId]);
 
     useEffect(() => {

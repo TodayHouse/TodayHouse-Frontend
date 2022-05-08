@@ -13,6 +13,7 @@ const OptionSelectView = (props) => {
     const sellerInfo = useSelector((state) => state.product.sellerInfo);
 
     const [parentOption, setParentOption] = useState("");
+    const [parentOptionId, setParentOptionId] = useState(0);
     const optionList1 = productInfo.parentOptions;
     const [optionList2, setOptionList2] = useState([]);
     const optionTitle1 = productInfo.option1;
@@ -27,6 +28,7 @@ const OptionSelectView = (props) => {
         console.log("hi");
         console.log(id);
         setParentOption(obj.value); //1차 옵션
+        setParentOptionId(optionList1[id - 1].id); //1차 옵션의 id 저장
         setOptionList2(optionList1[id - 1].childOptions); //2차 옵션 목록들
     };
 
@@ -57,8 +59,11 @@ const OptionSelectView = (props) => {
                     title: productInfo.title,
                     name,
                     price: optionList2[id - 1].price,
+                    parentOptionId,
+                    childOptionId: optionList2[id - 1].id,
                     id: parentOption + e.target.value + id,
                     num: 1,
+                    productId: productInfo.id,
                 })
             );
     };
