@@ -3,7 +3,6 @@ import styled from "styled-components";
 import {
     OrderPersonContainer,
     OrderStickyContainer,
-    DestinationContainer,
     OrderProduct,
     CouponContainer,
     PointContainer,
@@ -35,7 +34,6 @@ const Order = () => {
                 <ContentContainer>
                     <HeaderTitle>주문/결제</HeaderTitle>
                     <OrderPersonContainer />
-                    <DestinationContainer />
                     <OrderProductWrap>
                         <Title>주문상품</Title>
                         {productInfo.map((data, idx) => (

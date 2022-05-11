@@ -1,12 +1,11 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { Button } from "../../../elements";
 import $ from "jquery";
 
 const prefix = ["010", "011", "016", "017", "018", "019"];
 
 const PhoneNumInput = (props) => {
-    const { label, button, namePrefix, nameSuffix, onChange } = props;
+    const { label, namePrefix, nameSuffix, onChange, id1, id2 } = props;
 
     useEffect(() => {
         $("#buttonViewtrue").show();
@@ -20,7 +19,7 @@ const PhoneNumInput = (props) => {
                     <Label>{label}</Label>
                 </LabelContainer>
                 <ContentContainer>
-                    <SelectBox onChange={onChange} name={namePrefix}>
+                    <SelectBox id={id1} onChange={onChange} name={namePrefix}>
                         {prefix.map((data, idx) => (
                             <option key={idx} value={data}>
                                 {data}
@@ -28,17 +27,12 @@ const PhoneNumInput = (props) => {
                         ))}
                     </SelectBox>
                     <InputBox
+                        id={id2}
                         name={nameSuffix}
                         placeholder="입력해주세요"
                         onChange={onChange}
                     />
                 </ContentContainer>
-            </div>
-            <div id={"buttonView" + button}>
-                {/* 인증번호 발송 성공하면 버튼 밑에 인증번호 입력칸 띄움 */}
-                <Button width="283px" margin="10px 0px 0px 100px">
-                    인증번호 발송
-                </Button>
             </div>
         </Container>
     );
