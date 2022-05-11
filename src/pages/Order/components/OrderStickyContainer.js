@@ -5,14 +5,18 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import theme from "../../../theme";
 import { getCookie } from "../../../App";
+import { useNavigate } from "react-router-dom";
 
 const OrderStickyContainer = (props) => {
     const { totalPrice, deliveryFee } = props;
     const url = theme.apiUrl;
+    const navigate = useNavigate();
     const accessToken = getCookie("login_id");
 
     const [toggle1Open, setToggle1Open] = useState(false);
     const [toggle2Open, setToggle2Open] = useState(false);
+
+    const [checked, setChecked] = useState(false); // 필수 동의 조건 체크박스
 
     const productInfo = JSON.parse(localStorage.getItem("selectedOption2"));
     const orderForm = useSelector((state) => state.order.orderForm);
@@ -32,38 +36,60 @@ const OrderStickyContainer = (props) => {
     }, [toggle2Open]);
 
     const submitOrder = () => {
-        console.log(orderForm);
-        console.log(destForm);
-        console.log(memo);
-        console.log(productInfo);
         const deliverySaveRequest = { ...orderForm, ...destForm };
+        const {
+            address1,
+            address2,
+            receiver,
+            receiverPhoneNumber,
+            sender,
+            senderPhoneNumber,
+            zipCode,
+        } = deliverySaveRequest;
 
-        let list = [];
-        productInfo.forEach((data) => {
-            list.push({
-                childOptionId: data.childOptionId,
-                deliverySaveRequest,
-                memo,
-                parentOptionId: data.parentOptionId,
-                productId: data.productId,
-                productQuantity: data.num,
+        // 빠뜨린 정보 있을 경우
+        if (
+            address1 === "" ||
+            address2 === "" ||
+            receiver === "" ||
+            receiverPhoneNumber === "" ||
+            sender === "" ||
+            senderPhoneNumber === "" ||
+            zipCode === ""
+        )
+            alert("모든 정보를 입력해 주세요.");
+        // 동의 안 한 경우
+        else if (!checked) alert("필수 동의 조건을 확인해주세요.");
+        else {
+            let list = [];
+            productInfo.forEach((data) => {
+                list.push({
+                    childOptionId: data.childOptionId,
+                    deliverySaveRequest,
+                    memo,
+                    parentOptionId: data.parentOptionId,
+                    productId: data.productId,
+                    productQuantity: data.num,
+                });
             });
-        });
-        console.log(list);
-        console.log(accessToken);
-        axios
-            .post(url + "orders", list, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                },
-                withCredentials: true,
-            })
-            .then((response) => {
-                console.log(response);
-            })
-            .catch((e) => {
-                console.log(e);
-            });
+
+            axios
+                .post(url + "orders", list, {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                    withCredentials: true,
+                })
+                .then((response) => {
+                    if (response.data.isSuccess) {
+                        alert("상품 주문이 완료되었습니다.");
+                        navigate("/store");
+                    }
+                })
+                .catch((e) => {
+                    console.log(e);
+                });
+        }
     };
 
     return (
@@ -112,7 +138,13 @@ const OrderStickyContainer = (props) => {
             </PriceContainer>
             <AgreeContainer>
                 <AllAgree>
-                    <Checkbox type="checkbox" />
+                    <Checkbox
+                        onChange={() => {
+                            setChecked(!checked);
+                        }}
+                        value={checked}
+                        type="checkbox"
+                    />
                     <AllAgreeText>
                         아래 내용에 모두 동의합니다. (필수)
                     </AllAgreeText>
@@ -165,7 +197,7 @@ const OrderStickyContainer = (props) => {
                 </AgreeDetailContainer>
             </AgreeContainer>
             <Button onClick={submitOrder} margin="20px 0px">
-                582,900원 결제하기
+                {(totalPrice + deliveryFee).toLocaleString()}원 결제하기
             </Button>
         </Container>
     );

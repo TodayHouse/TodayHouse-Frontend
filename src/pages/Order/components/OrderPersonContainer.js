@@ -73,6 +73,13 @@ const OrderPersonContainer = () => {
         document.getElementById("destName").value = orderForm.name;
         document.getElementById("prefixNum").value = orderForm.phoneNumPrefix;
         document.getElementById("suffixNum").value = orderForm.phoneNumSuffix;
+
+        setDestForm({
+            ...destForm,
+            receiver: orderForm.name,
+            phoneNumPrefix: orderForm.phoneNumPrefix,
+            phoneNumSuffix: orderForm.phoneNumSuffix,
+        });
     };
 
     useEffect(() => {
