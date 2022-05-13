@@ -1,21 +1,96 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import $ from "jquery";
 import { Button } from "../../../elements";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import theme from "../../../theme";
+import { getCookie } from "../../../App";
+import { useNavigate } from "react-router-dom";
 
-const OrderStickyContainer = () => {
+const OrderStickyContainer = (props) => {
+    const { totalPrice, deliveryFee } = props;
+    const url = theme.apiUrl;
+    const navigate = useNavigate();
+    const accessToken = getCookie("login_id");
+
     const [toggle1Open, setToggle1Open] = useState(false);
     const [toggle2Open, setToggle2Open] = useState(false);
 
+    const [checked, setChecked] = useState(false); // 필수 동의 조건 체크박스
+
+    const productInfo = JSON.parse(localStorage.getItem("selectedOption2"));
+    const orderForm = useSelector((state) => state.order.orderForm);
+    const destForm = useSelector((state) => state.order.destForm);
+    const memo = useSelector((state) => state.order.memo);
+
     useEffect(() => {
-        if (toggle1Open) $("#agreeToggle1").show();
-        else $("#agreeToggle1").hide();
+        if (toggle1Open)
+            document.getElementById("agreeToggle1").style.display = "flex";
+        else document.getElementById("agreeToggle1").style.display = "none";
     }, [toggle1Open]);
 
     useEffect(() => {
-        if (toggle2Open) $("#agreeToggle2").show();
-        else $("#agreeToggle2").hide();
+        if (toggle2Open)
+            document.getElementById("agreeToggle2").style.display = "flex";
+        else document.getElementById("agreeToggle2").style.display = "none";
     }, [toggle2Open]);
+
+    const submitOrder = () => {
+        const deliverySaveRequest = { ...orderForm, ...destForm };
+        const {
+            address1,
+            address2,
+            receiver,
+            receiverPhoneNumber,
+            sender,
+            senderPhoneNumber,
+            zipCode,
+        } = deliverySaveRequest;
+
+        // 빠뜨린 정보 있을 경우
+        if (
+            address1 === "" ||
+            address2 === "" ||
+            receiver === "" ||
+            receiverPhoneNumber === "" ||
+            sender === "" ||
+            senderPhoneNumber === "" ||
+            zipCode === ""
+        )
+            alert("모든 정보를 입력해 주세요.");
+        // 동의 안 한 경우
+        else if (!checked) alert("필수 동의 조건을 확인해주세요.");
+        else {
+            let list = [];
+            productInfo.forEach((data) => {
+                list.push({
+                    childOptionId: data.childOptionId,
+                    deliverySaveRequest,
+                    memo,
+                    parentOptionId: data.parentOptionId,
+                    productId: data.productId,
+                    productQuantity: data.num,
+                });
+            });
+
+            axios
+                .post(url + "orders", list, {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                    withCredentials: true,
+                })
+                .then((response) => {
+                    if (response.data.isSuccess) {
+                        alert("상품 주문이 완료되었습니다.");
+                        navigate("/store");
+                    }
+                })
+                .catch((e) => {
+                    console.log(e);
+                });
+        }
+    };
 
     return (
         <Container>
@@ -24,11 +99,11 @@ const OrderStickyContainer = () => {
                     <Title>결제금액</Title>
                     <ContentContainer>
                         <Content>총 상품 금액</Content>
-                        <TempPrice>582,900원</TempPrice>
+                        <TempPrice>{totalPrice.toLocaleString()}원</TempPrice>
                     </ContentContainer>
                     <ContentContainer>
                         <Content>배송비</Content>
-                        <TempPrice>0원</TempPrice>
+                        <TempPrice>{deliveryFee.toLocaleString()}원</TempPrice>
                     </ContentContainer>
                     <ContentContainer>
                         <Content>쿠폰 사용</Content>
@@ -43,10 +118,19 @@ const OrderStickyContainer = () => {
                     <TotalPriceText>최종 결제 금액</TotalPriceText>
                     <PricePoint>
                         <span style={{ fontSize: 24, fontWeight: "bold" }}>
-                            <TotalPrice>582,900</TotalPrice> 원
+                            <TotalPrice>
+                                {(totalPrice + deliveryFee).toLocaleString()}
+                            </TotalPrice>{" "}
+                            원
                         </span>
                         <Point>
-                            <span style={{ fontWeight: "bold" }}>1,749 P</span>{" "}
+                            <span style={{ fontWeight: "bold" }}>
+                                {(
+                                    (totalPrice + deliveryFee) *
+                                    0.03
+                                ).toLocaleString()}{" "}
+                                P
+                            </span>{" "}
                             적립 예정
                         </Point>
                     </PricePoint>
@@ -54,7 +138,13 @@ const OrderStickyContainer = () => {
             </PriceContainer>
             <AgreeContainer>
                 <AllAgree>
-                    <Checkbox type="checkbox" />
+                    <Checkbox
+                        onChange={() => {
+                            setChecked(!checked);
+                        }}
+                        value={checked}
+                        type="checkbox"
+                    />
                     <AllAgreeText>
                         아래 내용에 모두 동의합니다. (필수)
                     </AllAgreeText>
@@ -106,7 +196,9 @@ const OrderStickyContainer = () => {
                     </ConfirmContainer>
                 </AgreeDetailContainer>
             </AgreeContainer>
-            <Button margin="20px 0px">582,900원 결제하기</Button>
+            <Button onClick={submitOrder} margin="20px 0px">
+                {(totalPrice + deliveryFee).toLocaleString()}원 결제하기
+            </Button>
         </Container>
     );
 };
@@ -189,7 +281,7 @@ const Checkbox = styled.input`
 `;
 const AllAgreeText = styled.span`
     margin-left: 10px;
-    font-size: 18px;
+    font-size: 15px;
 `;
 const AgreeDetailContainer = styled.div`
     display: flex;
@@ -210,7 +302,9 @@ const ToggleTextContainer = styled.div`
         cursor: pointer;
     }
 `;
-const ToggleText = styled.span``;
+const ToggleText = styled.span`
+    font-size: 15px;
+`;
 const ToggleArrow = styled.img`
     width: 30px;
     height: 30px;
