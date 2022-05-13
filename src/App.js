@@ -1,47 +1,48 @@
-import React, { useState, useEffect } from 'react';
-import styled, { ThemeProvider } from 'styled-components';
-import theme from './theme';
+import React, { useState, useEffect } from "react";
+import styled, { ThemeProvider } from "styled-components";
+import theme from "./theme";
 import {
-  Login,
-  Main,
-  Signup,
-  Store,
-  Story,
-  StoryPostDetail,
-  Product,
-  AdviceDetail,
-  Advices,
-  Editor,
-  Board,
-  Search,
-  Cart,
-  Order,
-  SocialSignup,
-  Error,
-  MyPage,
-  CardCollections,
-  Setting,
-  Seller,
-  UploadProduct,
-  MyStories,
-} from '../src/pages/index';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-import { Cookies } from 'react-cookie';
+    Login,
+    Main,
+    Signup,
+    Store,
+    Story,
+    StoryPostDetail,
+    Product,
+    AdviceDetail,
+    Advices,
+    Editor,
+    Board,
+    Search,
+    Cart,
+    Order,
+    SocialSignup,
+    Error,
+    MyPage,
+    CardCollections,
+    Setting,
+    Seller,
+    UploadProduct,
+    MyStories,
+    CheckOrder,
+} from "../src/pages/index";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import { Cookies } from "react-cookie";
 
 const cookies = new Cookies();
 
 export const setCookie = (name, value, option) => {
-  return cookies.set(name, value, option); //이름,밸류
+    return cookies.set(name, value, option); //이름,밸류
 };
 
 export const getCookie = (name) => {
-  return cookies.get(name); //쿠키 가져오기 (이름으로)
+    return cookies.get(name); //쿠키 가져오기 (이름으로)
 };
 
 function App() {
-  /*
+    /*
   console.log("쿠키생성");
   //임시로 생성한 쿠키
   setCookie("login",
@@ -52,57 +53,71 @@ function App() {
  console.log(getCookie("login"))
 */
 
-  return (
-    <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <div
-          style={{
-            width: '100vw',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            backgroundColor: 'skyblue',
-          }}
-        >
-          <Routes>
-            <Route path="/" element={<Main />}>
-              <Route path="/advices" element={<Advices />}></Route>
-              <Route path="/advices/:id" element={<AdviceDetail />}></Route>
-              <Route path="/event" element={<Board />}></Route>
-              <Route path="/store" element={<Store />}></Route>
-              <Route path="/story" element={<Story />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/product/:id" element={<Product />} />
-              <Route path="/story/post/:id" element={<StoryPostDetail />} />
-              <Route path="/order" element={<Order />} />
-              <Route path="/social-signup" element={<SocialSignup />} />
-              <Route path="/error" element={<Error />} />
-              <Route path="/search" element={<Search />}></Route>
-              <Route path="/mypage" element={<MyPage />}>
-                <Route
-                  path="/mypage/profile"
-                  element={<CardCollections></CardCollections>}
-                ></Route>
-                <Route
-                  path="/mypage/setting"
-                  element={<Setting></Setting>}
-                ></Route>
-                <Route
-                  path="/mypage/story"
-                  element={<MyStories></MyStories>}
-                ></Route>
-              </Route>
-            </Route>
-            <Route path="/editor" element={<Editor />}></Route>
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />}></Route>
-            <Route path="/seller" element={<Seller />}></Route>
-            <Route path="/upload-product" element={<UploadProduct />}></Route>
-          </Routes>
-        </div>
-      </BrowserRouter>
-    </ThemeProvider>
-  );
+    return (
+        <ThemeProvider theme={theme}>
+            <BrowserRouter>
+                <div
+                    style={{
+                        width: "100vw",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        backgroundColor: "skyblue",
+                    }}>
+                    <Routes>
+                        <Route path="/" element={<Main />}>
+                            <Route
+                                path="/advices"
+                                element={<Advices />}></Route>
+                            <Route
+                                path="/advices/:id"
+                                element={<AdviceDetail />}></Route>
+                            <Route path="/event" element={<Board />}></Route>
+                            <Route path="/store" element={<Store />}></Route>
+                            <Route path="/story" element={<Story />} />
+                            <Route path="/cart" element={<Cart />} />
+                            <Route path="/product/:id" element={<Product />} />
+                            <Route
+                                path="/story/post/:id"
+                                element={<StoryPostDetail />}
+                            />
+                            <Route path="/order" element={<Order />} />
+                            <Route
+                                path="/check-order"
+                                element={<CheckOrder />}
+                            />
+                            <Route
+                                path="/social-signup"
+                                element={<SocialSignup />}
+                            />
+                            <Route path="/error" element={<Error />} />
+                            <Route path="/search" element={<Search />}></Route>
+                            <Route path="/mypage" element={<MyPage />}>
+                                <Route
+                                    path="/mypage/profile"
+                                    element={
+                                        <CardCollections></CardCollections>
+                                    }></Route>
+                                <Route
+                                    path="/mypage/setting"
+                                    element={<Setting></Setting>}></Route>
+                                <Route
+                                    path="/mypage/story"
+                                    element={<MyStories></MyStories>}></Route>
+                            </Route>
+                        </Route>
+                        <Route path="/editor" element={<Editor />}></Route>
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/signup" element={<Signup />}></Route>
+                        <Route path="/seller" element={<Seller />}></Route>
+                        <Route
+                            path="/upload-product"
+                            element={<UploadProduct />}></Route>
+                    </Routes>
+                </div>
+            </BrowserRouter>
+        </ThemeProvider>
+    );
 }
 
 export default App;
