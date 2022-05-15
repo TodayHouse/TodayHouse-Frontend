@@ -96,7 +96,7 @@ const Navbar = () => {
                 <Link to="/cart">
                   <Item>장바구니</Item>
                 </Link>
-                <Link to="/mypage/profile">
+                <Link to="/mypage/setting">
                   <Item>마이페이지</Item>
                 </Link>
                 <Item onClick={buttonLogout}>로그아웃</Item>

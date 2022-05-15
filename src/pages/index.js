@@ -13,10 +13,9 @@ import Search from './SearchPW/Search';
 import Order from './Order/Order';
 import SocialSignup from './SocialSignup/SocialSignup';
 import Error from './SocialSignup/Error';
-import CardCollections from './MyPage/CardCollections';
 import MyPage from './MyPage/MyPage';
 import Setting from './MyPage/Setting';
-import MyStories from './MyPage/MyStories';
+import MyOrder from './MyPage/MyOrder';
 import Cart from './Cart/Cart';
 import Seller from './Seller/Seller';
 import UploadProduct from './UploadProduct/UploadProduct';
@@ -39,9 +38,8 @@ export {
   SocialSignup,
   Error,
   MyPage,
-  CardCollections,
   Setting,
   Seller,
   UploadProduct,
-  MyStories,
+  MyOrder
 };
