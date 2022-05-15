@@ -6,7 +6,7 @@ const Setting = () => {
         <AllCover>
             <TitleText>
                 회원정보수정
-                <hr></hr>
+                
             </TitleText>
             <TotalInfo>
             <InfoBox></InfoBox>
@@ -91,7 +91,7 @@ const TitleText =  styled.div`
     font-size : 24px;
     position :absolute;
     width : 800px;
-    left : 28.5%;
+    left : 30%;
 `
 
 const TotalInfo = styled.div`

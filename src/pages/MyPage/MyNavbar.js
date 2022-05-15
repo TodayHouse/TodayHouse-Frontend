@@ -10,27 +10,16 @@ const MyNavbar = ({isLogin}) => {
     <NavBar id="navBar">
       <NavListFront>
 
-        <NavItem>
-          <Link to="/mypage/profile">
-            <NavText>프로필</NavText>
-          </Link>
-        </NavItem>
 
         <NavItem>
-          <Link to="/mypage/story">
-            <NavText>나의 스토리</NavText>
-          </Link>
-        </NavItem>
-
-        <NavItem>
-          <Link to="/mypage/knowhow">
-            <NavText>나의 노하우</NavText>
+          <Link to="/mypage/myorder">
+            <NavText>나의 주문목록</NavText>
           </Link>
         </NavItem>
 
         <NavItem>
           <Link to="/mypage/setting">
-            <NavText>설정</NavText>
+            <NavText>나의 정보 조회/수정</NavText>
           </Link>
         </NavItem>
 
