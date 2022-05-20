@@ -105,7 +105,7 @@ const MyStories = () => {
                     {list?.map((data, idx) => (
                         <ItemWrap
                             key={idx}
-                            ref={list.length - 1 === idx ? ref : ""}>
+                            ref={list.length - 1 === idx ? ref : null}>
                             <ItemHeader>
                                 <ItemHeaderText>
                                     {data.productInfo[2]}
@@ -118,7 +118,10 @@ const MyStories = () => {
                             <hr style={{ margin: "8px 0px" }} />
                             <ItemContainer>
                                 <ItemImgContainer>
-                                    <ItemImg src={house1} alt="img" />
+                                    <ItemImg
+                                        src={data.productInfo[0]}
+                                        alt="img"
+                                    />
                                 </ItemImgContainer>
                                 <ItemContentContainer>
                                     <ItemTitle>{data.productInfo[1]}</ItemTitle>
@@ -212,7 +215,7 @@ const ItemWrap = styled.article`
     border: 1px solid #cccccc;
     border-radius: 4px;
     padding: 16px;
-    margin: 8px 0px;
+    margin: 32px 0px;
     width: 400px;
 `;
 const ItemContainer = styled.div`
