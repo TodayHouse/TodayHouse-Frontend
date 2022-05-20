@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Button } from "../elements";
+import theme from "../theme";
+import axios from "axios";
+import { getCookie } from "../App";
 
 const MyOrderItem = (props) => {
     const {
+        id,
         brandName,
         orderedDate,
         img,
@@ -13,6 +17,61 @@ const MyOrderItem = (props) => {
         stock,
         status,
     } = props;
+
+    const [orderStatus, setOrderStatus] = useState();
+    const url = theme.apiUrl;
+    const accessToken = getCookie("login_id");
+
+    const completeOrder = () => {
+        axios
+            .put(
+                url + `orders/complete/${id}`,
+                {},
+                {
+                    headers: { Authorization: `Bearer ${accessToken}` },
+                    withCredentials: true,
+                }
+            )
+            .then((res) => {
+                console.log(res);
+                if (res.data.isSuccess) {
+                    alert("구매가 확정되었습니다.");
+                    window.location.reload();
+                }
+            })
+            .catch((e) => {
+                console.log(e);
+            });
+    };
+
+    const cancelOrder = () => {
+        axios
+            .put(
+                url + `orders/cancel/${id}`,
+                {},
+                {
+                    headers: { Authorization: `Bearer ${accessToken}` },
+                    withCredentials: true,
+                }
+            )
+            .then((res) => {
+                console.log(res);
+                if (res.data.isSuccess) {
+                    alert("주문이 취소되었습니다.");
+                    window.location.reload();
+                }
+            })
+            .catch((e) => {
+                console.log(e);
+            });
+    };
+
+    useEffect(() => {
+        if (status === "PROCESSING") setOrderStatus("주문 처리 중");
+        else if (status === "COMPLETED") setOrderStatus("배송 완료");
+        else if (status === "CANCELED") setOrderStatus("주문 취소");
+    }, [status]);
+
     return (
         <ItemWrap>
             <ItemHeader>
@@ -36,14 +95,16 @@ const MyOrderItem = (props) => {
                             {stock}개
                         </ItemStock>
                     </div>
-                    <ItemStatus>
-                        {status === "PROCESSING" ? "주문 처리 중" : "배송 완료"}
-                    </ItemStatus>
+                    <ItemStatus>{orderStatus}</ItemStatus>
                 </ItemContentContainer>
             </ItemContainer>
             <ItemBtnContainer>
-                <Button margin="0px 8px 0px 0px">구매확정</Button>
-                <Button margin="0px 0px 0px 8px">주문취소</Button>
+                <Button onClick={completeOrder} margin="0px 8px 0px 0px">
+                    구매확정
+                </Button>
+                <Button onClick={cancelOrder} margin="0px 0px 0px 8px">
+                    주문취소
+                </Button>
             </ItemBtnContainer>
         </ItemWrap>
     );
