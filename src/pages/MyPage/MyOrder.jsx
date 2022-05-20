@@ -9,6 +9,7 @@ import theme from "../../theme";
 import { useInView } from "react-intersection-observer";
 import house1 from "../../img/house1.jpg";
 import { Button } from "../../elements";
+import { MyOrderItem } from "../../components";
 
 const MyStories = () => {
     const accessToken = getCookie("login_id");
@@ -103,59 +104,24 @@ const MyStories = () => {
 
                 <ItemBox>
                     {list?.map((data, idx) => (
-                        <ItemWrap
+                        <div
                             key={idx}
                             ref={list.length - 1 === idx ? ref : null}>
-                            <ItemHeader>
-                                <ItemHeaderText>
-                                    {data.productInfo[2]}
-                                    &nbsp;|&nbsp;주문일자 :{" "}
-                                    {data.createdAt.map((e, idx) =>
-                                        idx < 3 ? e + "." : ""
-                                    )}
-                                </ItemHeaderText>
-                            </ItemHeader>
-                            <hr style={{ margin: "8px 0px" }} />
-                            <ItemContainer>
-                                <ItemImgContainer>
-                                    <ItemImg
-                                        src={data.productInfo[0]}
-                                        alt="img"
-                                    />
-                                </ItemImgContainer>
-                                <ItemContentContainer>
-                                    <ItemTitle>{data.productInfo[1]}</ItemTitle>
-                                    <ItemOption>
-                                        {data.productInfo[3]}
-                                    </ItemOption>
-                                    <div>
-                                        <ItemPrice>
-                                            {parseInt(
-                                                data.productInfo[4]
-                                            ).toLocaleString()}
-                                            원
-                                        </ItemPrice>
-                                        <ItemStock>
-                                            &nbsp;|&nbsp;
-                                            {data.productInfo[5]}개
-                                        </ItemStock>
-                                    </div>
-                                    <ItemStatus>
-                                        {data.status === "PROCESSING"
-                                            ? "주문 처리 중"
-                                            : "배송 완료"}
-                                    </ItemStatus>
-                                </ItemContentContainer>
-                            </ItemContainer>
-                            <ItemBtnContainer>
-                                <Button margin="0px 8px 0px 0px">
-                                    구매확정
-                                </Button>
-                                <Button margin="0px 0px 0px 8px">
-                                    주문취소
-                                </Button>
-                            </ItemBtnContainer>
-                        </ItemWrap>
+                            <MyOrderItem
+                                brandName={data.productInfo[2]}
+                                orderedDate={data.createdAt.map((e, idx) =>
+                                    idx < 3 ? e + "." : ""
+                                )}
+                                img={data.productInfo[0]}
+                                productName={data.productInfo[1]}
+                                productOption={data.productInfo[3]}
+                                price={parseInt(
+                                    data.productInfo[4]
+                                ).toLocaleString()}
+                                stock={data.productInfo[5]}
+                                status={data.status}
+                            />
+                        </div>
                     ))}
                 </ItemBox>
             </CenterRenderer>
@@ -209,59 +175,5 @@ const ItemBox = styled.div`
     padding: 16px;
     border-radius: 4px;
 `;
-const ItemWrap = styled.article`
-    display: flex;
-    flex-direction: column;
-    border: 1px solid #cccccc;
-    border-radius: 4px;
-    padding: 16px;
-    margin: 32px 0px;
-    width: 400px;
-`;
-const ItemContainer = styled.div`
-    display: flex;
-    margin-top: 8px;
-    &:hover {
-        cursor: pointer;
-    }
-`;
-const ItemHeader = styled.div`
-    display: flex;
-    align-items: center;
-`;
-const ItemImgContainer = styled.div``;
-const ItemContentContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin-left: 8px;
-`;
-const ItemImg = styled.img`
-    border-radius: 4px;
-    width: 80px;
-    height: 80px;
-`;
-const ItemTitle = styled.strong`
-    font-size: 18px;
-    &:hover {
-        text-decoration: underline;
-    }
-`;
-const ItemOption = styled.span`
-    font-size: 16px;
-    color: #aaaaaa;
-`;
-const ItemPrice = styled.strong`
-    font-size: 16px;
-`;
-const ItemStock = styled(ItemOption)``;
-const ItemStatus = styled.strong`
-    font-size: 16px;
-    color: ${(props) => props.theme.mainColor};
-`;
-const ItemHeaderText = styled(ItemOption)``;
-const ItemBtnContainer = styled.div`
-    display: flex;
-    justify-content: center;
-    margin-top: 8px;
-`;
+
 export default MyStories;
