@@ -25,8 +25,6 @@ const OptionSelectView = (props) => {
     const onParentOptionSelected = () => {
         const obj = document.getElementById(parentId);
         const id = obj.selectedIndex;
-        console.log("hi");
-        console.log(id);
         setParentOption(obj.value); //1차 옵션
         setParentOptionId(optionList1[id - 1].id); //1차 옵션의 id 저장
         setOptionList2(optionList1[id - 1].childOptions); //2차 옵션 목록들
@@ -80,7 +78,6 @@ const OptionSelectView = (props) => {
         document.getElementById(parentId).value = "default";
         document.getElementById(childId).value = "default";
         setOptionList2([]);
-        console.log(selectedOption);
     }, [selectedOption]);
 
     return (
@@ -154,7 +151,6 @@ const OptionSelectView = (props) => {
                             if (!selectedOption.length)
                                 alert("옵션 선택 후에 버튼을 클릭해 주세요.");
                             else {
-                                localStorage.removeItem("selectedOption1");
                                 navigate("/order");
                             }
                         }}>

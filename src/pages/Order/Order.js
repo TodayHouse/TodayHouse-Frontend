@@ -11,7 +11,7 @@ import {
 import { Title } from "./elements";
 
 const Order = () => {
-    const productInfo = JSON.parse(localStorage.getItem("selectedOption2"));
+    const productInfo = JSON.parse(localStorage.getItem("selectedOption"));
     const [totalPrice, setTotalPrice] = useState(0);
     const [deliveryFee, setDeliveryFee] = useState(0);
 

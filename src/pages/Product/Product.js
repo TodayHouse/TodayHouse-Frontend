@@ -47,7 +47,6 @@ const Product = () => {
             .then((response) => {
                 if (response.data.isSuccess) {
                     const { result } = response.data;
-                    console.log(result);
                     dispatch(dispatchSetForm(result));
 
                     // 최초 메인 이미지 설정
