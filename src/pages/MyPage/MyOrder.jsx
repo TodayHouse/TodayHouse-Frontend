@@ -1,14 +1,10 @@
 import styled from "styled-components";
-import {} from "react-icons/fa";
-import { Icon, InlineIcon } from "@iconify/react";
+import { Icon } from "@iconify/react";
 import React, { useState, useEffect, useCallback } from "react";
-import Item from "antd/lib/list/Item";
 import axios from "axios";
 import { getCookie } from "../../App";
 import theme from "../../theme";
 import { useInView } from "react-intersection-observer";
-import house1 from "../../img/house1.jpg";
-import { Button } from "../../elements";
 import { MyOrderItem } from "../../components";
 
 const MyStories = () => {
@@ -30,8 +26,7 @@ const MyStories = () => {
                 })
                 .then((response) => {
                     console.log(response.data);
-                    if (response.data.result.totalPages === page + 1)
-                        setIsLast(true);
+                    if (response.data.result.last) setIsLast(true);
                     let arr = [...list];
                     response.data.result.content.forEach((data) => {
                         arr.push(data);
@@ -103,26 +98,45 @@ const MyStories = () => {
                 </StateRenderer>
 
                 <ItemBox>
-                    {list?.map((data, idx) => (
-                        <div
-                            key={idx}
-                            ref={list.length - 1 === idx ? ref : null}>
-                            <MyOrderItem
-                                brandName={data.productInfo[2]}
-                                orderedDate={data.createdAt.map((e, idx) =>
-                                    idx < 3 ? e + "." : ""
-                                )}
-                                img={data.productInfo[0]}
-                                productName={data.productInfo[1]}
-                                productOption={data.productInfo[3]}
-                                price={parseInt(
-                                    data.productInfo[4]
-                                ).toLocaleString()}
-                                stock={data.productInfo[5]}
-                                status={data.status}
-                            />
-                        </div>
-                    ))}
+                    {list?.map((data, idx) =>
+                        list.length - 1 === idx ? (
+                            <div key={idx} ref={ref}>
+                                <MyOrderItem
+                                    id={data.id}
+                                    brandName={data.productInfo[2]}
+                                    orderedDate={data.createdAt.map((e, idx) =>
+                                        idx < 3 ? e + "." : ""
+                                    )}
+                                    img={data.productInfo[0]}
+                                    productName={data.productInfo[1]}
+                                    productOption={data.productInfo[3]}
+                                    price={parseInt(
+                                        data.productInfo[4]
+                                    ).toLocaleString()}
+                                    stock={data.productInfo[5]}
+                                    status={data.status}
+                                />
+                            </div>
+                        ) : (
+                            <div key={idx}>
+                                <MyOrderItem
+                                    id={data.id}
+                                    brandName={data.productInfo[2]}
+                                    orderedDate={data.createdAt.map((e, idx) =>
+                                        idx < 3 ? e + "." : ""
+                                    )}
+                                    img={data.productInfo[0]}
+                                    productName={data.productInfo[1]}
+                                    productOption={data.productInfo[3]}
+                                    price={parseInt(
+                                        data.productInfo[4]
+                                    ).toLocaleString()}
+                                    stock={data.productInfo[5]}
+                                    status={data.status}
+                                />
+                            </div>
+                        )
+                    )}
                 </ItemBox>
             </CenterRenderer>
         </>
