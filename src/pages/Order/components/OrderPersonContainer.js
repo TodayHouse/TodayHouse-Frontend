@@ -104,6 +104,7 @@ const OrderPersonContainer = () => {
             sender: orderForm.name,
             senderPhoneNumber:
                 orderForm.phoneNumPrefix + orderForm.phoneNumSuffix,
+            senderEmail: orderForm.email + "@" + orderForm.emailSuffix,
         };
         dispatch(dispatchSetOrderForm(form));
     }, [orderForm]);
