@@ -5,11 +5,7 @@ const productReducer = createSlice({
     initialState: {
         //서버에서 현재 상품 게시글의 첫 번째 사진의 주소를 불러와서 저장 -> default img가 됨
         imgSrc: "",
-
-        selectedOption:
-            JSON.parse(localStorage.getItem("selectedOption1")) === null
-                ? []
-                : JSON.parse(localStorage.getItem("selectedOption1")),
+        selectedOption: [],
         totalPrice: 0,
         form: {},
         sellerInfo: {},
@@ -18,17 +14,11 @@ const productReducer = createSlice({
         changeImg: (state, action) => {
             state.imgSrc = action.payload;
         },
-
         addOption: (state, action) => {
             state.selectedOption.push(action.payload);
             // order 페이지에서 리덕스 정보를 사용하기 위해 local storage에 저장
-            // selectOption1은 상품 상세페이지, 2는 주문 페이지에서 사용
             localStorage.setItem(
-                "selectedOption1",
-                JSON.stringify(state.selectedOption)
-            );
-            localStorage.setItem(
-                "selectedOption2",
+                "selectedOption",
                 JSON.stringify(state.selectedOption)
             );
         },
@@ -37,8 +27,7 @@ const productReducer = createSlice({
                 (data) => data.id !== action.payload
             );
             // order 페이지에서 리덕스 정보를 사용하기 위해 local storage에 저장
-            localStorage.setItem("selectedOption1", JSON.stringify(options));
-            localStorage.setItem("selectedOption2", JSON.stringify(options));
+            localStorage.setItem("selectedOption", JSON.stringify(options));
             return {
                 //initialState에 selectedOption말고도 다른 state들도 있으므로 ...state를 사용하여 다른 state들도 불러와야함
                 ...state,
@@ -51,11 +40,7 @@ const productReducer = createSlice({
                     data.num = parseInt(action.payload.num);
             });
             localStorage.setItem(
-                "selectedOption1",
-                JSON.stringify(state.selectedOption)
-            );
-            localStorage.setItem(
-                "selectedOption2",
+                "selectedOption",
                 JSON.stringify(state.selectedOption)
             );
         },
