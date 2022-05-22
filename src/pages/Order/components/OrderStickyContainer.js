@@ -18,7 +18,7 @@ const OrderStickyContainer = (props) => {
 
     const [checked, setChecked] = useState(false); // 필수 동의 조건 체크박스
 
-    const productInfo = JSON.parse(localStorage.getItem("selectedOption2"));
+    const productInfo = JSON.parse(localStorage.getItem("selectedOption"));
     const orderForm = useSelector((state) => state.order.orderForm);
     const destForm = useSelector((state) => state.order.destForm);
     const memo = useSelector((state) => state.order.memo);
