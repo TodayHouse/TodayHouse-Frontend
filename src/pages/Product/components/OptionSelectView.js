@@ -4,6 +4,8 @@ import { SelectedOption } from ".";
 import { useDispatch, useSelector } from "react-redux";
 import { addOption } from "../../../redux/reducer/product";
 import { useNavigate } from "react-router-dom";
+import { Modal } from "../../../components";
+import { Button } from "../../../elements";
 
 const OptionSelectView = (props) => {
     const { parentId, childId } = props; //상단 선택창과 sticky 선택창을 구분하기 위해 id를 각각 설정
@@ -18,6 +20,8 @@ const OptionSelectView = (props) => {
     const [optionList2, setOptionList2] = useState([]);
     const optionTitle1 = productInfo.option1;
     const optionTitle2 = productInfo.option2;
+
+    const [modalOpen, setModalOpen] = useState(false);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -64,6 +68,26 @@ const OptionSelectView = (props) => {
                     productId: productInfo.id,
                 })
             );
+    };
+
+    const addCart = () => {
+        // localStorage를 사용하여 장바구니 item 저장
+        if (localStorage.getItem("cart") !== null) {
+            let cartItems = JSON.parse(localStorage.getItem("cart"));
+            cartItems.push(selectedOption);
+            localStorage.setItem("cart", JSON.stringify(cartItems));
+        } else {
+            let list = [];
+            list.push(selectedOption);
+            localStorage.setItem("cart", JSON.stringify(list));
+        }
+        setModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setModalOpen(false);
+        localStorage.removeItem("selectedOption");
+        window.location.reload();
     };
 
     useEffect(() => {
@@ -145,7 +169,7 @@ const OptionSelectView = (props) => {
                     </PurchasePrice>
                 </InnerContainer>
                 <InnerContainer>
-                    <MyBucketBtn>장바구니</MyBucketBtn>
+                    <MyBucketBtn onClick={addCart}>장바구니</MyBucketBtn>
                     <PurchaseBtn
                         onClick={() => {
                             if (!selectedOption.length)
@@ -158,6 +182,24 @@ const OptionSelectView = (props) => {
                     </PurchaseBtn>
                 </InnerContainer>
             </PurchaseContainer>
+            <Modal
+                width={500}
+                height={300}
+                modalOpen={modalOpen}
+                closeModal={closeModal}>
+                <span style={{ fontSize: 18 }}>장바구니에 담았습니다.</span>
+                <ModalInnerBtnsContainer>
+                    <ContinueShoppingBtn onClick={closeModal}>
+                        쇼핑 계속하기
+                    </ContinueShoppingBtn>
+                    <Button
+                        onClick={() => {
+                            navigate("/cart");
+                        }}>
+                        장바구니 가기
+                    </Button>
+                </ModalInnerBtnsContainer>
+            </Modal>
         </Container>
     );
 };
@@ -228,5 +270,19 @@ const PurchaseBtn = styled(MyBucketBtn)`
         background-color: ${(props) => props.theme.hoverMainColor};
     }
 `;
-
+const ModalInnerBtnsContainer = styled.div`
+    margin-top: 24px;
+    display: flex;
+    width: 60%;
+    justify-content: space-between;
+`;
+const ContinueShoppingBtn = styled(Button)`
+    background-color: white;
+    color: black;
+    border: 1px solid #cccccc;
+    &:hover {
+        background-color: white;
+        color: #aaaaaa;
+    }
+`;
 export default OptionSelectView;
