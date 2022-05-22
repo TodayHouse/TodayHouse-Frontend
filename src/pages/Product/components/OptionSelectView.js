@@ -73,10 +73,12 @@ const OptionSelectView = (props) => {
     const addCart = () => {
         // localStorage를 사용하여 장바구니 item 저장
         if (localStorage.getItem("cart") !== null) {
+            // 장바구니에 아직 물품을 담지 않아 cart가 존재하지 않는 경우
             let cartItems = JSON.parse(localStorage.getItem("cart"));
             cartItems.push(selectedOption);
             localStorage.setItem("cart", JSON.stringify(cartItems));
         } else {
+            // 장바구니에 물품을 담아서 cart가 존재하는 경우
             let list = [];
             list.push(selectedOption);
             localStorage.setItem("cart", JSON.stringify(list));
@@ -85,6 +87,7 @@ const OptionSelectView = (props) => {
     };
 
     const closeModal = () => {
+        // 쇼핑을 계속한다는 의미
         setModalOpen(false);
         localStorage.removeItem("selectedOption");
         window.location.reload();
