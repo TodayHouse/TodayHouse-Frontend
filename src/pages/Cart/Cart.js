@@ -1,79 +1,36 @@
 import React,{useEffect, useState} from 'react'
 import styled from 'styled-components'
-import Item from'./component/Item'
+import Group from'./component/Group'
 import { useSelector,useDispatch } from 'react-redux'
 import { OmitProps } from 'antd/lib/transfer/ListBody'
-import { deleteProduct } from '../../redux/reducer/cart'
+import { deleteProduct, load } from '../../redux/reducer/cart'
 const Cart = () =>{
-    const [items,setItems]=useState([])
-    const [checkItems, setCheckItems] = useState([]);
-    const data= useSelector((state) => state.cart.items)
-    const [totalCost,setTotalcost]=useState(0);
-    const [shipCost,setShipCost]=useState(0);
+    let data =[]; 
+    const [groups,setGroups]=useState([]) ;//장바구니 불러옴
+    const totalPrice=useSelector((state)=>state.cart.totalPrice);
+    const totalDeliveryFee=useSelector((state)=>state.cart.deliveryFee);
 
-    useEffect(()=>{
-        setItems(data)
-    },[data]);
+    
 
-    useEffect(()=>{
-        calTotalCost();
-        calShipCost();
-    },[checkItems])
+    useEffect(()=>
+    {
+        
+        if(localStorage.getItem("cart")){
+            data = JSON.parse(localStorage.getItem("cart"));
 
-    const deleteItem = (id) =>{
-        setItems(items.filter((item)=>item.id !== id))
-        setCheckItems(checkItems.filter((el)=> el!== id))
-        calTotalCost();
-        calShipCost();
-    }
-    const deleteOption = (id, i)=>{
-        console.log(id);
-        const temp = items;
-        temp.map((item)=>{
-            if(item.id == id){
-                item.options = item.options.filter((el,index)=> index !==i)
-            }
-        })
-        setItems(temp);
-
-    }
-    const calTotalCost=()=>{
-        var cost =0;
-        items.map((item) =>{
-            checkItems.includes(item.id) && item.options.map((option)=>{
-                cost +=option.price *option.number;
-            })
-
-        })
-        setTotalcost(cost);
-    }
-    const calShipCost=()=>{
-        var cost =0;
-        items.map((item) =>{
-            cost += item.shipCost;
-
-        })
-        setShipCost(cost);
-    }
-    const handleCheckAll =(checked)=>{
-        if (checked) {
-            const Array = [];
-            items.forEach((item) => Array.push(item.id));
-            setCheckItems(Array);
-          }
-      
-          // 반대의 경우 전체 체크 박스 체크 삭제
-          else {
-            setCheckItems([]);
-          }
-    }
-    const handleSingleCheck = (checked, id) => {
-        if (checked) {
-          setCheckItems([...checkItems, id]);
-        } else {
-          setCheckItems(checkItems.filter((el) => el !== id));
         }
-      };
+        else{
+            console.log("장바구니가 비었습니다.");
+        }
+        
+        setGroups(data);
+        
+        
+    },[]);
+    
+    
+
+
 
     return (
         <>
@@ -82,32 +39,34 @@ const Cart = () =>{
                     <Container1>
                         <SelectLine>
                             <CheckBlock><Check 
-                            type="checkbox" 
-                            onChange={(e)=>handleCheckAll(e.target.checked)}
-                            checked={checkItems.length === items.length ? true : false}/>모두선택 
+                            type="checkbox" />모두선택 
                             </CheckBlock>
                             <Choice>선택삭제</Choice>
                         </SelectLine>
                         <CartContainer>
                         {
-                            items && items.map((item,index)=>(
-                                <Item item={item} 
-                                      index={index} 
-                                      key={index} 
-                                      delete={deleteItem}
-                                      deleteOption={deleteOption}
-                                      handleSingleCheck={handleSingleCheck}
-                                      checkItems={checkItems}/>
-                            ))
+                            groups && groups.map((group, index)=>{
+                                return (
+                                    <>
+                                        <Group 
+                                        group={group}
+                                        ></Group>
+
+                                    </>
+                                )
+
+                            })
+
+                          
                         }
                         </CartContainer>
                     </Container1>
                     
                     <ContainerSticky>
                         <Receipt>
-                            <Price>총 상품금액<Won>{totalCost}원</Won></Price>
-                            <ShipPrice>총 배송비<Won>{shipCost}원</Won></ShipPrice>
-                            <Cost>결제금액<Won>{totalCost + shipCost}원</Won></Cost>
+                            <Price>총 상품금액<Won>{totalPrice}원</Won></Price>
+                            <ShipPrice>총 배송비<Won>{totalDeliveryFee}원</Won></ShipPrice>
+                            <Cost>결제금액<Won>{totalPrice + totalDeliveryFee}원</Won></Cost>
                         </Receipt>
                         <Purchase>구매하기</Purchase>
                     </ContainerSticky>
@@ -199,6 +158,12 @@ const Won=styled.div`
     font-weight: bold;
     margin-left: 100px;
 
+`
+const ShipCompany = styled.div`
+    font-weight:bold;
+    border-bottom: 0.01em solid #f4f4f4;
+    padding:10px;
+    
 `
 const Purchase=styled.button`
   background-color: ${(props) => props.theme.mainColor};

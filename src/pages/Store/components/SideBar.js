@@ -9,6 +9,7 @@ const SideBar = (props)=>{
             "카테고리"
         ]
     )
+    console.log(list);
     useEffect(()=>{
         try{
             axios.get("http://localhost:8080/categories")
@@ -30,16 +31,16 @@ const SideBar = (props)=>{
             
             item.subCategories.forEach(el => {
                 if(all){
-                    $(`#${el.id}`).css("display","none")
+                    $(`#${el.name}`).css("display","none")
                 }
-                else if($(`#${el.id}`).css("display") ==="flex" && !all){
-                    $(`#${el.id}`).css("display","none")
+                else if($(`#${el.name}`).css("display") ==="flex" && !all){
+                    $(`#${el.name}`).css("display","none")
                     
                     onOff(el,true);
                 }
                 
                 else{
-                    $(`#${el.id}`).css("display","flex")
+                    $(`#${el.name}`).css("display","flex")
                     
 
                 }
@@ -63,7 +64,7 @@ const SideBar = (props)=>{
                                         marginLeft:`${margin}px`
                                     }}
                                     onClick={()=>onOff(item,false)}
-                                    id={item.id}>
+                                    id={item.name}>
                                     {item.name}
                                 </Detail1>
                                 {Items(item.subCategories,fontSize*0.7,margin+20,"none")}
