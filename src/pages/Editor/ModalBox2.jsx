@@ -5,17 +5,22 @@ import GuideBar_2 from './GuideBar2';
 
 const ModalBox2 = ({isOpen, onSubmit, onCancel}) => {
     const handleClickSubmit = () => {
+        console.log(window.localStorage.getItem('k_space'));
+        console.log(window.localStorage.getItem('k_resi'));
+        console.log(window.localStorage.getItem('k_fam'));
+        console.log(window.localStorage.getItem('k_style'));
         onSubmit();
     };
     const customStyles = {
       content: {
-        top: '10%',
+        top: '15%',
         left: '10%',
         right: 'auto',
         bottom: 'auto',
-        marginLeft : '20%',
+        marginLeft : '25%',
         paddingLeft : '0%',
-        width: '40%',
+        width: '600px',
+        height : '300px',
         
       },
     };
@@ -35,10 +40,10 @@ const SubmitButton = styled.button`
   border-radius : 10px;
   border-color : skyblue;
   padding-left : 43px;
-  padding-top : 5px;
+  padding-top : 7px;
 `
 const CenterArranger = styled.div`
-  margin-left: 45%;
+  margin-left: 42%;
   margin-right : auto;
   align-items : center;
 `
