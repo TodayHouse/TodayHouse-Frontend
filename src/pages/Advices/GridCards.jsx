@@ -3,17 +3,18 @@ import styled from 'styled-components'
 import {Col} from 'antd'
 import {Link} from "react-router-dom"
 function GridCards(props) {
+    console.log(props.item);
     return (
         <Col lg={6} md={8} xs={24}>
             <div style ={{position: 'relative'}}>
                 <Container>
-                    <Link to={`/advices/${props.id}`}>
+                    <Link to={`/advices/${props.item.id}`}>
                         <Frame>
-                        <Image src={props.image}/>
+                        <Image src={props.item.thumbnailUrl}/>
                         </Frame>
                         <Text style={{color:"black"}}>
-                            제목
-                            <Textsmall>작성자</Textsmall>
+                            {props.item.title}
+                            <Textsmall>{props.item.writer}</Textsmall>
                             <Textsmall>조회수</Textsmall>
                         </Text>
                     </Link>
@@ -29,11 +30,9 @@ export default GridCards
 const Container= styled.div`
     display:flex;
     flex-direction: column;
-    width:100%;
 `
 const Frame = styled.div` 
 height: 250px;
-width:100%;
 border-radius: 10px;
 overflow: hidden;
 cursor: pointer;
@@ -41,7 +40,6 @@ cursor: pointer;
 //마우스 갖다대면 확대(hover)
 const Image = styled.img`
 height: 250px;
-width:100%;
 transition: all 0.2s linear;
 &:hover{
     transform: scale(1.2);

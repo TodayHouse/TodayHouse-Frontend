@@ -17,7 +17,6 @@ const Delivery = (props) => {
             axios
                 .get(url + `sellers/${sellerId}`)
                 .then((response) => {
-                    console.log(response);
                     setSellerInfo(response.data.result);
                 })
                 .catch((e) => {

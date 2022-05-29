@@ -1,55 +1,67 @@
 import React,{useEffect, useState} from "react"
 import styled from "styled-components"
+import { useSelector,useDispatch } from 'react-redux'
+import { checkGroup} from "../../../redux/reducer/cart"
 import OptionModal from "./OptionModal"
 import $ from 'jquery'
-const Item = (props) =>{
+const Group = ({group}) =>{
     const [isOpen, setOpen] = useState(false);
+    const dispatch = useDispatch(); 
     const handleSubmit = () => {
         setOpen(false);
     };
     const handleClick = () => {
         setOpen(true);
     };
+    const [price,setPrice] =useState(0);
+    useEffect(()=>
+    {
+        console.log(group);
+        let temp = 0;
+        group.map((option)=>{ temp += option.price *option.num});
+        setPrice(temp);
+        
+    },[]);
+    const [deleveryFee,setDeleveryFee] = useState(0);
     const num = Array(100)
     .fill()
     .map((data,i)=>i+1);
+    
     
     return(
         <>
         
             <Container>
-                <ShipCompany>{props.item.shipCompany} 배송</ShipCompany>
                 <Content>
                     <CheckBox type= "checkbox"
-                     onChange={(e) => props.handleSingleCheck(e.target.checked, props.item.id)}
-                     // checkItems에 data.id가 있으면 체크 아니면 체크 해제
-                     checked={props.checkItems.includes(props.item.id) ? true : false}></CheckBox>
+                    onClick={() => dispatch(checkGroup({price:price,deliveryFee:group[0].deliveryFee,group: group}))}
+                     ></CheckBox>
                     <First>
                         <TitleBlock>
                             
                             <Frame>
-                                <Image src={props.item.img}/>
+                                <Image src={group[0].image}/>
                             </Frame>
                             <TextBlock>
-                                <Title>{props.item.title}</Title>
-                                <SubText>{props.item.shipCost ? props.item.shipcost:"무료배송"}</SubText>
+                                <Title>{group[0].title}</Title>
+                                <SubText>{group[0].deleveryFee ? group[0].deleveryFee + "원" : "무료배송"}</SubText>
                             </TextBlock>
-                            <Delete onClick={()=>props.delete(props.item.id)}>X</Delete>
+                            <Delete>X</Delete>
                         </TitleBlock>
                         {
-                            props.item.options.map((option,index) =>
+                            group.map((option,index) =>
                             (
                                 <OptionBlock  key={index}>
-                                    <OptionName>{option.name}<OptionDelete onClick={()=>props.deleteOption(props.index,index)} >X</OptionDelete></OptionName>
+                                    <OptionName>{option.name}<OptionDelete  >X</OptionDelete></OptionName>
                                     
                                     <OptionPriceBlock>
                                         <SelectNum>
                                             {num.map((data)=>(
-                                                <option value={data} selected={data === option.number}>{data}</option>
+                                                <option value={data} selected={data === option.num}>{data}</option>
                                             ))}
                                         </SelectNum>
-                                        <Number>{option.number} 개</Number>
-                                        <Price>{option.price * option.number}</Price>
+                                        <Number>{option.num} 개</Number>
+                                        <Price>{option.price * option.num}</Price>
                                     </OptionPriceBlock>
                                 </OptionBlock>
                             ))
@@ -61,13 +73,12 @@ const Item = (props) =>{
                     </First>
                     
                 </Content>
-                {props.item.shipCost ? <ShipCost>배송비 :{props.item.shipCost}</ShipCost> :<ShipCost>무료배송</ShipCost>}
-                <OptionModal isOpen = {isOpen} item={props.item} index={props.index} onSubmit={handleSubmit}></OptionModal>            
+                           
             </Container>
         </>
     )
 }
-
+//<OptionModal isOpen = {isOpen} onSubmit={handleSubmit}></OptionModal> 
 const Container = styled.div`
     display: flex;
     flex-direction: column;
@@ -79,12 +90,7 @@ const Container = styled.div`
     padding-right: 30px;
 
 `
-const ShipCompany = styled.div`
-    font-weight:bold;
-    border-bottom: 0.01em solid #f4f4f4;
-    padding:10px;
-    
-`
+
 const TitleBlock = styled.div`
     display:flex;
     margin:10px;
@@ -214,4 +220,4 @@ const SelectNum=styled.select`
     width:100px;
     height:30px;
 `
-export default Item
+export default Group
