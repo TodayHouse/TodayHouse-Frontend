@@ -185,11 +185,7 @@ const OptionSelectView = (props) => {
                     </PurchaseBtn>
                 </InnerContainer>
             </PurchaseContainer>
-            <Modal
-                width={500}
-                height={300}
-                modalOpen={modalOpen}
-                closeModal={closeModal}>
+            <Modal width={500} modalOpen={modalOpen} closeModal={closeModal}>
                 <span style={{ fontSize: 18 }}>장바구니에 담았습니다.</span>
                 <ModalInnerBtnsContainer>
                     <ContinueShoppingBtn onClick={closeModal}>

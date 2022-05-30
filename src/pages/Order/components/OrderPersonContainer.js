@@ -190,7 +190,6 @@ const OrderPersonContainer = () => {
                 </ContentContainer>
                 <Modal
                     width={600}
-                    height={600}
                     modalOpen={modalOpen}
                     closeModal={closeModal}>
                     <DaumPostCode

@@ -19,7 +19,7 @@ const Modal = (props) => {
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
-                    justifyContent: "center",
+                    // justifyContent: "center",
                     top: `calc(50% - ${height / 2}px)`,
                     left: `calc(50% - ${width / 2}px)`,
                     width: width + "px",
@@ -27,6 +27,8 @@ const Modal = (props) => {
                     borderRadius: 8,
                     border: "3px solid skyblue",
                     backgroundColor: "white",
+                    padding: 0,
+                    overflow: "auto",
                 },
             }}>
             {children}
