@@ -14,6 +14,7 @@ const Modal = (props) => {
                     top: 0,
                     left: 0,
                     zIndex: 1,
+                    backgroundColor: "rgba(0,0,0,0.5)",
                 },
                 content: {
                     position: "absolute",
@@ -25,7 +26,6 @@ const Modal = (props) => {
                     height: "fit-content",
                     maxHeight: "750px",
                     borderRadius: 8,
-                    border: "3px solid skyblue",
                     backgroundColor: "white",
                     padding: 0,
                     overflow: "auto",
