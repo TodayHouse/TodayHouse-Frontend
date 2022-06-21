@@ -1,16 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import Rating from "react-star-ratings";
 import theme from "../theme";
 
 //rating(0~5 소수점 가능), size(px)를 props로 받아야 함
 //ex) rating={4.5} size="36px"
 const Star = (props) => {
-    const { size } = props;
-    const [rating, setRating] = useState(0);
+    const { size, changeRating, rating } = props;
 
-    const handleRating = (e) => {
-        setRating(e);
-    };
     return (
         <Rating
             rating={rating}
@@ -22,7 +18,7 @@ const Star = (props) => {
             starDimension={props.size}
             starSpacing="0px"
             size={size}
-            changeRating={handleRating}
+            changeRating={changeRating}
         />
     );
 };
