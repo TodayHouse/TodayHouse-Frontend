@@ -8,6 +8,8 @@ import $ from "jquery";
 import modalX from "../../../img/x.png";
 import arrow from "../../../img/ExpandMoreArrow.png";
 import { useSelector } from "react-redux";
+import axios from "axios";
+import { getCookie } from "../../../App";
 
 const mock = [1, 2, 3, 4, 5, 6];
 const reviewPerStar = [
@@ -20,6 +22,8 @@ const reviewPerStar = [
 const reviewPerOption = ["전체", "SS 슈퍼싱글", "Q 퀸"];
 
 const Review = (props) => {
+    const { productId } = props;
+
     const [bestClicked, setBestClicked] = useState(true);
     const [recentClicked, setRecentClicked] = useState(false);
     const [photoReviewClicked, setPhotoReviewClicked] = useState(false);
@@ -28,7 +32,85 @@ const Review = (props) => {
     const [modalOpen, setModalOpen] = useState(false);
     const [policyOpen, setPolicyOpen] = useState(false);
 
+    const [rating, setRating] = useState(0);
+    const [modalImg, setModalImg] = useState([]);
+    const [content, setContent] = useState("");
+
     const form = useSelector((state) => state.product.form);
+    const url = theme.apiUrl;
+    const accessToken = getCookie("login_id");
+    const formData = new FormData();
+
+    const closeModal = () => {
+        setModalOpen(false);
+        setRating(0);
+        setModalImg([]);
+    };
+
+    const handleRating = (e) => {
+        setRating(e);
+    };
+
+    const handleModalImg = (e) => {
+        const img = URL.createObjectURL(e.target.files[0]);
+        let list = [];
+        list.push(img);
+        setModalImg(list);
+    };
+
+    const removeModalImg = () => {
+        setModalImg([]);
+    };
+
+    const handleContent = (e) => {
+        setContent(e.target.value);
+    };
+
+    const uploadReview = (e) => {
+        e.preventDefault();
+        if (rating === 0 && content === "") {
+            alert("입력되지 않은 정보가 있습니다.");
+        } else {
+            if (window.confirm("리뷰를 등록하시겠습니까?")) {
+                formData.append("file", modalImg);
+                formData.append(
+                    "request",
+                    new Blob(
+                        [
+                            JSON.stringify({
+                                content,
+                                productId,
+                                rating,
+                            }),
+                        ],
+                        { type: "application/json" }
+                    )
+                );
+
+                axios
+                    .post(url + "reviews", formData, {
+                        headers: {
+                            Authorization: `Bearer ${accessToken}`,
+                        },
+                        withCredentials: true,
+                    })
+                    .then((response) => {
+                        console.log(response);
+                        if (response.data.isSuccess) {
+                            alert("리뷰가 등록되었습니다.");
+                        }
+                        closeModal();
+                    })
+                    .catch((e) => {
+                        alert(e.response.data.message);
+                    });
+            }
+        }
+    };
+
+    useEffect(() => {
+        console.log("form :>> ", form);
+    }, []);
 
     useEffect(() => {
         //중복 선택이 안 되고, 최소 하나는 선택해야함
@@ -171,15 +253,13 @@ const Review = (props) => {
             <Pagination />
             <Modal
                 modalOpen={modalOpen}
-                closeModal={() => {
-                    setModalOpen(false);
-                }}
+                closeModal={closeModal}
                 width="700"
                 height="700">
                 <ModalWrap>
                     <header>
                         <ModalTitle>리뷰 쓰기</ModalTitle>
-                        <ModalCloseBtn>
+                        <ModalCloseBtn onClick={closeModal}>
                             <img
                                 width="32"
                                 height="32"
@@ -189,12 +269,12 @@ const Review = (props) => {
                         </ModalCloseBtn>
                     </header>
                     <ModalMain>
-                        <form>
+                        <form onSubmit={uploadReview}>
                             <ModalProductInfo>
-                                <ModalProductImg
-                                    src={form.imageUrls}
+                                {/* <ModalProductImg
+                                    src={form.imageUrls[0]}
                                     alt="img"
-                                />
+                                /> */}
                                 <ModalProductInfoText>
                                     <span>{form.brand}</span>
                                     <span>{form.title}</span>
@@ -202,26 +282,57 @@ const Review = (props) => {
                             </ModalProductInfo>
                             <ModalRatingContainer>
                                 <ModalText>별점 평가</ModalText>
-                                <div style={{ display: "flex" }}>
+                                <ModalRating>
                                     <span>만족도</span>
-                                    <Star />
-                                </div>
+                                    <Star
+                                        size="36px"
+                                        changeRating={handleRating}
+                                        rating={rating}
+                                    />
+                                </ModalRating>
                             </ModalRatingContainer>
                             <ModalImageContainer>
                                 <ModalText>사진 첨부 (선택)</ModalText>
                                 <span>사진을 첨부해주세요. (최대 1장)</span>
+                                {modalImg.length !== 0 ? (
+                                    <ModalImgView>
+                                        <ModalImgRemoveBtn
+                                            onClick={removeModalImg}>
+                                            삭제
+                                        </ModalImgRemoveBtn>
+                                        <ModalImg
+                                            src={modalImg}
+                                            alt="modalImg"
+                                        />
+                                    </ModalImgView>
+                                ) : null}
                                 <ModalImgBtn htmlFor="modal-img">
+                                    <svg
+                                        viewBox="0 0 24 24"
+                                        preserveAspectRatio="xMidYMid meet"
+                                        style={{
+                                            width: 24,
+                                            height: 24,
+                                            margin: "0px 8px",
+                                            fill: theme.mainColor,
+                                        }}>
+                                        <path d="M21.1 4c.5 0 .9.4.9.9v14.2c0 .5-.4.9-.9.9H2.9a.9.9 0 01-.9-.9V4.9c0-.5.4-.9.9-.9h18.2zm-.91 1.8H3.8v10.85l5.54-6.27c.12-.17.38-.17.52 0l3.1 3.54c.06.06.08.14.06.2l-.4 1.84c-.02.14.15.23.23.12l3.16-3.43a.27.27 0 01.38 0l3.79 4.12V5.8zm-3.37 4.8a1.47 1.47 0 01-1.47-1.45c0-.81.66-1.46 1.47-1.46s1.48.65 1.48 1.46c0 .8-.66 1.45-1.48 1.45z"></path>
+                                    </svg>
                                     사진 첨부하기
                                 </ModalImgBtn>
                                 <input
                                     type="file"
                                     id="modal-img"
                                     style={{ display: "none" }}
+                                    onChange={handleModalImg}
                                 />
                             </ModalImageContainer>
                             <ModalCommentContainer>
                                 <ModalText>리뷰 작성</ModalText>
-                                <ModalComment placeholder="자세하고 솔직한 리뷰는 다른 고객에게 큰 도움이 됩니다. (최소 20자 이상)" />
+                                <ModalComment
+                                    onChange={handleContent}
+                                    placeholder="자세하고 솔직한 리뷰는 다른 고객에게 큰 도움이 됩니다. (최소 20자 이상)"
+                                />
                             </ModalCommentContainer>
                             <div>
                                 <ModalButton type="submit" width="100%">
@@ -230,15 +341,12 @@ const Review = (props) => {
                             </div>
                         </form>
                         <ModalReviewPolicyContainer>
-                            <ReviewPolicySummary>
+                            <ReviewPolicySummary
+                                onClick={() => {
+                                    setPolicyOpen(!policyOpen);
+                                }}>
                                 <span>오늘의집 리뷰 정책</span>
-                                <PolicyArrow
-                                    src={arrow}
-                                    alt="arrow"
-                                    onClick={() => {
-                                        setPolicyOpen(!policyOpen);
-                                    }}
-                                />
+                                <PolicyArrow src={arrow} alt="arrow" />
                             </ReviewPolicySummary>
                             <ReviewPolicyDetail policyOpen={policyOpen}>
                                 <p>
@@ -465,6 +573,16 @@ const ModalText = styled.span`
     font-size: 15px;
     font-weight: bold;
 `;
+const ModalRating = styled.div`
+    display: flex;
+    align-items: center;
+
+    & > span {
+        font-size: 16px;
+        font-weight: 400;
+        margin-right: 12px;
+    }
+`;
 const ModalMain = styled.div`
     padding: 0px 40px;
     & > form > div {
@@ -479,6 +597,24 @@ const ModalProductImg = styled.img`
     width: 100px;
     height: 100px;
     border-radius: 4px;
+`;
+const ModalImgView = styled.div`
+    width: 100%;
+    height: 226px;
+    background-color: #eeeeee;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    position: relative;
+`;
+const ModalImg = styled.img`
+    width: 226px;
+    height: 226px;
+`;
+const ModalImgRemoveBtn = styled(Button)`
+    position: absolute;
+    top: 12px;
+    right: 12px;
 `;
 const ModalImgBtn = styled.label`
     display: flex;
@@ -511,16 +647,23 @@ const ModalComment = styled.textarea`
 const ModalButton = styled(Button)``;
 const ModalReviewPolicyContainer = styled.div`
     margin-bottom: 32px;
+    background-color: #eeeeee;
+    padding: 12px;
+    border-radius: 4px;
 `;
 const ReviewPolicySummary = styled.div`
     display: flex;
     align-items: center;
-    & img:hover {
+    justify-content: space-between;
+    font-size: 16px;
+    font-weight: bold;
+    &:hover {
         cursor: pointer;
     }
 `;
 const ReviewPolicyDetail = styled.div`
     display: ${(props) => (props.policyOpen ? "block" : "none")};
+    margin-top: 12px;
 `;
 const PolicyArrow = styled.img``;
 const ModalFooter = styled.footer`
