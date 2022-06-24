@@ -1,33 +1,61 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Star } from "../../../components";
 import axios from "axios";
 import theme from "../../../theme";
 import { getCookie } from "../../../App";
+import { useSelector } from "react-redux";
 
 //프로필사진, 닉네임, 총 평점, 각 평점 4개, 상품옵션, 상품사진, 리뷰 내용, 도움된 사람 수 -> props로 받아야함
 const ReviewDetail = (props) => {
-    const { info } = props;
+    const { info, getReviews } = props;
     const reviewId = info.id;
     const url = theme.apiUrl;
     const accessToken = getCookie("login_id");
+    const canLike = useSelector((state) => state.product.canLike);
 
     const doLike = () => {
-        axios
-            .post(
-                url + `reviews/like/${reviewId}`,
-                {},
-                {
-                    headers: { Authorization: `Bearer ${accessToken}` },
-                    withCredentials: true,
-                }
-            )
-            .then((response) => {
-                console.log("response :>> ", response);
-            })
-            .catch((e) => {
-                alert(e.response.data.message);
-            });
+        if (!canLike) {
+            axios
+                .delete(
+                    url + `reviews/like/${reviewId}`,
+                    {},
+                    {
+                        headers: { Authorization: `Bearer ${accessToken}` },
+                        withCredentials: true,
+                    }
+                )
+                .then((response) => {
+                    console.log("delete :>> ", response);
+                    if (response.data.isSuccess) {
+                        alert("좋아요를 취소했습니다.");
+                        getReviews();
+                    }
+                })
+                .catch((e) => {
+                    alert(e.response.data.message);
+                });
+        } else {
+            axios
+                .post(
+                    url + `reviews/like/${reviewId}`,
+                    {},
+                    {
+                        headers: { Authorization: `Bearer ${accessToken}` },
+                        withCredentials: true,
+                    }
+                )
+                .then((response) => {
+                    console.log("post :>> ", response);
+                    if (response.data.isSuccess) {
+                        alert("이 리뷰를 좋아합니다.");
+                        getReviews();
+                    }
+                })
+                .catch((e) => {
+                    alert(e.response.data.message);
+                });
+        }
     };
 
     return (

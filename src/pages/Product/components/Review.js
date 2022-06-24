@@ -7,7 +7,8 @@ import { ReviewDetail } from ".";
 import $ from "jquery";
 import modalX from "../../../img/x.png";
 import arrow from "../../../img/ExpandMoreArrow.png";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { handleCanLike } from "../../../redux/reducer/product";
 import axios from "axios";
 import { getCookie } from "../../../App";
 
@@ -36,8 +37,14 @@ const Review = (props) => {
     const [modalImg, setModalImg] = useState([]);
     const [content, setContent] = useState("");
 
+    const [reviewDetail, setReviewDetail] = useState([]); //리뷰 목록들
+    const [page, setPage] = useState(1); //페이지네이션
+    const [totalItemsCount, setTotalItemsCount] = useState(0);
+    const [canLike, setCanLike] = useState(true);
+
     const form = useSelector((state) => state.product.form);
     const url = theme.apiUrl;
+    const dispatch = useDispatch();
     const accessToken = getCookie("login_id");
     const formData = new FormData();
 
@@ -100,6 +107,7 @@ const Review = (props) => {
                             alert("리뷰가 등록되었습니다.");
                         }
                         closeModal();
+                        getReviews();
                     })
                     .catch((e) => {
                         alert(e.response.data.message);
@@ -108,8 +116,33 @@ const Review = (props) => {
         }
     };
 
+    const getReviews = (page) => {
+        axios
+            .get(
+                url + `reviews?page=${page}&size=1&productId=${productId}`,
+                {},
+                {
+                    headers: { Authorization: `Bearer ${accessToken}` },
+                    withCredentials: true,
+                }
+            )
+            .then((response) => {
+                console.log("response.data.result :>> ", response.data.result);
+                console.log(response.data.result.content[0].canLike);
+                dispatch(
+                    handleCanLike(response.data.result.content[0].canLike)
+                );
+                setReviewDetail(response.data.result.content);
+                setTotalItemsCount(response.data.result.totalElements);
+            })
+            .catch((e) => {
+                console.log(e.response.data.message);
+            });
+    };
+
     useEffect(() => {
         console.log("form :>> ", form);
+        getReviews();
     }, []);
 
     useEffect(() => {
@@ -247,10 +280,20 @@ const Review = (props) => {
                     </SelectOption>
                 </FilterOptionList>
             </ReviewFilterContainer>
-            {mock.map((data, idx) => (
-                <ReviewDetail key={idx} />
+            {reviewDetail.map((data, idx) => (
+                <ReviewDetail
+                    key={idx}
+                    info={data}
+                    canLike={canLike}
+                    getReviews={getReviews}
+                />
             ))}
-            <Pagination />
+            <Pagination
+                callApi={getReviews}
+                page={page}
+                setPage={setPage}
+                totalItemsCount={totalItemsCount}
+            />
             <Modal
                 modalOpen={modalOpen}
                 closeModal={closeModal}
