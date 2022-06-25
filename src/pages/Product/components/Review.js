@@ -118,14 +118,10 @@ const Review = (props) => {
 
     const getReviews = (page) => {
         axios
-            .get(
-                url + `reviews?page=${page}&size=1&productId=${productId}`,
-                {},
-                {
-                    headers: { Authorization: `Bearer ${accessToken}` },
-                    withCredentials: true,
-                }
-            )
+            .get(url + `reviews?page=${page}&size=1&productId=${productId}`, {
+                headers: { Authorization: `Bearer ${accessToken}` },
+                withCredentials: true,
+            })
             .then((response) => {
                 console.log("response.data.result :>> ", response.data.result);
                 console.log(response.data.result.content[0].canLike);

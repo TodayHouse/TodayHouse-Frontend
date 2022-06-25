@@ -17,14 +17,10 @@ const ReviewDetail = (props) => {
     const doLike = () => {
         if (!canLike) {
             axios
-                .delete(
-                    url + `reviews/like/${reviewId}`,
-                    {},
-                    {
-                        headers: { Authorization: `Bearer ${accessToken}` },
-                        withCredentials: true,
-                    }
-                )
+                .delete(url + `reviews/like/${reviewId}`, {
+                    headers: { Authorization: `Bearer ${accessToken}` },
+                    withCredentials: true,
+                })
                 .then((response) => {
                     console.log("delete :>> ", response);
                     if (response.data.isSuccess) {
