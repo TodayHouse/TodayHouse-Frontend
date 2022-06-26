@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { Star } from "../../../components";
 import axios from "axios";
@@ -12,19 +12,18 @@ const ReviewDetail = (props) => {
     const reviewId = info.id;
     const url = theme.apiUrl;
     const accessToken = getCookie("login_id");
-    const canLike = useSelector((state) => state.product.canLike);
-
+    const canLikeList = useSelector((state) => state.product.canLike);
+    const canLike = canLikeList.filter((data) => data.id === reviewId);
+    // console.log("info :>> ", info);
     const doLike = () => {
-        if (!canLike) {
+        if (!canLike[0].canLike) {
             axios
                 .delete(url + `reviews/like/${reviewId}`, {
                     headers: { Authorization: `Bearer ${accessToken}` },
                     withCredentials: true,
                 })
                 .then((response) => {
-                    console.log("delete :>> ", response);
                     if (response.data.isSuccess) {
-                        alert("좋아요를 취소했습니다.");
                         getReviews();
                     }
                 })
@@ -42,9 +41,7 @@ const ReviewDetail = (props) => {
                     }
                 )
                 .then((response) => {
-                    console.log("post :>> ", response);
                     if (response.data.isSuccess) {
-                        alert("이 리뷰를 좋아합니다.");
                         getReviews();
                     }
                 })
@@ -81,7 +78,9 @@ const ReviewDetail = (props) => {
                 <Content>{info.content}</Content>
             </ReviewContentContainer>
             <Footer>
-                <RecommendBtn onClick={doLike}>도움이 돼요</RecommendBtn>
+                <RecommendBtn onClick={doLike} canLike={canLike[0].canLike}>
+                    {canLike[0].canLike ? "도움이 돼요" : "도움됨"}
+                </RecommendBtn>
                 <NumOfRecommend>
                     <span style={{ fontWeight: "bold" }}>{info.like}</span>
                     명에게 도움이 되었습니다.
@@ -151,8 +150,12 @@ const RecommendBtn = styled.button`
     all: unset;
     font-size: 18px;
     font-weight: bold;
-    color: ${(props) => props.theme.mainColor};
-    padding: 5px 25px;
+    color: ${(props) => (props.canLike ? props.theme.mainColor : "white")};
+    background-color: ${(props) =>
+        props.canLike ? "white" : props.theme.mainColor};
+    text-align: center;
+    padding: 5px 0px;
+    width: 130px;
     border: 1px solid ${(props) => props.theme.mainColor};
     border-radius: 4px;
 `;

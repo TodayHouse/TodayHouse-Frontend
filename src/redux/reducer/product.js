@@ -9,7 +9,7 @@ const productReducer = createSlice({
         totalPrice: 0,
         form: {},
         sellerInfo: {},
-        canLike: true,
+        canLike: [],
     },
     reducers: {
         changeImg: (state, action) => {
