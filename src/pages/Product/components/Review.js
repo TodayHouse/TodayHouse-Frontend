@@ -12,7 +12,6 @@ import { handleCanLike } from "../../../redux/reducer/product";
 import axios from "axios";
 import { getCookie } from "../../../App";
 
-const mock = [1, 2, 3, 4, 5, 6];
 const reviewPerStar = [
     { rating: 5, num: 100 },
     { rating: 4, num: 200 },
@@ -32,6 +31,25 @@ const Review = (props) => {
     const [optionClicked, setOptionClicked] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
     const [policyOpen, setPolicyOpen] = useState(false);
+    const [reviewRatings, setReviewRatings] = useState({
+        //상품의 평점
+        average: 0,
+        five: 0,
+        four: 0,
+        three: 0,
+        two: 0,
+        one: 0,
+    });
+
+    //별점 별 리뷰 수
+    const ratingData = [
+        { rating: 5, num: reviewRatings.five },
+        { rating: 4, num: reviewRatings.four },
+        { rating: 3, num: reviewRatings.three },
+        { rating: 2, num: reviewRatings.two },
+        { rating: 1, num: reviewRatings.one },
+    ];
+    const [ratingNum, setRatingNum] = useState(0); //리뷰 평점 수
 
     const [rating, setRating] = useState(0);
     const [modalImg, setModalImg] = useState([]);
@@ -117,19 +135,33 @@ const Review = (props) => {
     };
 
     const getReviews = (page) => {
+        //상품의 리뷰 목록 불러오기
         axios
-            .get(url + `reviews?page=${page}&size=1&productId=${productId}`, {
+            .get(url + `reviews?page=${page}&size=2&productId=${productId}`, {
                 headers: { Authorization: `Bearer ${accessToken}` },
                 withCredentials: true,
             })
             .then((response) => {
                 console.log("response.data.result :>> ", response.data.result);
-                console.log(response.data.result.content[0].canLike);
-                dispatch(
-                    handleCanLike(response.data.result.content[0].canLike)
-                );
+                let list = [];
+                response.data.result.content.forEach((data) => {
+                    list.push({ id: data.id, canLike: data.canLike });
+                });
+                dispatch(handleCanLike(list));
                 setReviewDetail(response.data.result.content);
                 setTotalItemsCount(response.data.result.totalElements);
+            })
+            .catch((e) => {
+                console.log(e);
+            });
+    };
+
+    const getReviewRatings = () => {
+        //상품의 평점 불러오기
+        axios
+            .get(url + `reviews/ratings/${productId}`)
+            .then((response) => {
+                setReviewRatings(response.data.result);
             })
             .catch((e) => {
                 console.log(e.response.data.message);
@@ -139,7 +171,13 @@ const Review = (props) => {
     useEffect(() => {
         console.log("form :>> ", form);
         getReviews();
+        getReviewRatings();
     }, []);
+
+    useEffect(() => {
+        const { one, two, three, four, five } = reviewRatings;
+        setRatingNum(one + two + three + four + five);
+    }, [reviewRatings]);
 
     useEffect(() => {
         //중복 선택이 안 되고, 최소 하나는 선택해야함
@@ -170,7 +208,8 @@ const Review = (props) => {
         <Container id={props.id}>
             <HeaderView>
                 <Header>
-                    리뷰 <NumOfReviews>9,866</NumOfReviews>
+                    리뷰{" "}
+                    <NumOfReviews>{ratingNum.toLocaleString()}</NumOfReviews>
                 </Header>
                 <WriteView>
                     <Write
@@ -182,9 +221,23 @@ const Review = (props) => {
                 </WriteView>
             </HeaderView>
             <ReviewSummary>
+                <AverageStarView>
+                    <Star rating={reviewRatings.average} size="36px" />
+                    <Rating>{reviewRatings.average.toFixed(1)}</Rating>
+                </AverageStarView>
                 <StarView>
-                    <Star rating={4.8} size="36px" />
-                    <Rating>4.8</Rating>
+                    {ratingData.map((data, idx) => (
+                        <RatingWrap key={idx}>
+                            <span>{data.rating}점</span>
+                            <RatingBar>
+                                <RatingBarBg></RatingBarBg>
+                                <RatingBarColor
+                                    num={data.num}
+                                    all={ratingNum}></RatingBarColor>
+                            </RatingBar>
+                            <span>{data.num.toLocaleString()}</span>
+                        </RatingWrap>
+                    ))}
                 </StarView>
             </ReviewSummary>
             <ReviewFilterContainer>
@@ -495,11 +548,46 @@ const ReviewSummary = styled.div`
     background-color: #fafafa;
     border-radius: 4px;
 `;
-const StarView = styled.div`
+const AverageStarView = styled.div`
     display: flex;
     align-items: center;
     border-right: 1px solid #eeeeee;
     padding: 20px 40px;
+`;
+const StarView = styled.div`
+    padding: 20px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`;
+const RatingWrap = styled.div`
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+
+    & > span {
+        color: rgb(158, 158, 158);
+    }
+`;
+const RatingBar = styled.div`
+    margin: 0px 8px;
+    margin-top: 5px;
+`;
+const RatingBarBg = styled.div`
+    width: 180px;
+    height: 5px;
+    position: relative;
+    background-color: rgb(218, 220, 224);
+    border-radius: 10px;
+`;
+const RatingBarColor = styled.div`
+    width: ${(props) => (props.num / props.all) * 180}px;
+    height: 5px;
+    position: relative;
+    background-color: ${(props) => props.theme.mainColor};
+    top: -5px;
+    border-radius: 10px;
 `;
 const Rating = styled.span`
     margin-left: 15px;
