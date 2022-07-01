@@ -7,7 +7,8 @@ import SideBar from "./components/SideBar";
 import {Row} from 'antd'
 import axios from "axios";
 import { useSelector } from "react-redux";
-
+import theme from '../../theme'
+const url = theme.apiUrl;
 
 const Store = () =>{
     const [items,setItems] = useState([
@@ -64,7 +65,7 @@ const Store = () =>{
         console.log(id)
         var temp = []
         try{
-        axios.get("http://localhost:8080/products",
+        axios.get(url+"products",
         {
             params:
             {
@@ -111,7 +112,7 @@ const Store = () =>{
                     name:name,
             }
         )
-        axios.get("http://localhost:8080/products",
+        axios.get(url+"products",
         {
             params:
             {
@@ -148,7 +149,7 @@ const Store = () =>{
     }
     useEffect(()=>{
         try{
-            axios.get("http://localhost:8080/categories")
+            axios.get(url+"categories")
             .then(function(res){
                 console.log(res.data.result)
                 handleCategory(res.data.result[0].id,res.data.result[0].name)
