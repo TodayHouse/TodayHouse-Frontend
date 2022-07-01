@@ -10,7 +10,7 @@ const Setting = () => {
     const jwt = getCookie('login_id');
     const formData = new FormData();
     useEffect(() => {
-        axios.get('http://localhost:8080/users/emails/' + oid, {
+        axios.get('http://44.206.171.242:8080/users/emails/' + oid, {
             headers : {
                 'Authorization' : `Bearer ${jwt}`,
             },

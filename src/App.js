@@ -20,6 +20,7 @@ import {
     Error,
     MyPage,
     Setting,
+    Scraped,
     Seller,
     UploadProduct,
     MyOrder,
@@ -93,6 +94,9 @@ function App() {
                                 <Route
                                     path="/mypage/myorder"
                                     element={<MyOrder></MyOrder>}></Route>
+                                <Route
+                                    path="/mypage/scrap"
+                                    element={<Scraped></Scraped>}></Route>
                             </Route>
                         </Route>
                         <Route path="/editor" element={<Editor />}></Route>

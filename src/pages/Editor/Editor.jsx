@@ -115,7 +115,7 @@ const Editor = () => {
    
 
     try{
-      axios.post("http://localhost:8080/stories", formData, {
+      axios.post("http://44.206.171.242:8080/stories", formData, {
         headers : {
           'Content-Type' : 'multipart/form-data', 
            'Authorization': `Bearer ${accessToken}`,

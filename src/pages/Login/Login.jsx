@@ -41,7 +41,7 @@ const Login = () => {
         };
  
         axios
-        .post("http://localhost:8080/users/login", send_param)
+        .post("http://44.206.171.242:8080/users/login", send_param)
         .then(function(response) {    
             const isSuccess = response.data.isSuccess;
             if(isSuccess !== true)
@@ -80,7 +80,8 @@ const Login = () => {
     return (
         <form onSubmit = {submitHandler}>
         <MainContainer>
-            <LogoImage src = "https://img.etnews.com/photonews/2104/1403026_20210419140535_358_0003.jpg" />
+            <LogoImage src = "https://img.etnews.com/photonews/2104/1403026_20210419140535_358_0003.jpg" 
+            onClick={() => {window.location.replace("/")}}/>
            <InputContainer>
                 <Input type = "text" placeholder = "아이디" id = "uid"
                 onChange = {e => setUser({...user, uid : e.target.value})}

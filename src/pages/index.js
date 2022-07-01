@@ -16,9 +16,12 @@ import Error from "./SocialSignup/Error";
 import MyPage from "./MyPage/MyPage";
 import Setting from "./MyPage/Setting";
 import MyOrder from "./MyPage/MyOrder";
+import Scraped from "./MyPage/Scraped"
+
 import Cart from "./Cart/Cart";
 import Seller from "./Seller/Seller";
 import UploadProduct from "./UploadProduct/UploadProduct";
+
 
 export {
     Login,
@@ -39,6 +42,7 @@ export {
     Error,
     MyPage,
     Setting,
+    Scraped,
     Seller,
     UploadProduct,
     MyOrder,
