@@ -80,7 +80,7 @@ const Store = () =>{
                 temp=[...temp,
                     {
                         id:item.id,
-                        url:item.imageUrls[0],
+                        url:item.imageUrls ? item.imageUrls[0]:"https://image.ohou.se/i/bucketplace-v2-development/uploads/productions/159797179944305943.jpg?gif=1&w=720&h=720&c=c&q=0.8" ,
                         title: item.title,
                         discount:item.discountRate,
                         price:item.price,
@@ -127,7 +127,7 @@ const Store = () =>{
                 temp=[...temp,
                     {
                         id:item.id,
-                        url:item.imageUrls[0],
+                        url:item.imageUrls ? item.imageUrls[0]:"https://image.ohou.se/i/bucketplace-v2-development/uploads/productions/159797179944305943.jpg?gif=1&w=720&h=720&c=c&q=0.8" ,
                         title: item.title,
                         discount:item.discountRate,
                         price:item.price,

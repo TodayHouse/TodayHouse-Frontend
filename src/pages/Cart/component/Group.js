@@ -1,10 +1,11 @@
 import React,{useEffect, useState} from "react"
 import styled from "styled-components"
 import { useSelector,useDispatch } from 'react-redux'
-import { checkGroup} from "../../../redux/reducer/cart"
+import { checkGroup,changeOptionNum , deleteOption} from "../../../redux/reducer/cart"
 import OptionModal from "./OptionModal"
 import $ from 'jquery'
-const Group = ({group}) =>{
+import { changeNum } from "../../../redux/reducer/product"
+const Group = ({group,index}) =>{
     const [isOpen, setOpen] = useState(false);
     const dispatch = useDispatch(); 
     const handleSubmit = () => {
@@ -13,15 +14,34 @@ const Group = ({group}) =>{
     const handleClick = () => {
         setOpen(true);
     };
-    const [price,setPrice] =useState(0);
+    
+
+    let price = 0;
+    console.log(price );
+    const handleChangeNum = (g ,o,gi,oi)=>{ //리덕스 옵션수량변경
+        dispatch(changeOptionNum({
+            group:g,
+            option:o,
+            groupIndex:gi,
+            optionIndex:oi,
+            num:document.getElementById("selectNum").value}));
+        
+    }
+    const handleDeleteOption =(g,o,gi,oi)=>{ //옵션 삭제
+        dispatch(deleteOption({
+            group:g,
+            option:o,
+            groupIndex:gi,
+            optionIndex:oi,
+        }))
+    }
     useEffect(()=>
     {
-        console.log(group);
         let temp = 0;
         group.map((option)=>{ temp += option.price *option.num});
-        setPrice(temp);
-        
-    },[]);
+        price=temp;
+    });
+
     const [deleveryFee,setDeleveryFee] = useState(0);
     const num = Array(100)
     .fill()
@@ -49,16 +69,20 @@ const Group = ({group}) =>{
                             <Delete>X</Delete>
                         </TitleBlock>
                         {
-                            group.map((option,index) =>
+                            group.map((option,i) =>
                             (
-                                <OptionBlock  key={index}>
-                                    <OptionName>{option.name}<OptionDelete  >X</OptionDelete></OptionName>
+                                <OptionBlock  key={i}>
+                                    <OptionName>{option.name}<OptionDelete  onClick={()=>handleDeleteOption(group,option,index,i)}>X</OptionDelete></OptionName>
                                     
                                     <OptionPriceBlock>
-                                        <SelectNum>
-                                            {num.map((data)=>(
-                                                <option value={data} selected={data === option.num}>{data}</option>
-                                            ))}
+                                        <SelectNum id="selectNum"
+                                        onChange={()=>handleChangeNum(group,option,index,i)
+                                            }>
+                                            { //숫자를 변경하면 장바구니 갱신
+                                            num.map((data,index)=>(
+                                                <option key={index} value={data} selected={data === option.num}
+                                                >{data}</option>
+                                            ))} 
                                         </SelectNum>
                                         <Number>{option.num} 개</Number>
                                         <Price>{option.price * option.num}</Price>

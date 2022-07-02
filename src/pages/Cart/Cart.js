@@ -3,27 +3,27 @@ import styled from 'styled-components'
 import Group from'./component/Group'
 import { useSelector,useDispatch } from 'react-redux'
 import { OmitProps } from 'antd/lib/transfer/ListBody'
-import { deleteProduct, load } from '../../redux/reducer/cart'
+import { deleteProduct, loadCart } from '../../redux/reducer/cart'
 const Cart = () =>{
     let data =[]; 
-    const [groups,setGroups]=useState([]) ;//장바구니 불러옴
+    const groups=useSelector((state)=>state.cart.allGroups) ;//장바구니 불러옴
     const totalPrice=useSelector((state)=>state.cart.totalPrice);
     const totalDeliveryFee=useSelector((state)=>state.cart.deliveryFee);
-
+    console.log(groups);
     
-
+    const dispatch = useDispatch(); 
     useEffect(()=>
     {
-        
-        if(localStorage.getItem("cart")){
+        dispatch(loadCart());
+        /*if(localStorage.getItem("cart")){
             data = JSON.parse(localStorage.getItem("cart"));
 
         }
         else{
             console.log("장바구니가 비었습니다.");
         }
+        */
         
-        setGroups(data);
         
         
     },[]);
@@ -44,20 +44,22 @@ const Cart = () =>{
                             <Choice>선택삭제</Choice>
                         </SelectLine>
                         <CartContainer>
-                        {
-                            groups && groups.map((group, index)=>{
-                                return (
-                                    <>
-                                        <Group 
-                                        group={group}
-                                        ></Group>
+                        {   
+                            
+                                groups && groups.map((group, index)=>{
+                                    return (
+                                        <React.Fragment key={index}>
+                                            <Group
+                                            group={group}
+                                            index={index}
+                                            
+                                            ></Group>
 
-                                    </>
-                                )
+                                        </React.Fragment>
+                                    )
 
-                            })
-
-                          
+                                })
+                            
                         }
                         </CartContainer>
                     </Container1>
