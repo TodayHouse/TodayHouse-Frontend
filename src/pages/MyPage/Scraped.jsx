@@ -51,7 +51,12 @@ const Scraped = () => {
             {(info != null) ? info.nickname : "별명 없음"}
         </ProfileNickname>
         <ScrapLoader>
-            
+            <span style={{margin : "20px", fontWeight : (tag == 0 ? "bold" : "normal"), cursor : 'pointer'}}
+            onClick = { () => {setTag(0)} }
+            >모두</span>
+            <span style={{margin : "20px", fontWeight : (tag == 1 ? "bold" : "normal"), cursor : 'pointer'}}
+              onClick = { () => {setTag(1)} }
+            >노하우</span>
         </ScrapLoader>
         </Container>
  
