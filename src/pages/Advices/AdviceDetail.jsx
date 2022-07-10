@@ -6,6 +6,8 @@ import { FixedMenu, Footer } from '../../pages/Story/components'
 import axios from 'axios'
 import {Carousel} from '../../components'
 import { useParams } from 'react-router-dom'
+import theme from '../../theme'
+const url = theme.apiUrl;
 const AdviceDetail = (props) => {
   
   window.addEventListener('scroll', () => {
@@ -28,7 +30,7 @@ const AdviceDetail = (props) => {
   useEffect(()=>{
     try{
       
-      axios.get("http://localhost:8080/stories/"+param.id,{param:{id: param.id}})
+      axios.get(url+"stories/"+param.id,{param:{id: param.id}})
         .then(function(res){
           console.log(res)
           setContent(res.data.result)
@@ -47,7 +49,7 @@ const AdviceDetail = (props) => {
     
     return (
         <Container id="container">
-            <TitleImage src={content.imageUrls[0]? `http://localhost:8080/stories/images/${content.imageUrls[0]}` : house2}
+            <TitleImage src={content.imageUrls[0]? url+`stories/images/${content.imageUrls[0]}` : house2}
                         width="125%" 
                         height="500px"
             >

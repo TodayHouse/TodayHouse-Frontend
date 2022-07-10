@@ -39,84 +39,71 @@ const Login = () => {
         };
 
         axios
-            .post("http://44.206.171.242:8080/users/login", send_param)
-            .then(function (response) {
-                const isSuccess = response.data.isSuccess;
-                if (isSuccess !== true) {
-                    console.log(response.data.message);
-                    return;
-                }
-                const accessToken = response.data.result.accessToken;
-                console.log(response.data.result);
-                axios.defaults.headers.common[
-                    "Authorization"
-                ] = `Bearer ${accessToken}`;
-
-                if (accessToken) {
-                    setCookie("login_id", accessToken, { path: "/" });
-                    setCookie("original_id", user.uid, { path: "/" });
-                    setCookie("index_id", response.data.result.id, {
-                        path: "/",
-                    });
-                    console.log(user.uid);
-                    dispatch(cookieSet(accessToken));
-
-                    console.log("토큰 : " + accessToken);
-                    alert("login success");
-                    let mainUrl = "/";
-                    window.location.replace(mainUrl);
-                } else {
-                    alert("login failed");
-                    //로그인 실패
-                }
-            })
-            .catch((err) => {
-                setError(err);
-                console.log(error);
-            });
+        .post("http://44.206.171.242:8080/users/login", send_param)
+        .then(function(response) {    
+            const isSuccess = response.data.isSuccess;
+            if(isSuccess !== true)
+            {
+                console.log(response.data.message);
+                return;
+            }
+            const accessToken = response.data.result.accessToken;
+            console.log(response.data.result);
+            axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
+            
+            if(accessToken){
+                setCookie('login_id', accessToken, { path : "/"});
+                setCookie('original_id', user.uid, {path: "/"});
+                setCookie('index_id', response.data.result.id, {path: "/"});
+                console.log(user.uid);
+                dispatch(cookieSet(accessToken));
+               
+                console.log("토큰 : " + accessToken);
+                alert("login success");
+                let mainUrl = "/";
+                window.location.replace(mainUrl);
+            }
+            else{
+                alert("login failed");
+                //로그인 실패
+            }
+        })
+        .catch(err => {    
+            setError(err);
+            console.log(error);
+        })
     };
     //임시 저장 아이디 및 패스워드
 
     return (
-        <form onSubmit={submitHandler}>
-            <MainContainer>
-                <LogoImage src="https://img.etnews.com/photonews/2104/1403026_20210419140535_358_0003.jpg" />
-                <InputContainer>
-                    <Input
-                        type="text"
-                        placeholder="아이디"
-                        id="uid"
-                        onChange={(e) =>
-                            setUser({ ...user, uid: e.target.value })
-                        }
-                        value={user.id}
-                    />
-                </InputContainer>
-                <InputContainer>
-                    <Input
-                        type="password"
-                        placeholder="비밀번호"
-                        id="password"
-                        onChange={(e) =>
-                            setUser({ ...user, password: e.target.value })
-                        }
-                        value={user.password}
-                    />
-                </InputContainer>
-                <ButtonContainer>
-                    <Button content="로그인" type="submit"></Button>
-                </ButtonContainer>
-                <LoginWith>or login with</LoginWith>
-                <HorizontalRule />
-                <IconsContainer>
-                    <StyledIcon src={require("./img/NaverIcon.png")} />
-                    <StyledIcon src={require("./img/KakaoIcon.png")} />
-                </IconsContainer>
-
-                <ForgotPassword>
-                    <a href="/search">비밀번호를 잊으셨나요?</a>
-                </ForgotPassword>
-            </MainContainer>
+        <form onSubmit = {submitHandler}>
+        <MainContainer>
+            <LogoImage src = "https://img.etnews.com/photonews/2104/1403026_20210419140535_358_0003.jpg" 
+            onClick={() => {window.location.replace("/")}}/>
+           <InputContainer>
+                <Input type = "text" placeholder = "아이디" id = "uid"
+                onChange = {e => setUser({...user, uid : e.target.value})}
+                value = {user.id} 
+                />
+           </InputContainer>   
+           <InputContainer>
+                <Input type = "password" placeholder = "비밀번호" id = "password"
+                onChange = {e => setUser({...user, password : e.target.value})}
+                value = {user.password}
+                />
+           </InputContainer>  
+           <ButtonContainer>
+               <Button content = "로그인" type = "submit"></Button>
+            </ButtonContainer> 
+            <LoginWith>or login with</LoginWith>
+            <HorizontalRule />
+            <IconsContainer>
+                <StyledIcon src = {require("./img/NaverIcon.png")}/>
+                <StyledIcon src = {require("./img/KakaoIcon.png")}/>
+            </IconsContainer>
+            
+            <ForgotPassword><a href = "/search">비밀번호를 잊으셨나요?</a></ForgotPassword>
+        </MainContainer>
         </form>
     );
 };

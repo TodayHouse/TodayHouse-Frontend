@@ -23,6 +23,11 @@ const MyNavbar = ({isLogin}) => {
           </Link>
         </NavItem>
 
+        <NavItem>
+          <Link to="/mypage/scrap">
+            <NavText>나의 스크랩 목록</NavText>
+          </Link>
+        </NavItem>
       </NavListFront>
 
     </NavBar>

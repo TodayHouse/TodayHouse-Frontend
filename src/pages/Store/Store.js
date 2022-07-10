@@ -7,12 +7,12 @@ import SideBar from "./components/SideBar";
 import { Row } from "antd";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import theme from "../../theme";
+import theme from '../../theme'
 const url = theme.apiUrl;
 
-const Store = () => {
-    const [items, setItems] = useState([
-        {
+const Store = () =>{
+    const [items,setItems] = useState([
+        { 
             url: "https://image.ohou.se/i/bucketplace-v2-development/uploads/productions/162679699600663118.jpeg?gif=1&w=360&h=360&c=c&q=0.8",
             title: "노르빅 호텔식 차렵침구세트",
             discount: 59,
@@ -89,58 +89,104 @@ const Store = () => {
                         ];
                     });
 
-                    setProductList(productList.concat(temp));
-                    console.log(productList);
-                });
-        } catch (e) {}
-    };
-    const [category, setCategory] = useState(0);
+    ])
+    const [dealList,setDealList]=useState(); //오늘의 딜 리스트
+    const [productList,setProductList]=useState(); //인기상품 리스트
+    const load = (id) =>{
+        console.log(id)
+        var temp = []
+        try{
+        axios.get(url+"products",
+        {
+            params:
+            {
+                
+                categoryId : parseInt(id),
+                
+            }
+        }
+        ).then(function(res){
+            console.log(res.data.result.content)
+            res.data.result.content.map((item)=>{
+                temp=[...temp,
+                    {
+                        id:item.id,
+                        url:item.imageUrls ? item.imageUrls[0]:"https://image.ohou.se/i/bucketplace-v2-development/uploads/productions/159797179944305943.jpg?gif=1&w=720&h=720&c=c&q=0.8" ,
+                        title: item.title,
+                        discount:item.discountRate,
+                        price:item.price,
+                        star:5,
+                        review:30,
+                        delivery:item.deliveryFee,
+                        leftTime:6,
+                        company:item.brand,
+                    }]
+            })
+            
+            setProductList(productList.concat(temp));
+            console.log(productList)
+        })
+        
+        
+        }
+        catch(e){}
+    }
+    const [category,setCategory]=useState(0);
+    
+    const handleCategory=(id,name)=>{
+        console.log(id)
+        var temp = []
+        try{
+        setCategory(
+            {
+                    id: id,
+                    name:name,
+            }
+        )
+        axios.get(url+"products",
+        {
+            params:
+            {
+                
+                categoryId : parseInt(id),
+                
+            }
+        }
+        ).then(function(res){
+            console.log(res.data.result.content)
+            res.data.result.content.map((item)=>{
+                temp=[...temp,
+                    {
+                        id:item.id,
+                        url:item.imageUrls ? item.imageUrls[0]:"https://image.ohou.se/i/bucketplace-v2-development/uploads/productions/159797179944305943.jpg?gif=1&w=720&h=720&c=c&q=0.8" ,
+                        title: item.title,
+                        discount:item.discountRate,
+                        price:item.price,
+                        star:5,
+                        review:30,
+                        delivery:item.deliveryFee,
+                        leftTime:6,
+                        company:item.brand,
+                    }]
+            })
+            setProductList(temp)
+            setDealList(temp)
+        })
+        
+        
+        }
+        catch(e){}
 
-    const handleCategory = (id, name) => {
-        console.log(id);
-        var temp = [];
-        try {
-            setCategory({
-                id: id,
-                name: name,
-            });
-            axios
-                .get("/products", {
-                    params: {
-                        categoryId: parseInt(id),
-                    },
-                })
-                .then(function (res) {
-                    console.log(res.data.result.content);
-                    res.data.result.content.map((item) => {
-                        temp = [
-                            ...temp,
-                            {
-                                id: item.id,
-                                url: item.imageUrls[0],
-                                title: item.title,
-                                discount: item.discountRate,
-                                price: item.price,
-                                star: 5,
-                                review: 30,
-                                delivery: item.deliveryFee,
-                                leftTime: 6,
-                                company: item.brand,
-                            },
-                        ];
-                    });
-                    setProductList(temp);
-                    setDealList(temp);
-                });
-        } catch (e) {}
-    };
-    useEffect(() => {
-        try {
-            axios.get(url + "categories").then(function (res) {
-                console.log(res.data.result);
-                handleCategory(res.data.result[0].id, res.data.result[0].name);
-            });
-        } catch (e) {
+    }
+    useEffect(()=>{
+        try{
+            axios.get(url+"categories")
+            .then(function(res){
+                console.log(res.data.result)
+                handleCategory(res.data.result[0].id,res.data.result[0].name)
+            })
+            }
+        catch(e){
             console.log(e);
         }
     }, []);

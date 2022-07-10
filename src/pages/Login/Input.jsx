@@ -19,12 +19,7 @@ const StyledInput = styled.input`
     color : #3c354e;
     font-size : 14px;
     font-weight : bold;
-    &: focus {
-        display : inline-block;
-        box-shadow : 0 0 0 0.2rem #4f4f4f;
-        backdrop-filter : blur(12rem);
-        border-radius : 2rem;
-    }
+
    
 `;
 export default Input;

@@ -9,7 +9,7 @@ import styled from 'styled-components';
 import icon1 from "./img/view.png";
 import backImage from "./img/o_back.jpeg";
 import axios from "axios";
-import {Link} from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
 //import { useSelector } from "react-redux";
 import { getCookie } from '../../App';
 import { useSelector } from "react-redux";
@@ -33,35 +33,25 @@ const Editor = () => {
   //const cookieState= useSelector((state) => state.login.cookieState);
   const accessToken = getCookie('login_id');
 
-  const formData = new FormData();
   useEffect(() => {
     console.log(from.etype)
     let etype = from.etype;
     console.log("가져온 데이터 : " + etype);
+    window.localStorage.setItem('k_etype', etype);
     setEditor(etype);
     console.log("불러온 에디터 타입 쿠키 : " + editorType);
 
     setCookie("login_id", accessToken, {path : "/"});
     console.log(accessToken);
     
-    setLoca(editorType == "STORY" ? "/story" : "/advices");
+    setLoca(editorType === "STORY" ? "/story" : "/advices");
     console.log(backLoca);
   }, [editorType, backLoca]);
 
-  const contentSetter = (e) => {
-    setContent(e.target.value);
-    console.log(e.target.value);
-  }
-
-  const handleTitle = (e) => {
+ const handleTitle = (e) => {
     setTitle(e.target.value);
     console.log(e.target.value);
   };
-  const handleContent = (e) =>{
-    setContent(e.target.value);
-    console.log(e.target.value);
-  };
-
 
 
   const handleClick1 = () => {
@@ -100,11 +90,32 @@ const Editor = () => {
       category : editorType,
       content : content,
       title : titleText,
+      theme : window.localStorage.getItem('k_theme')
     }//`Bearer ${accessToken}`
-    formData.append("request", new Blob([JSON.stringify(param)], {type : "application/json"}))
+    const param2 = {
+      category : editorType,
+      content : content,
+      title : titleText,
+      resiType : window.localStorage.getItem('k_resi'),
+      floorSpace : parseInt(window.localStorage.getItem('k_space')),
+      familyType : window.localStorage.getItem('k_fam'),
+      styleType : window.localStorage.getItem('k_style')
+    }
+
+    if(editorType === 'KNOWHOW')
+    {
+      formData.append("request", new Blob([JSON.stringify(param)], {type : "application/json"}));
+      console.log(param.category + " " + param.content + " " + param.title + " " +  param.theme)
+    }
+    else{
+      formData.append("request", new Blob([JSON.stringify(param2)], {type : "application/json"}))
+      console.log(param2.category + " " + param2.content + " " + param2.title + " " +  param2.resiType 
+      + " " + param2.floorSpace + " " + param2.familyType + " " + param2.styleType)
+    }
+   
 
     try{
-      axios.post("http://localhost:8080/stories", formData, {
+      axios.post("http://44.206.171.242:8080/stories", formData, {
         headers : {
           'Content-Type' : 'multipart/form-data', 
            'Authorization': `Bearer ${accessToken}`,

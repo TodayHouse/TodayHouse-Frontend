@@ -3,6 +3,8 @@ import styled from"styled-components"
 import {Link} from "react-router-dom"
 import axios from "axios"
 import $ from 'jquery'
+import theme from '../../../theme'
+const url = theme.apiUrl;
 const SideBar = (props)=>{
     const [list,setList] = useState(
         [
@@ -12,7 +14,7 @@ const SideBar = (props)=>{
     console.log(list);
     useEffect(()=>{
         try{
-            axios.get("http://localhost:8080/categories")
+            axios.get(url+"categories")
             .then(function(res){
                 console.log(res)
                 props.handleCategory(list[0].id,list[0].name)

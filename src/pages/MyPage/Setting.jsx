@@ -1,7 +1,74 @@
-import Title from 'antd/lib/skeleton/Title'
-import styled from'styled-components'
-
+import Title from 'antd/lib/skeleton/Title';
+import styled from'styled-components';
+import { useEffect, useState } from 'react';
+import { getCookie } from '../../App';
+import axios from 'axios'
 const Setting = () => {
+    const [info, setInfo]= useState(null);
+    const [send, setSend] = useState({});
+    const oid = getCookie('original_id');
+    const jwt = getCookie('login_id');
+    const formData = new FormData();
+    useEffect(() => {
+        axios.get('http://44.206.171.242:8080/users/emails/' + oid, {
+            headers : {
+                'Authorization' : `Bearer ${jwt}`,
+            },
+        }).then(function(res) {
+            console.log(res.data.result);
+            setInfo(res.data.result);
+            setSend(res.data.result);
+        }).catch(function(error) {
+            console.log(error);
+        })
+    }, [])
+
+    const loadFile = () => {
+       let image = document.getElementById('profileImage')
+       console.log(image.files[0]);
+       //이미지 폼데이터 형태 취할건지 선택 대기
+      
+       formData.append("file", image.files[0]);
+     
+    }
+
+    const Submit = () => {
+
+        const params = {
+            email  : send.email == null ? "" : send.email,
+            nickname : send.nickname == null ? "" : send.nickname,
+            gender : send.gender == null ? "" :send.gender,
+            birth : send.birth == null ? "" : send.birth,
+            introduction : send.introduction == null ? "" : send.introduction
+        }
+
+
+        formData.append("request", new Blob([JSON.stringify(params)], {type : "application/json"}));
+        console.log( params);
+        try{
+            axios.post("http://localhost:8080/users/info", formData, {
+              headers : {
+                'Content-Type' : 'multipart/form-data', 
+                 'Authorization': `Bearer ${jwt}`,
+                 }, 
+                 withCredentials:true,
+                })
+            .then(function(res){
+              const isSuccess = res.data.isSuccess;
+              if(isSuccess !== true)
+              {
+                  console.log(res.data.message);
+                  return;
+              }
+              alert('업로드 완료!')
+              window.location.href = "/";
+             
+            });
+          }
+          catch(e){
+            console.log(e);
+          }
+    }
     return (
         <AllCover>
             <TitleText>
@@ -16,25 +83,30 @@ const Setting = () => {
                     <hr></hr>
                 </TagText>
                 <CellBox>
-                <EmailInput type = "text" ></EmailInput>   
-                    <Alpha>@</Alpha>
-                <EmailPlatform type = "text">
-                        <option value disabled>선택해주세요</option>
-                        <option value = "naver.com">naver.com</option>
-                        <option value = "daum.net">daum.net</option>
-                        <option value = "gmail.com">gmail.com</option>
-                </EmailPlatform>  
+                <EmailInput type = "text" >{oid}</EmailInput>   
+                  
+               
               <Description>이메일을 변경하시려면 운영자에게 이메일을 보내주세요.  </Description>
                 </CellBox>
             </InfoBox>
          
           
             <InfoBox>
-                <TagText id = "nickname">
+                <TagText id = "nickname" >
                     별명
                     <hr></hr>
                 </TagText>
-                <InfoInput type = "text"></InfoInput>              
+                <InfoInput type = "ntext" placeholder={info != null ? info.nickname :  ''}
+                onChange = {
+                    (event) => 
+                    {
+                        console.log(event.target.value);
+                        let tempJson = send;
+                        tempJson.nickname = event.target.value;
+                        setSend(tempJson);
+                        console.log(send)
+                    }
+                }></InfoInput>              
             </InfoBox>
             
             <InfoBox>
@@ -43,9 +115,19 @@ const Setting = () => {
                     <hr></hr>
                 </TagText>
               
-                <RadioInput type = "radio" name = "gender"></RadioInput>  
+                <RadioInput type = "radio" name = "gender" checked onClick={() => {
+                    let tempJson = send;
+                    tempJson.gender = 'm'
+                    setSend(tempJson);
+                    console.log(send)
+                }}></RadioInput>  
                 남성   
-                <RadioInput type = "radio" name = "gender"></RadioInput>  
+                <RadioInput type = "radio" name = "gender" onClick={() => {
+                    let tempJson = send;
+                    tempJson.gender = 'f'
+                    setSend(tempJson);
+                    console.log(send)
+                }}></RadioInput>  
                 여성         
             </InfoBox>
 
@@ -54,13 +136,24 @@ const Setting = () => {
                     생년월일
                     <hr></hr>
                 </TagText>
-                <InfoInput type = "text" placeholder = "api적용 여부 미정"></InfoInput>              
+                <InfoInput type = "text" id = "birth" placeholder = {info != null ? info.birth :  "여덟자리 입력 / ex)19950101"}
+             onChange = {
+                (event) => 
+                {
+                    console.log(event.target.value);
+                    let tempJson = send;
+                    tempJson.birth = event.target.value;
+                    setSend(tempJson);
+                    console.log(send)
+                }
+            }
+                ></InfoInput>              
             </InfoBox>
            
            <InfoBox>
             <CellBox>
                 <ProfileImage>프로필 이미지</ProfileImage>
-                <ImageInput type = "file"></ImageInput>
+                <ImageInput type = "file" id = "profileImage" onChange = {loadFile}></ImageInput>
             </CellBox>
             </InfoBox>
 
@@ -69,10 +162,23 @@ const Setting = () => {
                     한줄 소개
                     <hr></hr>
                 </TagText>
-                <InfoInput type = "introduction" placeholder='어서와요 오늘의집'></InfoInput>              
+                <InfoInput type = "introduction" id = "introtext" placeholder= {info != null ? info.introduction :  '어서오세요 오늘의 집'}
+                
+                onChange = {
+                    (event) => 
+                    {
+                        console.log(event.target.value);
+                        let tempJson = send;
+                        tempJson.introduction = event.target.value;
+                        setSend(tempJson);
+                        console.log(send)
+                    }
+                }
+                
+                ></InfoInput>              
             </InfoBox>
 
-            <ConfirmButton>회원 정보 수정</ConfirmButton>
+            <ConfirmButton onClick = {Submit}>회원 정보 수정</ConfirmButton>
             </TotalInfo>
         </AllCover>
     )
@@ -124,16 +230,17 @@ const Alpha = styled.div`
     margin-left: 15px;
 `
 
-const EmailInput = styled.input`
+const EmailInput = styled.div`
     display: inline;
     font-size : 17px;
     margin-left : 17px;
+
     border : 1px solid #dfdfdf;
     box-shadow: 0 1px 3px 0 rgb(53 197 240 / 20%);
     border-radius : 6px;
     height : 40px;
     width: 152px;
-    padding-left :10px;
+    padding : 8px;
     &:hover{
         border-color : skyblue;
     }
@@ -210,6 +317,7 @@ const ConfirmButton = styled.button`
 `
 
 const Description = styled.div`
+    margin-top: 8px;
     font-weight : 700;
     font-size : 12px;
     color : #dbdbdb;
