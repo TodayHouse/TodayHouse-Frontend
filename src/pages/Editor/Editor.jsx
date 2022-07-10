@@ -16,6 +16,13 @@ import { useSelector } from "react-redux";
 import Cover from "./Cover";
 import { Cookies, useCookies } from "react-cookie"
 import { useLocation } from "react-router-dom";
+
+window.localStorage.setItem('k_resi', '');
+window.localStorage.setItem('k_fam', '');
+window.localStorage.setItem('k_style', '');
+window.localStorage.setItem('k_space', '');
+window.localStorage.setItem('k_theme', '');
+
 const Editor = () => {
   const location = useLocation();
   const from = location.state;

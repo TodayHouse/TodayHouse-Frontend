@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const GridContents = (props) => {
     const jwt = getCookie('login_id');
     const navigate = useNavigate();
-    const { src, title, profile, nickname, like, view, id } = props;
+    const { src, title, nickname, like,id } = props;
     return (
       <GridContainer
         onClick={() => {
@@ -65,6 +65,9 @@ const Scraped = () => {
     const oid = getCookie('original_id');
     const jwt = getCookie('login_id');
    
+    const [scraped_story, setStory] = useState([]);
+    const [scraped_knowhow, setKnowhow] = useState([]);
+
     useEffect(() => {
         axios.get('http://44.206.171.242:8080/users/emails/' + oid, {
             headers : {
@@ -103,19 +106,46 @@ const Scraped = () => {
         }
     }, [info])
  
+    useEffect(() => {
+      if(contents != null && contents[0] != undefined)
+      {
+        let s_story = []
+        let s_knowhow = []
+        
+        for(let items in contents)
+        {
+          if(items.category == "STORY")
+          {
+            s_story.push(items);
+          }
+          else{
+            s_knowhow.push(items);
+          }
+        }
 
+        if(tag === 0){
+          setStory(s_story)
+        }
+        else{
+          setKnowhow(s_knowhow)
+        }      
+      }
+    }, [contents])
 
     return (
         <Container>    
         <Ptitle>
             스크랩북
         </Ptitle>
+        <div style = {{textAlign : 'center'}}>
         <ProfileImage src = {profile}>
 
         </ProfileImage>
         <ProfileNickname>
             {(info != null) ? info.nickname : "별명 없음"}
         </ProfileNickname>
+        </div>
+       
         <ScrapLoader>
             <span style={{margin : "20px", fontWeight : (tag == 0 ? "bold" : "normal"), cursor : 'pointer'}}
             onClick = { () => {setTag(0)} }
@@ -125,16 +155,33 @@ const Scraped = () => {
             >노하우</span>
         </ScrapLoader>
         <MainContentsBox id = "contentLoader">
-            {
-                contents.map((content, idx) => {
-                    <GridContents 
+            { (contents != null && contents[0] !== undefined) ? 
+            (                 
+                tag === 0 ?
+                
+                scraped_story.map((content, idx) => {
+                    <GridContents key = {idx}
                     src = {content.imageUrls}
                     title = {content.title}
                     like = {content.like}
                     nickname = {content.writer}
                     id = {content.id}
                     ></GridContents>                  
-                })
+                })                 
+                :
+                scraped_knowhow.map((content, idx) => {
+                  <GridContents key = {idx}
+                  src = {content.imageUrls}
+                  title = {content.title}
+                  like = {content.like}
+                  nickname = {content.writer}
+                  id = {content.id}
+                  ></GridContents>                  
+                 }) 
+                         
+            )
+                :
+                <div></div>
             }
         </MainContentsBox>
         </Container>
@@ -161,7 +208,7 @@ const ProfileImage = styled.img`
     border-radius: 100%;
     width : 86px;
     height : 86px;
-    margin-left : 46.5%;
+ 
 `
 const ProfileNickname = styled.p`
     text-align: center;
