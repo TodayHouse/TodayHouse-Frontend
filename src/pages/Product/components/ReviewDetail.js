@@ -51,6 +51,26 @@ const ReviewDetail = (props) => {
         }
     };
 
+    const deleteReview = () => {
+        if (window.confirm("리뷰를 삭제하시겠습니까?")) {
+            axios
+                .delete(url + `reviews/${reviewId}`, {
+                    headers: { Authorization: `Bearer ${accessToken}` },
+                    withCredentials: true,
+                })
+                .then((res) => {
+                    console.log("res :>> ", res);
+                    if (res.data.isSuccess) {
+                        alert(res.data.result);
+                        window.location.reload();
+                    } else alert(res.data.message);
+                })
+                .catch((e) => {
+                    console.log("e :>> ", e);
+                });
+        }
+    };
+
     return (
         <Container>
             <ProfileContainer>
@@ -63,6 +83,7 @@ const ReviewDetail = (props) => {
                     </div>
                 </NicknameStar>
             </ProfileContainer>
+            <button onClick={deleteReview}>삭제</button>
             <ReviewContentContainer>
                 <ProductTitle>{info.productResponse.title}</ProductTitle>
                 <Option>
