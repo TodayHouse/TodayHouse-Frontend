@@ -17,25 +17,25 @@ const GuideBar_2 = () => {
   //카테고리 정보, 링크 정보 입력
   const handleResi = (e) => {
     console.log(e.target.value);
-    window.localStorage.setItem('k_space', e.target.value);
+    window.localStorage.setItem('k_resi', e.target.value);
     setResi(e.target.value);
   };
 
   const handleFam = (e) => {
     console.log(e.target.value);
-    window.localStorage.setItem('k_resi', e.target.value);
+    window.localStorage.setItem('k_fam', e.target.value);
     setFam(e.target.value);
   };
 
   const handleStyle = (e) => {
     console.log(e.target.value);
-    window.localStorage.setItem('k_fam', e.target.value);
+    window.localStorage.setItem('k_style', e.target.value);
     setStyle(e.target.value);
   };
 
   const handleSpace = (e) => {
     console.log(e.target.value);
-    window.localStorage.setItem('k_style', e.target.value);
+    window.localStorage.setItem('k_space', e.target.value);
     setSpace(e.target.value);
   };
 

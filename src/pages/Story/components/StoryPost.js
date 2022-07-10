@@ -1,9 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { getCookie } from '../../../App';
 
 //집들이 페이지의 그리드로 뿌려져있는 게시글 하나하나의 미리보기
 const StoryPost = (props) => {
+  const jwt = getCookie('login_id');
   const navigate = useNavigate();
   const { src, title, profile, nickname, scrap, view, id } = props;
   return (
@@ -23,7 +26,18 @@ const StoryPost = (props) => {
         <Image src={src} />
         <Bookmark
           onClick={() => {
-            alert('스크랩했습니다');
+           
+           axios.post("http://44.206.171.242:8080/scraps/"+id, {
+            headers : {
+                'Authorization' : `Bearer ${jwt}`,
+            },
+          },
+          ).then(function(res){
+            alert('스크랩했습니다' + res);
+            console.log(res);
+          }).catch(function(error){
+            alert('에러 발생' + error);
+          })
           }}
           width="40px"
           height="40px"

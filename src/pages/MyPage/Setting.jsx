@@ -46,7 +46,7 @@ const Setting = () => {
         formData.append("request", new Blob([JSON.stringify(params)], {type : "application/json"}));
         console.log( params);
         try{
-            axios.post("http://localhost:8080/users/info", formData, {
+            axios.post("http://44.206.171.242:8080/users/info", formData, {
               headers : {
                 'Content-Type' : 'multipart/form-data', 
                  'Authorization': `Bearer ${jwt}`,

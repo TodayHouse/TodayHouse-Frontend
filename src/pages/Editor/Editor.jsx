@@ -130,7 +130,7 @@ const Editor = () => {
             return;
         }
         alert('업로드 완료!')
-        window.location.href = backLoca;
+        //window.location.href = backLoca;
        
       });
     }
