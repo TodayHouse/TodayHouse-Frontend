@@ -78,7 +78,7 @@ const Product = () => {
                 <ProductContents>
                     <UserStylingView />
                     <ProductInfo id="productInfo" />
-                    <Review id="review" />
+                    <Review id="review" productId={productId} />
                     <Ask id="ask" />
                     <Delivery id="delivery" />
                     <Recommend id="recommend" />

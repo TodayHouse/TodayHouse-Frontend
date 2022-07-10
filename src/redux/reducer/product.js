@@ -9,6 +9,7 @@ const productReducer = createSlice({
         totalPrice: 0,
         form: {},
         sellerInfo: {},
+        canLike: [],
     },
     reducers: {
         changeImg: (state, action) => {
@@ -55,6 +56,10 @@ const productReducer = createSlice({
             ...state,
             sellerInfo: action.payload,
         }),
+        handleCanLike: (state, action) => ({
+            ...state,
+            canLike: action.payload,
+        }),
     },
 });
 
@@ -65,5 +70,6 @@ export const {
     changeNum,
     dispatchSetForm,
     dispatchSellerInfo,
+    handleCanLike,
 } = productReducer.actions;
 export default productReducer;
