@@ -1,13 +1,14 @@
 import React,{useEffect, useState} from "react"
 import styled from "styled-components"
 import { useSelector,useDispatch } from 'react-redux'
-import { checkGroup,changeOptionNum , deleteOption} from "../../../redux/reducer/cart"
+import { checkGroup,changeOptionNum , deleteOption , deleteGroup} from "../../../redux/reducer/cart"
 import OptionModal from "./OptionModal"
 import $ from 'jquery'
 import { changeNum } from "../../../redux/reducer/product"
 const Group = ({group,index}) =>{
     const [isOpen, setOpen] = useState(false);
-    const dispatch = useDispatch(); 
+    const dispatch = useDispatch();
+    const productInfo = useSelector((state => state.cart.productInfo? state.cart.productInfo:null));
     const handleSubmit = () => {
         setOpen(false);
     };
@@ -15,16 +16,17 @@ const Group = ({group,index}) =>{
         setOpen(true);
     };
     
+    
 
     let price = 0;
-    console.log(price );
+    
     const handleChangeNum = (g ,o,gi,oi)=>{ //리덕스 옵션수량변경
         dispatch(changeOptionNum({
             group:g,
             option:o,
             groupIndex:gi,
             optionIndex:oi,
-            num:document.getElementById("selectNum").value}));
+            num:document.getElementById("selectNum"+gi+"-"+oi).value}));
         
     }
     const handleDeleteOption =(g,o,gi,oi)=>{ //옵션 삭제
@@ -35,11 +37,19 @@ const Group = ({group,index}) =>{
             optionIndex:oi,
         }))
     }
+    const handleDeleteGroup =(g,gi)=>{ //그룹 삭제
+        dispatch(deleteGroup({
+            group:g,
+            groupIndex:gi,
+        }));
+    }
     useEffect(()=>
     {
         let temp = 0;
         group.map((option)=>{ temp += option.price *option.num});
         price=temp;
+
+        
     });
 
     const [deleveryFee,setDeleveryFee] = useState(0);
@@ -49,25 +59,46 @@ const Group = ({group,index}) =>{
     
     
     return(
+         group.length != 0? (
         <>
-        
             <Container>
                 <Content>
-                    <CheckBox type= "checkbox"
-                    onClick={() => dispatch(checkGroup({price:price,deliveryFee:group[0].deliveryFee,group: group}))}
+                    <CheckBox type= "checkbox" id={"group"+index}
+                    onClick={() => dispatch(checkGroup({group: group}))}
                      ></CheckBox>
                     <First>
                         <TitleBlock>
-                            
                             <Frame>
-                                <Image src={group[0].image}/>
+                                <Image src={group.length !=0? group[0].image: "이미지없음"}/>
                             </Frame>
                             <TextBlock>
                                 <Title>{group[0].title}</Title>
                                 <SubText>{group[0].deleveryFee ? group[0].deleveryFee + "원" : "무료배송"}</SubText>
                             </TextBlock>
-                            <Delete>X</Delete>
+                            <Delete onClick={()=>handleDeleteGroup(group,index)}>X</Delete>
+                            
                         </TitleBlock>
+                        <SelectedView>
+                            <Selected
+                                id={productInfo? productInfo.parentId : null}
+                                //onChange={onParentOptionSelected}
+                                defaultValue="default">
+                                <option value="default" disabled>
+                                    {productInfo? productInfo.optionTitle1: null}선택
+                                </option>
+                                {productInfo? productInfo.optionList1?.map((data, idx) => (
+                                    <option
+                                        key={idx}
+                                        id={"option" + idx}
+                                        value={data.content}>
+                                        {data.content +
+                                            "(" +
+                                            data.price.toLocaleString() +
+                                            "원)"}
+                                    </option>
+                                )): null}
+                            </Selected>
+                        </SelectedView>
                         {
                             group.map((option,i) =>
                             (
@@ -75,7 +106,7 @@ const Group = ({group,index}) =>{
                                     <OptionName>{option.name}<OptionDelete  onClick={()=>handleDeleteOption(group,option,index,i)}>X</OptionDelete></OptionName>
                                     
                                     <OptionPriceBlock>
-                                        <SelectNum id="selectNum"
+                                        <SelectNum id={"selectNum"+index+"-"+i}
                                         onChange={()=>handleChangeNum(group,option,index,i)
                                             }>
                                             { //숫자를 변경하면 장바구니 갱신
@@ -99,7 +130,9 @@ const Group = ({group,index}) =>{
                 </Content>
                            
             </Container>
-        </>
+        </>):(<></>
+        )
+                    
     )
 }
 //<OptionModal isOpen = {isOpen} onSubmit={handleSubmit}></OptionModal> 
@@ -244,4 +277,24 @@ const SelectNum=styled.select`
     width:100px;
     height:30px;
 `
+const Selected = styled.select`
+    width: 100%;
+    height: 50px;
+    border: none;
+    font-size: 16px;
+    &:focus {
+        outline: none;
+    }
+`;
+const SelectedView = styled.div`
+    display: flex;
+    flex-direction: column;
+    border: 1px solid ${(props) => props.theme.mainColor};
+    border-radius: 4px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 10px;
+    margin-top: 10px;
+    width: 100%;
+`;
 export default Group
