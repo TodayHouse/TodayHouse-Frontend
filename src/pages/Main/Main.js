@@ -28,13 +28,15 @@ const Main = ({ selPage }) => {
   }, 250);
 
   return (
+    <>
+    <NavBarContainer onMouseOver={navOver}>
+      <Navbar />
+      <SubNavbar />
+    </NavBarContainer>
     <Container>
-      <NavBarContainer onMouseOver={navOver}>
-        <Navbar />
-        <SubNavbar />
-      </NavBarContainer>
       <Outlet />
     </Container>
+    </>
   );
 };
 function mapStateToProps(state, ownProps) {
@@ -58,4 +60,5 @@ const NavBarContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
+  width:100%;
 `;
