@@ -109,7 +109,7 @@ const Store = () => {
             axios
                 .get(url + "products", {
                     params: {
-                        categoryId: parseInt(id),
+                        categoryName: name,
                     },
                 })
                 .then(function (res) {
