@@ -10,7 +10,12 @@ import {
     resetCategory,
 } from "../../../redux/reducer/story";
 
-const Category = () => {
+const Category = ({
+    setResiType,
+    setFamilyType,
+    setStyleType,
+    setFloorSpace,
+}) => {
     const dispatch = useDispatch();
     const [flatText, setFlatText] = useState("모든 평수");
     const selectedCategoryList = useSelector(
@@ -32,36 +37,75 @@ const Category = () => {
         if (1 <= data && data < 10) {
             setFlatText("1-9평");
             dispatch(changeCategoryList({ type: "flatArea", data: "1-9평" }));
+            setFloorSpace([1, 9]);
         }
         if (10 <= data && data < 20) {
             setFlatText("10평대");
             dispatch(changeCategoryList({ type: "flatArea", data: "10평대" }));
+            setFloorSpace([10, 19]);
         }
         if (20 <= data && data < 30) {
             setFlatText("20평대");
             dispatch(changeCategoryList({ type: "flatArea", data: "20평대" }));
+            setFloorSpace([20, 29]);
         }
         if (30 <= data && data < 40) {
             setFlatText("30평대");
             dispatch(changeCategoryList({ type: "flatArea", data: "30평대" }));
+            setFloorSpace([30, 39]);
         }
         if (40 <= data && data < 50) {
             setFlatText("40평대");
             dispatch(changeCategoryList({ type: "flatArea", data: "40평대" }));
+            setFloorSpace([40, 49]);
         }
         if (50 <= data && data < 60) {
             setFlatText("50평대");
             dispatch(changeCategoryList({ type: "flatArea", data: "50평대" }));
+            setFloorSpace([50, 59]);
         }
         if (60 <= data && data < 70) {
             setFlatText("60평대");
             dispatch(changeCategoryList({ type: "flatArea", data: "60평대" }));
+            setFloorSpace([60, 69]);
         }
         if (70 <= data && data < 80) {
             setFlatText("70평 이상");
             dispatch(
                 changeCategoryList({ type: "flatArea", data: "70평 이상" })
             );
+            setFloorSpace([70, 79]);
+        }
+    };
+
+    const setFloor = (idx) => {
+        switch (idx) {
+            case 0:
+                setFloorSpace([1, 9]);
+                break;
+            case 1:
+                setFloorSpace([10, 19]);
+                break;
+            case 2:
+                setFloorSpace([20, 29]);
+                break;
+            case 3:
+                setFloorSpace([30, 39]);
+                break;
+            case 4:
+                setFloorSpace([40, 49]);
+                break;
+            case 5:
+                setFloorSpace([50, 59]);
+                break;
+            case 6:
+                setFloorSpace([60, 69]);
+                break;
+            case 7:
+                setFloorSpace([70, 79]);
+                break;
+            default:
+                break;
         }
     };
 
@@ -69,6 +113,10 @@ const Category = () => {
         // 초기화 버튼 누를 때 실행
         dispatch(resetCategory());
         $("#reset").hide();
+        setResiType("");
+        setFamilyType("");
+        setStyleType("");
+        setFloorSpace([]);
     };
 
     // 카테고리 상세항목 보이기/숨기기
@@ -139,14 +187,11 @@ const Category = () => {
                             hideOption("livingType");
                         }}
                         options={[
-                            "원룸&오피스텔",
-                            "아파트",
-                            "빌라&연립",
-                            "단독주택",
-                            "사무공간",
-                            "상업공간",
-                            "기타",
+                            { id: "STUDIO", name: "원룸" },
+                            { id: "APARTMENT", name: "아파트" },
+                            { id: "DETACHED", name: "단독주택" },
                         ]}
+                        setState={setResiType}
                     />
                 </CategoryElement>
                 <CategoryElement
@@ -225,6 +270,7 @@ const Category = () => {
                                                     $("#customRange1").val(
                                                         idx * 10 + 9
                                                     );
+                                                    setFloor(idx);
                                                 }}>
                                                 {data}
                                             </Flat>
@@ -252,13 +298,11 @@ const Category = () => {
                             hideOption("family");
                         }}
                         options={[
-                            "싱글라이프",
-                            "신혼 부부",
-                            "아기가 있는 집",
-                            "취학 자녀가 있는 집",
-                            "부모님과 함께 사는 집",
-                            "기타",
+                            { id: "SINGLE", name: "싱글" },
+                            { id: "NUCLEAR", name: "핵가족" },
+                            { id: "EXTENDED", name: "대가족" },
                         ]}
+                        setState={setFamilyType}
                     />
                 </CategoryElement>
                 <CategoryElement
@@ -278,18 +322,12 @@ const Category = () => {
                             hideOption("style");
                         }}
                         options={[
-                            "모던",
-                            "미니멀&심플",
-                            "내추럴",
-                            "북유럽",
-                            "빈티지&레트로",
-                            "클래식&앤틱",
-                            "프렌치&프로방스",
-                            "러블리&로맨틱",
-                            "인더스트리얼",
-                            "한국&아시아",
-                            "유니크&믹스매치",
+                            { id: "MODERN", name: "모던" },
+                            { id: "SIMPLE", name: "심플" },
+                            { id: "NATURAL", name: "내추럴" },
+                            { id: "CLASSIC", name: "클래식" },
                         ]}
+                        setState={setStyleType}
                     />
                 </CategoryElement>
             </CategoryContainer>
@@ -302,6 +340,22 @@ const Category = () => {
                             onClick={() => {
                                 //삭제
                                 dispatch(deleteCategory({ type: data.type }));
+                                switch (data.type) {
+                                    case "livingType":
+                                        setResiType("");
+                                        break;
+                                    case "flatArea":
+                                        setFloorSpace([]);
+                                        break;
+                                    case "family":
+                                        setFamilyType("");
+                                        break;
+                                    case "style":
+                                        setStyleType("");
+                                        break;
+                                    default:
+                                        break;
+                                }
                             }}>
                             {data.data}
                         </SelectedCategoryElement>

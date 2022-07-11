@@ -6,7 +6,12 @@ import { changeCategoryList } from "../../../redux/reducer/story";
 //필터바 상세 옵션 박스
 const DetailBox = (props) => {
     const dispatch = useDispatch();
-    const { id, onMouseOver, onMouseLeave, options } = props;
+    const { id, onMouseOver, onMouseLeave, options, setState } = props;
+
+    const doFiltering = (filterId) => {
+        setState(filterId);
+    };
+
     return (
         <Container
             num={options.length}
@@ -18,9 +23,15 @@ const DetailBox = (props) => {
                     <Detail
                         key={idx}
                         onClick={() => {
-                            dispatch(changeCategoryList({ type: id, data }));
+                            dispatch(
+                                changeCategoryList({
+                                    type: id,
+                                    data: data.name,
+                                })
+                            );
+                            doFiltering(data.id);
                         }}>
-                        {data}
+                        {data.name}
                     </Detail>
                 ))}
             </div>
