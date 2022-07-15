@@ -20,7 +20,7 @@ const Pagination = ({ callApi, page, setPage, totalItemsCount }) => {
                 itemClassNext="next"
                 activePage={page}
                 totalItemsCount={totalItemsCount}
-                itemsCountPerPage={1}
+                itemsCountPerPage={5}
                 pageRangeDisplayed={9}
                 firstPageText={""}
                 lastPageText={""}
