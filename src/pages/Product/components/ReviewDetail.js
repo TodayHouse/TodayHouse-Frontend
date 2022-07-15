@@ -5,6 +5,7 @@ import axios from "axios";
 import theme from "../../../theme";
 import { getCookie } from "../../../App";
 import { useSelector } from "react-redux";
+import x from "../../../img/x.png";
 
 //프로필사진, 닉네임, 총 평점, 각 평점 4개, 상품옵션, 상품사진, 리뷰 내용, 도움된 사람 수 -> props로 받아야함
 const ReviewDetail = (props) => {
@@ -16,7 +17,7 @@ const ReviewDetail = (props) => {
     const canLike = canLikeList.filter((data) => data.id === reviewId);
     // console.log("info :>> ", info);
     const doLike = () => {
-        if (!canLike[0].canLike) {
+        if (!canLike[0]?.canLike) {
             axios
                 .delete(url + `reviews/like/${reviewId}`, {
                     headers: { Authorization: `Bearer ${accessToken}` },
@@ -83,7 +84,9 @@ const ReviewDetail = (props) => {
                     </div>
                 </NicknameStar>
             </ProfileContainer>
-            <button onClick={deleteReview}>삭제</button>
+            <DeleteBtn onClick={deleteReview}>
+                <img src={x} alt="x" />
+            </DeleteBtn>
             <ReviewContentContainer>
                 <ProductTitle>{info.productResponse.title}</ProductTitle>
                 <Option>
@@ -99,8 +102,8 @@ const ReviewDetail = (props) => {
                 <Content>{info.content}</Content>
             </ReviewContentContainer>
             <Footer>
-                <RecommendBtn onClick={doLike} canLike={canLike[0].canLike}>
-                    {canLike[0].canLike ? "도움이 돼요" : "도움됨"}
+                <RecommendBtn onClick={doLike} canLike={canLike[0]?.canLike}>
+                    {canLike[0]?.canLike ? "도움이 돼요" : "도움됨"}
                 </RecommendBtn>
                 <NumOfRecommend>
                     <span style={{ fontWeight: "bold" }}>{info.like}</span>
@@ -116,6 +119,7 @@ const Container = styled.div`
     flex-direction: column;
     padding: 40px 0px;
     border-top: 1px solid #eeeeee;
+    position: relative;
 `;
 const ProfileContainer = styled.div`
     display: flex;
@@ -135,6 +139,17 @@ const Nickname = styled.span``;
 const Date = styled.span`
     margin-left: 10px;
     color: gray;
+`;
+const DeleteBtn = styled.button`
+    background: none;
+    border: none;
+    position: absolute;
+    top: 40px;
+    right: 10px;
+    & img {
+        width: 24px;
+        height: 24px;
+    }
 `;
 const Rating = styled.div`
     display: flex;
@@ -159,7 +174,7 @@ const ProductImg = styled.img`
     height: 150px;
     border-radius: 4px;
 `;
-const Content = styled.p`
+const Content = styled.pre`
     margin-top: 20px;
     font-size: 18px;
 `;

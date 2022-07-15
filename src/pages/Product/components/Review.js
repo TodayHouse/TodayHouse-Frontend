@@ -8,7 +8,7 @@ import $ from "jquery";
 import modalX from "../../../img/x.png";
 import arrow from "../../../img/ExpandMoreArrow.png";
 import { useSelector, useDispatch } from "react-redux";
-import { handleCanLike } from "../../../redux/reducer/product";
+import { handleCanLike, setCount } from "../../../redux/reducer/product";
 import axios from "axios";
 import { getCookie } from "../../../App";
 
@@ -55,10 +55,9 @@ const Review = (props) => {
     const [modalImg, setModalImg] = useState([]);
     const [content, setContent] = useState("");
 
+    const [totalItemsCount, setTotalItemsCount] = useState(0);
     const [reviewDetail, setReviewDetail] = useState([]); //리뷰 목록들
     const [page, setPage] = useState(1); //페이지네이션
-    const [totalItemsCount, setTotalItemsCount] = useState(0);
-    const [canLike, setCanLike] = useState(true);
 
     const form = useSelector((state) => state.product.form);
     const url = theme.apiUrl;
@@ -137,10 +136,13 @@ const Review = (props) => {
     const getReviews = (page) => {
         //상품의 리뷰 목록 불러오기
         axios
-            .get(url + `reviews?page=${page}&size=2&productId=${productId}`, {
-                headers: { Authorization: `Bearer ${accessToken}` },
-                withCredentials: true,
-            })
+            .get(
+                url + `reviews?page=${page - 1}&size=5&productId=${productId}`,
+                {
+                    headers: { Authorization: `Bearer ${accessToken}` },
+                    withCredentials: true,
+                }
+            )
             .then((response) => {
                 console.log("response.data.result :>> ", response.data.result);
                 let list = [];
@@ -149,7 +151,6 @@ const Review = (props) => {
                 });
                 dispatch(handleCanLike(list));
                 setReviewDetail(response.data.result.content);
-                setTotalItemsCount(response.data.result.totalElements);
             })
             .catch((e) => {
                 console.log(e);
@@ -170,6 +171,17 @@ const Review = (props) => {
 
     useEffect(() => {
         console.log("form :>> ", form);
+        axios
+            .get(url + `reviews?productId=${productId}`, {
+                headers: { Authorization: `Bearer ${accessToken}` },
+                withCredentials: true,
+            })
+            .then((response) => {
+                setTotalItemsCount(response.data.result.totalElements);
+            })
+            .catch((e) => {
+                console.log(e);
+            });
         getReviews();
         getReviewRatings();
     }, []);
@@ -330,12 +342,7 @@ const Review = (props) => {
                 </FilterOptionList>
             </ReviewFilterContainer>
             {reviewDetail.map((data, idx) => (
-                <ReviewDetail
-                    key={idx}
-                    info={data}
-                    canLike={canLike}
-                    getReviews={getReviews}
-                />
+                <ReviewDetail key={idx} info={data} getReviews={getReviews} />
             ))}
             <Pagination
                 callApi={getReviews}
