@@ -5,7 +5,8 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import theme from "../../../theme";
 import { Carousel } from "../../../components";
-
+import { useDispatch, useSelector } from "react-redux";
+import { setCount } from "../../../redux/reducer/story";
 const sample = [
     { category: "공간", data: "아파트" },
     { category: "평수", data: "33평" },
@@ -24,6 +25,8 @@ const sample = [
 const StoryPostDetail = () => {
     const storyId = useParams().id;
     const url = theme.apiUrl;
+    const dispatch = useDispatch();
+
     const [info, setInfo] = useState({});
     const {
         imageUrls,
@@ -32,7 +35,6 @@ const StoryPostDetail = () => {
         createdAt,
         content,
         writer,
-        liked,
         updatedAt,
     } = info;
 
@@ -54,7 +56,21 @@ const StoryPostDetail = () => {
             .get(url + `stories/${storyId}`)
             .then((response) => {
                 console.log(response.data.result);
-                setInfo(response.data.result);
+                if (response.data.isSuccess) {
+                    setInfo(response.data.result);
+                    dispatch(
+                        setCount({
+                            name: "viewCount",
+                            count: response.data.result.views,
+                        })
+                    );
+                    dispatch(
+                        setCount({
+                            name: "likeCount",
+                            count: response.data.result.liked,
+                        })
+                    );
+                } else alert(response.data.message);
             })
             .catch((e) => {
                 console.log(e);
@@ -185,15 +201,11 @@ const StoryPostDetail = () => {
                                 <Carousel images={imageUrls} />
                                 <Contents>{content}</Contents>
                             </div>
-                            <Footer
-                                like={liked}
-                                writer={writer}
-                                storyId={storyId}
-                            />
+                            <Footer writer={writer} storyId={storyId} />
                         </div>
                     </Post>
                 </ContentContainer>
-                <Sidebar like={liked} storyId={storyId} />
+                <Sidebar storyId={storyId} />
             </Wrap>
             <FixedMenu />
         </Container>

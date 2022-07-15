@@ -5,18 +5,23 @@ import Pagination from "../../../components/Pagination";
 import axios from "axios";
 import theme from "../../../theme";
 import { getCookie } from "../../../App";
-
+import { useSelector, useDispatch } from "react-redux";
+import { setCount } from "../../../redux/reducer/story";
 //집들이 게시글 상세 페이지의 가장 아래 부분에 있는 글쓴이 프로필 및 댓글창 컴포넌트
 
 const Footer = (props) => {
-    const { like, writer, storyId } = props;
+    const { writer, storyId } = props;
+    const dispatch = useDispatch();
+    const viewCount = useSelector((state) => state.story.viewCount);
+    const likeCount = useSelector((state) => state.story.likeCount);
+    const scrapCount = useSelector((state) => state.story.scrapCount);
     const url = theme.apiUrl;
     const accessToken = getCookie("login_id");
     const [content, setContent] = useState("");
     const [commentList, setCommentList] = useState([]);
 
     const [page, setPage] = useState(1);
-    const [totalItemsCount, setTotalItemsCount] = useState(0);
+    const totalItemsCount = useSelector((state) => state.story.commentCount);
 
     useEffect(() => {
         axios
@@ -24,7 +29,12 @@ const Footer = (props) => {
             .then((res) => {
                 console.log("res :>> ", res.data.result);
                 if (res.data.isSuccess) {
-                    setTotalItemsCount(res.data.result.totalElements);
+                    dispatch(
+                        setCount({
+                            name: "commentCount",
+                            count: res.data.result.totalElements,
+                        })
+                    );
                 } else alert(res.data.message);
             })
             .catch((e) => {
@@ -80,10 +90,10 @@ const Footer = (props) => {
     return (
         <Container>
             <LikeContainer>
-                <LikeDetail>좋아요 {like}</LikeDetail>
-                <LikeDetail>스크랩 54</LikeDetail>
-                <LikeDetail>댓글 54</LikeDetail>
-                <LikeDetail>조회 54</LikeDetail>
+                <LikeDetail>좋아요 {likeCount}</LikeDetail>
+                <LikeDetail>스크랩 {scrapCount}</LikeDetail>
+                <LikeDetail>댓글 {totalItemsCount}</LikeDetail>
+                <LikeDetail>조회 {viewCount}</LikeDetail>
             </LikeContainer>
             <Profile>
                 <User>
@@ -98,7 +108,7 @@ const Footer = (props) => {
             </Profile>
             <CommentContainer>
                 <span style={{ fontSize: 20, fontWeight: "bold" }}>
-                    댓글 10
+                    댓글 {totalItemsCount}
                 </span>
                 <UploadComment>
                     <CommentProfile

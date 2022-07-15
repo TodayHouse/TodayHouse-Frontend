@@ -5,12 +5,16 @@ import { getCookie } from "../../../App";
 import theme from "../../../theme";
 import CommentShare from "../elements/CommentShare";
 import SidebarElement from "../elements/SidebarElement";
-
+import { useSelector, useDispatch } from "react-redux";
+import { setCount } from "../../../redux/reducer/story";
 //집들이 게시글 상세 페이지의 좋아요, 스크랩, 댓글, 공유 버튼이 있는 사이드바 컴포넌트
 const Sidebar = (props) => {
-    const { like, storyId } = props;
-    const [scrapCount, setScrapCount] = useState(0);
-    const [isScraped, setIsScraped] = useState(false);
+    const { storyId } = props;
+    const dispatch = useDispatch();
+    const scrapCount = useSelector((state) => state.story.scrapCount);
+    const isScraped = useSelector((state) => state.story.isScraped);
+    const likeCount = useSelector((state) => state.story.likeCount);
+    const commentCount = useSelector((state) => state.story.commentCount);
     const url = theme.apiUrl;
     const accessToken = getCookie("login_id");
 
@@ -24,7 +28,10 @@ const Sidebar = (props) => {
             .get(url + `scraps/${storyId}/count`)
             .then((res) => {
                 console.log("cnt :>> ", res);
-                if (res.data.isSuccess) setScrapCount(res.data.result);
+                if (res.data.isSuccess)
+                    dispatch(
+                        setCount({ name: "scrapCount", count: res.data.result })
+                    );
                 else alert(res.data.message);
             })
             .catch((e) => {
@@ -42,7 +49,10 @@ const Sidebar = (props) => {
             })
             .then((res) => {
                 console.log("is :>> ", res);
-                if (res.data.isSuccess) setIsScraped(res.data.result);
+                if (res.data.isSuccess)
+                    dispatch(
+                        setCount({ name: "isScraped", count: res.data.result })
+                    );
                 else alert(res.data.message);
             })
             .catch((e) => {
@@ -102,7 +112,7 @@ const Sidebar = (props) => {
                             onClick={() => {
                                 alert("dd");
                             }}
-                            num={like}
+                            num={likeCount}
                             type="like"
                         />
                         <SidebarElement
@@ -118,7 +128,7 @@ const Sidebar = (props) => {
                         <CommentShare
                             alt="topic"
                             src="https://img.icons8.com/ios/50/000000/topic.png"
-                            num={226}
+                            num={commentCount}
                         />
                         <CommentShare
                             alt="share"
