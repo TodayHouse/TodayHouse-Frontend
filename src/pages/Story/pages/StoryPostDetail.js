@@ -22,7 +22,7 @@ const sample = [
 ];
 
 const StoryPostDetail = () => {
-    const id = useParams().id;
+    const storyId = useParams().id;
     const url = theme.apiUrl;
     const [info, setInfo] = useState({});
     const {
@@ -51,7 +51,7 @@ const StoryPostDetail = () => {
     useEffect(() => {
         document.getElementById("fixedMenu").style.visibility = "hidden";
         axios
-            .get(url + `stories/${id}`)
+            .get(url + `stories/${storyId}`)
             .then((response) => {
                 console.log(response.data.result);
                 setInfo(response.data.result);
@@ -185,11 +185,15 @@ const StoryPostDetail = () => {
                                 <Carousel images={imageUrls} />
                                 <Contents>{content}</Contents>
                             </div>
-                            <Footer like={liked} writer={writer} storyId={id} />
+                            <Footer
+                                like={liked}
+                                writer={writer}
+                                storyId={storyId}
+                            />
                         </div>
                     </Post>
                 </ContentContainer>
-                <Sidebar like={liked} />
+                <Sidebar like={liked} storyId={storyId} />
             </Wrap>
             <FixedMenu />
         </Container>
