@@ -56,9 +56,12 @@ const NavBarContainer = styled.div`
   background-color: lightyellow;
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 2;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center
   height: 100%;
-  width:100%;
+  width: 100%;
 `;
+

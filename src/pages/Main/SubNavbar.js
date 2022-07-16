@@ -12,6 +12,7 @@ const SubNavbar = () => {
     //0번탭
     now = (
       <NavBar id="subNavBar">
+        <NavBarContent>
         <NavList>
           <NavItem>
             <Link to="/story">
@@ -25,12 +26,14 @@ const SubNavbar = () => {
             <NavText>이벤트</NavText>
           </Link>
         </NavList>
+        </NavBarContent>
       </NavBar>
     )
   } else {
     //1번 탭
     now = (
       <NavBar id="subNavBar">
+      <NavBarContent>
         <NavList>
           <NavItem>
             <NavText>카테고리</NavText>
@@ -42,6 +45,7 @@ const SubNavbar = () => {
             <NavText>프리미엄</NavText>
           </NavItem>
         </NavList>
+      </NavBarContent>
       </NavBar>
     )
   }
@@ -80,4 +84,11 @@ const NavBar = styled.nav`
 display: none;
 border-bottom: 1px solid #ededed;
 margin:0 auto;
+justify-content:center;
+algin-items:center;
+
+`
+const NavBarContent = styled.div`
+  display:flex;
+  width:80%;
 `

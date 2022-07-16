@@ -49,14 +49,13 @@ const Navbar = () => {
     return cookies.get(name)
 
   }
-  const [isLogin, setLogin] = useState(false);
+  const [isLogin, setLogin] = useState(getCookie("login_id") ? true: false);
   
-  useEffect(() => {
-    setLogin(getCookie("login_id") ? true: false);
-  }, [isLogin]);
+ 
 
   return (
     <NavBar id="navBar" >
+      <NavbarContent>
       <NavListFront>
         <NavBrand>
           <Link to="/">
@@ -138,6 +137,7 @@ const Navbar = () => {
           </>
         )}
       </NavListBack>
+    </NavbarContent>
     </NavBar>
   )
 }
@@ -157,7 +157,7 @@ const NavListFront = styled.div`
 `
 const NavListBack = styled.div`
   display: flex;
-  margin-left: auto;
+  margin-left:auto;
   
 `
 const NavItem = styled.div`
@@ -179,9 +179,18 @@ const NavText = styled.div`
 `
 const NavBar = styled.nav`
   display: flex;
+  justify-content: center;
+  align-items: center;
   border-bottom: 1px solid #ededed;
   height:70px;
+  width:100%;
   
+  
+`
+const NavbarContent = styled.div`
+  display: flex;
+  width:80%;
+
 `
 const Search = styled.button`
   background-color: white;
@@ -223,6 +232,8 @@ const Menu=styled.div`
 display:flex;
 flex-direction: column;
 margin-left: 10px;
+position:relative;
+z-index:2;
 `
 const Item=styled.div`
   padding:10px;
@@ -235,8 +246,8 @@ const Item=styled.div`
 `
 const DropDown=styled.div`
 display:none;
-position: absolute;
-z-index: 1;
+position:absolute;
+z-index:3;
 flex-direction: column;
 border-radius: 5px;
 box-shadow: 5px 5px 8px #aaaaaa;
@@ -244,10 +255,12 @@ width:200px;
 background-color: white;
 padding:10px;
 top:60px;
+
 `
 const Writing=styled.button`
   background-color: ${(props) => props.theme.mainColor};
   color: white;
+  z-index:2;
   &:hover {
     background-color: ${(props) => props.theme.hoverMainColor};
   }
