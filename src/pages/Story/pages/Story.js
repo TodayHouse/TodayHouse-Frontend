@@ -4,9 +4,11 @@ import { Category, StoryPost } from "../components/index";
 import axios from "axios";
 import theme from "../../../theme";
 import { useInView } from "react-intersection-observer";
+import { getCookie } from "../../../App";
 
 const Story = () => {
     const url = theme.apiUrl;
+    const accessToken = getCookie("login_id");
     const [list, setList] = useState([]);
     const [ref, inView] = useInView(); // ref로 관찰 중인 요소가 감지되면 inView = true
     const [page, setPage] = useState(0);
@@ -35,7 +37,13 @@ const Story = () => {
                             resiType === "" ? "" : `resiType=${resiType}&`
                         }${
                             familyType === "" ? "" : `familyType=${familyType}&`
-                        }${styleType === "" ? "" : `styleType=${styleType}&`}`
+                        }${styleType === "" ? "" : `styleType=${styleType}&`}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${accessToken}`,
+                        },
+                        withCredentials: true,
+                    }
                 )
                 .then((response) => {
                     console.log("response :>> ", response);
@@ -76,7 +84,13 @@ const Story = () => {
                         floorSpace.length === 0
                             ? ""
                             : `floorSpaceMin=${floorSpace[0]}&floorSpaceMax=${floorSpace[1]}&`
-                    }`
+                    }`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                    withCredentials: true,
+                }
             )
             .then((response) => {
                 console.log("response :>> ", response);
@@ -112,7 +126,7 @@ const Story = () => {
                                     title={item.title}
                                     // profile={item.profile}
                                     nickname={item.writer}
-                                    // scrap={item.scrap}
+                                    isScraped={item.isScraped}
                                     views={item.views}
                                 />
                             </div>
@@ -124,7 +138,7 @@ const Story = () => {
                                     title={item.title}
                                     // profile={item.profile}
                                     nickname={item.writer}
-                                    // scrap={item.scrap}
+                                    isScraped={item.isScraped}
                                     views={item.views}
                                 />
                             </div>
