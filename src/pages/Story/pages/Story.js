@@ -12,6 +12,7 @@ const Story = () => {
     const [page, setPage] = useState(0);
     const [loading, setLoading] = useState(false); // 추가 데이터를 불러온 후에 page를 증가시키기 위해 사용
     const [isLast, setIsLast] = useState(false);
+    const [numOfItems, setNumOfItems] = useState(0);
 
     const [resiType, setResiType] = useState(""); //주거형태 필터
     const [familyType, setFamilyType] = useState(""); //가족형태 필터
@@ -39,12 +40,14 @@ const Story = () => {
                 .then((response) => {
                     console.log("response :>> ", response);
                     console.log(response.request.responseURL);
-                    if (response.data.result.last) setIsLast(true); // 마지막 페이지(last)인지 여부 설정
-                    let arr = [...list];
-                    response.data.result.content.forEach((data) => {
-                        arr.push(data);
-                    });
-                    setList(arr); // list 최신화
+                    if (response.data.isSuccess) {
+                        if (response.data.result.last) setIsLast(true); // 마지막 페이지(last)인지 여부 설정
+                        let arr = [...list];
+                        response.data.result.content.forEach((data) => {
+                            arr.push(data);
+                        });
+                        setList(arr); // list 최신화
+                    } else alert(response.data.message);
                 })
                 .catch((e) => {
                     console.log(e);
@@ -77,10 +80,12 @@ const Story = () => {
             )
             .then((response) => {
                 console.log("response :>> ", response);
-                if (response.data.result.last) setIsLast(true); // 마지막 페이지(last)인지 여부 설정
-                let arr = response.data.result.content;
-
-                setList(arr); // list 최신화
+                if (response.data.isSuccess) {
+                    if (response.data.result.last) setIsLast(true); // 마지막 페이지(last)인지 여부 설정
+                    let arr = response.data.result.content;
+                    setList(arr); // list 최신화
+                    setNumOfItems(response.data.result.numberOfElements);
+                } else alert(response.data.message);
             })
             .catch((e) => {
                 console.log(e);
@@ -96,7 +101,7 @@ const Story = () => {
                 setFloorSpace={setFloorSpace}
             />
             <CardContainer>
-                <TotalNum>전체 5</TotalNum>
+                <TotalNum>전체 {numOfItems}</TotalNum>
                 <CardItem>
                     {list?.map((item, idx) =>
                         list.length - 1 === idx ? ( //마지막 요소면 ref
@@ -108,7 +113,7 @@ const Story = () => {
                                     // profile={item.profile}
                                     nickname={item.writer}
                                     // scrap={item.scrap}
-                                    // view={item.view}
+                                    views={item.views}
                                 />
                             </div>
                         ) : (
@@ -120,7 +125,7 @@ const Story = () => {
                                     // profile={item.profile}
                                     nickname={item.writer}
                                     // scrap={item.scrap}
-                                    // view={item.view}
+                                    views={item.views}
                                 />
                             </div>
                         )
