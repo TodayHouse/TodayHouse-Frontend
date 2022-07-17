@@ -43,8 +43,8 @@ const StoryPost = (props) => {
     const routing = (e) => {
         //북마크를 클릭하면 라우팅 x
         if (
-            ref.current.contains(e.target) &&
-            !bookmarkRef.current.contains(e.target)
+            ref.current?.contains(e.target) &&
+            !bookmarkRef.current?.contains(e.target)
         )
             navigate(`/story/post/${id}`);
     };
@@ -107,7 +107,7 @@ const StoryPost = (props) => {
                         width="32"
                         height="32"
                         viewBox="0 0 24 24"
-                        class="icon">
+                        className="icon">
                         <defs>
                             <path
                                 id="scrap-icon-122-b"
@@ -163,7 +163,7 @@ const StoryPost = (props) => {
                         </defs>
                         <g
                             fill={isScraped ? theme.mainColor : "none"}
-                            fill-rule="nonzero"
+                            fillRule="nonzero"
                             transform="matrix(1 0 0 -1 0 24)">
                             <use
                                 fill="#000"
@@ -171,7 +171,7 @@ const StoryPost = (props) => {
                                 href="#scrap-icon-122-b"></use>
                             <use
                                 fill="#FFF"
-                                fill-opacity=".4"
+                                fillOpacity=".4"
                                 href="#scrap-icon-122-b"></use>
                             <use
                                 fill="#000"

@@ -231,7 +231,7 @@ const Category = ({
                                             type="range"
                                             min="1"
                                             max="80"
-                                            class="form-range"
+                                            className="form-range"
                                             id="customRange1"
                                             onChange={(e) => {
                                                 if (e.target.value === "80")
