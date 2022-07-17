@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import theme from '../../theme';
 
+
 const Cart = () =>{
     let data =[]; 
     const groups=useSelector((state)=>state.cart.allGroups) ;//장바구니 불러옴
@@ -20,22 +21,9 @@ const Cart = () =>{
     useEffect(()=>
     {
         dispatch(loadCart()); //장바구니 로드
-
-        groups.map((group)=>{ //상품정보 전부 로드.
-            axios
-            .get(url + `products/${group[0].productId}`)
-            .then((response) => {
-                if (response.data.isSuccess) {
-                    const { result } = response.data;
-                    console.log("??");
-                    dispatch(setInfo(result));
-                    
-                }
-            })
-            .catch((e) => {
-                console.log(e);
-            });
-        })
+        
+        
+        
 
     },[]);
     

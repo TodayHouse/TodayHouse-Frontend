@@ -158,7 +158,8 @@ const cartReducer = createSlice({
             console.log(JSON.parse(localStorage.getItem("cartToPurchase")));
         },
         setInfo:(state, action)=>{
-            console.log(action);
+            console.log(action.payload);
+            state.productInfo = [...action.payload];
         },
         
     }

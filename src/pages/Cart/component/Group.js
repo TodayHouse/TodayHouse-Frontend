@@ -5,13 +5,18 @@ import { checkGroup,changeOptionNum , deleteOption , deleteGroup} from "../../..
 import OptionModal from "./OptionModal"
 import $ from 'jquery'
 import { changeNum } from "../../../redux/reducer/product"
+import axios from 'axios';
+import theme from '../../../theme';
+
 const Group = ({group,index}) =>{
     const [isOpen, setOpen] = useState(false);
+    const [productInfo,setProductInfo] = useState([]);
+    const url =theme.apiUrl;
     const dispatch = useDispatch();
-    const productInfo = useSelector((state => state.cart.productInfo? state.cart.productInfo:null));
     const handleSubmit = () => {
         setOpen(false);
     };
+
     const handleClick = () => {
         setOpen(true);
     };
@@ -48,9 +53,27 @@ const Group = ({group,index}) =>{
         let temp = 0;
         group.map((option)=>{ temp += option.price *option.num});
         price=temp;
-
+        
+        
         
     });
+    useEffect(()=>{
+        let tempInfo = [];
+        axios
+        .get(url + `products/${group[0].productId}`)
+        .then((response) => {
+            if (response.data.isSuccess) {
+                const { result } = response.data;
+                console.log("??");
+                setProductInfo(result);
+                    
+            }
+        })
+        .catch((e) => {
+            console.log(e);
+        });
+        
+    },[])
 
     const [deleveryFee,setDeleveryFee] = useState(0);
     const num = Array(100)
@@ -84,9 +107,9 @@ const Group = ({group,index}) =>{
                                 //onChange={onParentOptionSelected}
                                 defaultValue="default">
                                 <option value="default" disabled>
-                                    {productInfo? productInfo.optionTitle1: null}선택
+                                    {productInfo? productInfo.option1: null}선택
                                 </option>
-                                {productInfo? productInfo.optionList1?.map((data, idx) => (
+                                {productInfo? productInfo.parentOptions?.map((data, idx) => (
                                     <option
                                         key={idx}
                                         id={"option" + idx}

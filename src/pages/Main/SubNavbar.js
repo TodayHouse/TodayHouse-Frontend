@@ -87,6 +87,7 @@ margin:0 auto;
 justify-content:center;
 algin-items:center;
 
+
 `
 const NavBarContent = styled.div`
   display:flex;
