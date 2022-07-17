@@ -28,15 +28,6 @@ const StoryPostDetail = () => {
     const dispatch = useDispatch();
 
     const [info, setInfo] = useState({});
-    const {
-        imageUrls,
-        category,
-        title,
-        createdAt,
-        content,
-        writer,
-        updatedAt,
-    } = info;
 
     //스크롤 시 최상단으로부터의 offset을 계산하여 최상단이 아닐 때 FixedMenu가 보이도록 구현
     const onScroll = (e) => {
@@ -82,7 +73,7 @@ const StoryPostDetail = () => {
             <MainImage
                 width="125%"
                 height="500px"
-                src={imageUrls && imageUrls[0]}
+                src={info.imageUrls && info.imageUrls[0]}
             />
             <Wrap>
                 <WhiteSpace />
@@ -91,7 +82,7 @@ const StoryPostDetail = () => {
                         <p style={{ color: "#777777", fontSize: 18 }}>
                             온라인 집들이
                         </p>
-                        <Title>{title}</Title>
+                        <Title>{info.title}</Title>
                         <ProfileContainer>
                             <Profile>
                                 <ProfileImg
@@ -100,18 +91,20 @@ const StoryPostDetail = () => {
                                     src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMDExMjhfMTEx%2FMDAxNjA2NTQ0MjUwMTUx.uIBm1wL-ju7ADAvnTc5dwCM1ZuAUF2M9DD5fnHhc9mYg.sErQnf3Qjk3pEWPEgINwAYu_ricFFBLIyyIqpYaYADsg.JPEG.wind380%2F%25BF%25A4%25BD%25C3%25C6%25BC%25BB%25F3%25B0%25A1%25B3%25BB%25BA%25CE.jpg&type=sc960_832"
                                 />
                                 <Nickname>
-                                    <b style={{ fontSize: 16 }}>{writer}</b>
+                                    <b style={{ fontSize: 16 }}>
+                                        {info.writer?.nickname}
+                                    </b>
                                     <span
                                         style={{
                                             color: "#777777",
                                             fontSize: 16,
                                         }}>
-                                        {createdAt
-                                            ? createdAt[0] +
+                                        {info.createdAt
+                                            ? info.createdAt[0] +
                                               "년 " +
-                                              createdAt[1] +
+                                              info.createdAt[1] +
                                               "월 " +
-                                              createdAt[2] +
+                                              info.createdAt[2] +
                                               "일"
                                             : ""}
                                     </span>
@@ -198,10 +191,10 @@ const StoryPostDetail = () => {
                                     display: "flex",
                                     flexDirection: "column",
                                 }}>
-                                <Carousel images={imageUrls} />
-                                <Contents>{content}</Contents>
+                                <Carousel images={info.imageUrls} />
+                                <Contents>{info.content}</Contents>
                             </div>
-                            <Footer writer={writer} storyId={storyId} />
+                            <Footer writer={info.writer} storyId={storyId} />
                         </div>
                     </Post>
                 </ContentContainer>
