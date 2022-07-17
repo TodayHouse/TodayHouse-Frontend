@@ -80,7 +80,17 @@ const ReviewDetail = (props) => {
                     <Nickname>{info.nickname}</Nickname>
                     <div style={{ display: "flex", alignItems: "center" }}>
                         <Star rating={info.rating} size="20px" />
-                        <Date>2022.01.16</Date>
+                        <Date>
+                            {info.createdAt[0] +
+                                "." +
+                                (info.createdAt[1] < 10
+                                    ? "0" + info.createdAt[1]
+                                    : info.createdAt[1]) +
+                                "." +
+                                (info.createdAt[2] < 10
+                                    ? "0" + info.createdAt[2]
+                                    : info.createdAt[2])}
+                        </Date>
                     </div>
                 </NicknameStar>
             </ProfileContainer>
@@ -98,7 +108,7 @@ const ReviewDetail = (props) => {
                             .content
                     }
                 </Option>
-                <ProductImg src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMDAzMzBfMTE4%2FMDAxNTg1NTQ5Mzc3NjE4.K1vxULmVndgOKUn2J0-Mign95AWVrzEKZs-yGTYlwFMg.sOHgdMOq8lVX_o0eSssK9VaodVAiRVopM3-nTTrl-O0g.JPEG.norano4353%2FKakaoTalk_20200324_174057960.jpg&type=a340" />
+                <ProductImg src={info.productImage} />
                 <Content>{info.content}</Content>
             </ReviewContentContainer>
             <Footer>
