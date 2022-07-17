@@ -24,8 +24,23 @@ const Footer = (props) => {
     const totalItemsCount = useSelector((state) => state.story.commentCount);
 
     useEffect(() => {
+        getCommentsCount();
+        getComments();
+        // getIsFollowing()
+    }, []);
+
+    // const getIsFollowing=()=>{
+    //   axios.get(url+`follows?fromId=${}&toId=${}`)
+    // }
+
+    const getCommentsCount = () => {
         axios
-            .get(url + `stories/reply?storyId=${storyId}`)
+            .get(url + `stories/reply/${storyId}`, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+                withCredentials: true,
+            })
             .then((res) => {
                 console.log("res :>> ", res.data.result);
                 if (res.data.isSuccess) {
@@ -40,14 +55,16 @@ const Footer = (props) => {
             .catch((e) => {
                 console.log("e :>> ", e);
             });
-        getComments();
-    }, []);
+    };
 
-    const getComments = (page) => {
+    const getComments = () => {
         axios
-            .get(
-                url + `stories/reply?storyId=${storyId}&page=${page - 1}&size=5`
-            )
+            .get(url + `stories/reply/${storyId}?page=${page - 1}&size=5`, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+                withCredentials: true,
+            })
             .then((res) => {
                 if (res.data.isSuccess) {
                     setCommentList(res.data.result.content);
@@ -100,9 +117,9 @@ const Footer = (props) => {
                     <ProfileImg
                         width="80px"
                         height="80px"
-                        src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMTA3MTFfMjEy%2FMDAxNjI2MDA1ODgzODM5.HmYZGldiMudAiUFuU9MWO-BgE7zY7gaRbeSHVQXHkMEg.EKgu58sMQsOHAVTT5U-J-wb0ZtzkYhLU6v7a1Oz4ZlEg.JPEG.yhn2297%2FCB62AC49-461A-4258-8E28-210570937650.jpeg&type=sc960_832"
+                        src={writer?.profileImage}
                     />
-                    <Name>{writer}</Name>
+                    <Name>{writer?.nickname}</Name>
                 </User>
                 <FollowBtn>팔로우</FollowBtn>
             </Profile>
@@ -133,11 +150,14 @@ const Footer = (props) => {
                 {commentList.map((e, idx) => (
                     <Comment
                         key={idx}
-                        storyId={storyId}
+                        id={e.id}
                         src={e.replyUserDto.profileImage}
                         nickname={e.replyUserDto.nickname}
                         comment={e.content}
                         time={e.createdDate}
+                        isMine={e.isMine}
+                        getComments={getComments}
+                        getCommentsCount={getCommentsCount}
                     />
                 ))}
                 <Pagination

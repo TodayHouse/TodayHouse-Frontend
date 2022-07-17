@@ -1,16 +1,37 @@
 import axios from "axios";
 import React from "react";
 import styled from "styled-components";
+import { getCookie } from "../../../App";
 import theme from "../../../theme";
+
 //댓글 컴포넌트
-const Comment = ({ src, nickname, comment, time, storyId }) => {
+const Comment = ({
+    src,
+    nickname,
+    comment,
+    time,
+    id,
+    isMine,
+    getComments,
+    getCommentsCount,
+}) => {
     const url = theme.apiUrl;
+    const accessToken = getCookie("login_id");
 
     const deleteComment = () => {
         axios
-            .delete(url + "stories/reply", { storyId, withCredentials: true })
+            .delete(url + `stories/reply/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+                withCredentials: true,
+            })
             .then((res) => {
                 console.log("res :>> ", res);
+                if (res.data.isSuccess) {
+                    getCommentsCount();
+                    getComments();
+                } else alert(res.data.message);
             })
             .catch((e) => {
                 console.log("e :>> ", e);
@@ -45,8 +66,15 @@ const Comment = ({ src, nickname, comment, time, storyId }) => {
                     <FooterContent>답글 달기</FooterContent>
                     <FooterContent>·</FooterContent>
                     <FooterContent>신고</FooterContent>
-                    <FooterContent>·</FooterContent>
-                    <FooterContent onClick={deleteComment}>삭제</FooterContent>
+
+                    {isMine ? (
+                        <>
+                            <FooterContent>·</FooterContent>
+                            <FooterContent onClick={deleteComment}>
+                                삭제
+                            </FooterContent>
+                        </>
+                    ) : null}
                 </Footer>
             </Detail>
         </Container>
