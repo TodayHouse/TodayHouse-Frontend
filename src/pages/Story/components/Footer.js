@@ -31,7 +31,7 @@ const Footer = (props) => {
     useEffect(() => {
         getIsFollowing();
         getCommentsCount();
-        getComments();
+        getComments(page);
     }, []);
 
     const getIsFollowing = () => {
@@ -72,7 +72,7 @@ const Footer = (props) => {
             });
     };
 
-    const getComments = () => {
+    const getComments = (page) => {
         axios
             .get(url + `stories/reply/${storyId}?page=${page - 1}&size=5`, {
                 headers: {
@@ -110,7 +110,7 @@ const Footer = (props) => {
                 console.log("res :>> ", res);
                 if (res.data.isSuccess) {
                     setContent("");
-                    getComments();
+                    getComments(page);
                     window.location.reload();
                 } else alert(res.data.message);
             })
