@@ -69,7 +69,7 @@ const Review = (props) => {
     const closeModal = () => {
         setModalOpen(false);
         setRating(0);
-        setModalImg([]);
+        setPreviewImg("");
     };
 
     const handleRating = (e) => {
@@ -83,7 +83,7 @@ const Review = (props) => {
     };
 
     const removeModalImg = () => {
-        setModalImg();
+        setPreviewImg("");
     };
 
     const handleContent = (e) => {
@@ -397,6 +397,7 @@ const Review = (props) => {
                                 {previewImg.length !== 0 ? (
                                     <ModalImgView>
                                         <ModalImgRemoveBtn
+                                            type="button"
                                             onClick={removeModalImg}>
                                             삭제
                                         </ModalImgRemoveBtn>
