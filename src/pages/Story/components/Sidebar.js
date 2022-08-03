@@ -6,7 +6,7 @@ import theme from "../../../theme";
 import CommentShare from "../elements/CommentShare";
 import SidebarElement from "../elements/SidebarElement";
 import { useSelector, useDispatch } from "react-redux";
-import { setCount } from "../../../redux/reducer/story";
+import { handleIsScraped, setCount } from "../../../redux/reducer/story";
 //집들이 게시글 상세 페이지의 좋아요, 스크랩, 댓글, 공유 버튼이 있는 사이드바 컴포넌트
 const Sidebar = (props) => {
     const { storyId } = props;
@@ -50,9 +50,7 @@ const Sidebar = (props) => {
             .then((res) => {
                 console.log("is :>> ", res);
                 if (res.data.isSuccess)
-                    dispatch(
-                        setCount({ name: "isScraped", count: res.data.result })
-                    );
+                    dispatch(handleIsScraped(res.data.result));
                 else alert(res.data.message);
             })
             .catch((e) => {
@@ -120,8 +118,6 @@ const Sidebar = (props) => {
                             num={scrapCount}
                             isChecked={isScraped}
                             type="scrap"
-                            getIsScraped={getIsScraped}
-                            getScrapsCount={getScrapsCount}
                         />
                     </LikeAndScrap>
                     <CommentAndShare>
