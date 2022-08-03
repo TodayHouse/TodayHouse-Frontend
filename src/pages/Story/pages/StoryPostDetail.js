@@ -6,7 +6,7 @@ import axios from "axios";
 import theme from "../../../theme";
 import { Carousel } from "../../../components";
 import { useDispatch, useSelector } from "react-redux";
-import { setCount } from "../../../redux/reducer/story";
+import { setCount, setWriterId } from "../../../redux/reducer/story";
 const sample = [
     { category: "공간", data: "아파트" },
     { category: "평수", data: "33평" },
@@ -28,6 +28,7 @@ const StoryPostDetail = () => {
     const dispatch = useDispatch();
 
     const [info, setInfo] = useState({});
+    const writerId = useSelector((state) => state.story.writerId);
 
     //스크롤 시 최상단으로부터의 offset을 계산하여 최상단이 아닐 때 FixedMenu가 보이도록 구현
     const onScroll = (e) => {
@@ -49,6 +50,7 @@ const StoryPostDetail = () => {
                 console.log(response.data.result);
                 if (response.data.isSuccess) {
                     setInfo(response.data.result);
+                    dispatch(setWriterId(response.data.result.writer.id));
                     dispatch(
                         setCount({
                             name: "viewCount",

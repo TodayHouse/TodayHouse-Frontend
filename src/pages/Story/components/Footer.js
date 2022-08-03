@@ -6,7 +6,7 @@ import axios from "axios";
 import theme from "../../../theme";
 import { getCookie } from "../../../App";
 import { useSelector, useDispatch } from "react-redux";
-import { setCount } from "../../../redux/reducer/story";
+import { handleIsFollowing, setCount } from "../../../redux/reducer/story";
 //집들이 게시글 상세 페이지의 가장 아래 부분에 있는 글쓴이 프로필 및 댓글창 컴포넌트
 
 const Footer = (props) => {
@@ -15,8 +15,13 @@ const Footer = (props) => {
     const viewCount = useSelector((state) => state.story.viewCount);
     const likeCount = useSelector((state) => state.story.likeCount);
     const scrapCount = useSelector((state) => state.story.scrapCount);
+    const isFollowing = useSelector((state) => state.story.isFollowing);
+    const writerId = JSON.parse(localStorage.getItem("storyWriterId"));
+
     const url = theme.apiUrl;
     const accessToken = getCookie("login_id");
+    const userId = getCookie("index_id");
+
     const [content, setContent] = useState("");
     const [commentList, setCommentList] = useState([]);
 
@@ -24,14 +29,24 @@ const Footer = (props) => {
     const totalItemsCount = useSelector((state) => state.story.commentCount);
 
     useEffect(() => {
+        getIsFollowing();
         getCommentsCount();
         getComments();
-        // getIsFollowing()
     }, []);
 
-    // const getIsFollowing=()=>{
-    //   axios.get(url+`follows?fromId=${}&toId=${}`)
-    // }
+    const getIsFollowing = () => {
+        axios
+            .get(url + `follows?fromId=${userId}&toId=${writerId}`)
+            .then((res) => {
+                console.log("res :>> ", res);
+                if (res.data.isSuccess) {
+                    dispatch(handleIsFollowing(res.data.result));
+                } else alert(res.data.message);
+            })
+            .catch((e) => {
+                console.log("e :>> ", e);
+            });
+    };
 
     const getCommentsCount = () => {
         axios
@@ -80,7 +95,6 @@ const Footer = (props) => {
     };
     const onSubmit = (e) => {
         e.preventDefault();
-        console.log(content);
         axios
             .post(
                 url + "stories/reply",
@@ -104,6 +118,51 @@ const Footer = (props) => {
                 console.log("e :>> ", e);
             });
     };
+
+    const handleFollow = () => {
+        if (isFollowing) {
+            axios
+                .delete(
+                    url + `follows?fromId=${parseInt(userId)}&toId=${writerId}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${accessToken}`,
+                        },
+                        withCredentials: true,
+                    }
+                )
+                .then((res) => {
+                    if (res.data.isSuccess) {
+                        console.log("res.data :>> ", res.data);
+                        getIsFollowing();
+                    } else alert(res.data.message);
+                })
+                .catch((e) => {
+                    console.log("e :>> ", e);
+                });
+        } else {
+            axios
+                .post(
+                    url + "follows",
+                    { fromId: parseInt(userId), toId: writerId },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${accessToken}`,
+                        },
+                        withCredentials: true,
+                    }
+                )
+                .then((res) => {
+                    if (res.data.isSuccess) {
+                        console.log("res.data :>> ", res.data);
+                        getIsFollowing();
+                    } else alert(res.data.message);
+                })
+                .catch((e) => {
+                    console.log("e :>> ", e);
+                });
+        }
+    };
     return (
         <Container>
             <LikeContainer>
@@ -121,7 +180,9 @@ const Footer = (props) => {
                     />
                     <Name>{writer?.nickname}</Name>
                 </User>
-                <FollowBtn>팔로우</FollowBtn>
+                <FollowBtn isFollowing={isFollowing} onClick={handleFollow}>
+                    {isFollowing ? "팔로잉" : "팔로우"}
+                </FollowBtn>
             </Profile>
             <CommentContainer>
                 <span style={{ fontSize: 20, fontWeight: "bold" }}>
@@ -210,7 +271,8 @@ const FollowBtn = styled.button`
     font-weight: bold;
     font-size: 24px;
     margin-left: 20px;
-    color: ${(props) => props.theme.mainColor};
+    color: ${(props) =>
+        props.isFollowing ? "#9e9e9e" : props.theme.mainColor};
 `;
 const CommentContainer = styled.div`
     padding: 20px 0px;
