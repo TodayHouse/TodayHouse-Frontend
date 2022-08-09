@@ -124,7 +124,7 @@ const Review = (props) => {
                             alert("리뷰가 등록되었습니다.");
                         }
                         closeModal();
-                        getReviews();
+                        getReviews(page);
                         getReviewRatings();
                     })
                     .catch((e) => {
@@ -183,7 +183,7 @@ const Review = (props) => {
             .catch((e) => {
                 console.log(e);
             });
-        getReviews();
+        getReviews(page);
         getReviewRatings();
     }, []);
 
